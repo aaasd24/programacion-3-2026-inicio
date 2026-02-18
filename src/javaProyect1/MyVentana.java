@@ -4,6 +4,7 @@ import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 
+import views.BotonsView;
 import views.LoginView;
 import views.MyPanel;
 
@@ -27,7 +28,8 @@ public class MyVentana extends JFrame {
 		//MyPanel panelito = new MyPanel();
 		//add(panelito);
 		LoginView miLogin = new LoginView(); 
-		add(miLogin);
+		BotonsView prueba = new BotonsView();
+		add(prueba);
 		
 		setVisible(true);
 		
