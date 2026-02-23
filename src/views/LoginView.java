@@ -9,7 +9,9 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridBagLayoutInfo;
 import java.awt.Image;
+import java.awt.Insets;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -60,11 +62,11 @@ public class LoginView extends JPanel{
 		panelDerecho.setBackground(Color.ORANGE);
 		
 		//Botones al panel superior
-		for (int i = 0; i < 10; i++) {
+		/*for (int i = 0; i < 10; i++) {
 			JButton b = new JButton(i + "");
 			panelInferior.add(b);
 			panelInferior.add(Box.createVerticalGlue());
-		}
+		}*/
 		
 		Border emptyBorder = BorderFactory.createEmptyBorder(10,10,10,10);
 		setBorder(emptyBorder);
@@ -84,20 +86,51 @@ public class LoginView extends JPanel{
 		label1.setFont(new Font("Arial", Font.PLAIN, 20));
 		panelIzquierdo.add(label1);
 		panelDerecho.add(label2);
+		
+		JLabel labelIniciarSesion = new JLabel("Ingrese usuario");
+		labelIniciarSesion.setForeground(Color.black);
+		labelIniciarSesion.setFont(new Font("Arial", Font.PLAIN, 20));
 
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 1; //En la segunda columna
+		c.gridy = 0; //En la primera fila
+		c.weighty = 0;
+		c.gridheight = 1;
+		//c.insets = new Insets(40,0,40,40);
+		panelCentral.add(labelIniciarSesion, c);
+		
 		JTextField textoInicioCuenta = new JTextField();
 		textoInicioCuenta.setForeground(Color.BLACK);
 		textoInicioCuenta.setFont(new Font("Arial", Font.PLAIN, 30));
 		textoInicioCuenta.setSize(20, 20);
-		
-		c.gridheight = 3;
-		c.gridwidth = 3;
-		c.weightx = 4;
-		c.weighty = 2;
-		c.gridx = 2;
-		c.gridy = 0;
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 1; //En la segunda columna
+		c.gridy = 1; //En la segunda fila
+		c.weighty = 0;
+		c.ipadx = 200;
+
 		panelCentral.add(textoInicioCuenta, c);
 		
+		JLabel labelContrasenia = new JLabel("Ingrese contraseña");
+		labelContrasenia.setForeground(Color.black);
+		labelContrasenia.setFont(new Font("Arial", Font.PLAIN, 20));
+		c.anchor = GridBagConstraints.CENTER;
+		//c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridx = 1; //En la segunda columna
+		c.gridy = 2; //En la tercera fila
+		c.ipadx = 0;
+
+		panelCentral.add(labelContrasenia, c);
+		
+		
+		JPasswordField contra = new JPasswordField();
+		contra.setFont(new Font("Arial", Font.PLAIN, 30));
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 1; //En la segunda columna
+		c.gridy = 3; //En la cuarta fila
+		c.ipadx = 200;
+		c.weighty = 0;
+		panelCentral.add(contra, c);
 		
 		try {
 	        Image img = ImageIO.read(getClass().getResource("../img/SteakGames.png"));
