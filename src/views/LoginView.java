@@ -45,28 +45,22 @@ public class LoginView extends JPanel{
 		
 		//Crear 5 paneles para estructurar la primera faceta
 		JPanel panelSuperior = new JPanel();
-		panelSuperior.setBackground(Color.GREEN);
+		//panelSuperior.setBackground(Color.GREEN);
 		
 		JPanel panelCentral = new JPanel();
-		panelCentral.setBackground(Color.BLUE);
+		//panelCentral.setBackground(Color.BLUE);
 		panelCentral.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		
 		JPanel panelInferior = new JPanel();
-		panelInferior.setBackground(Color.RED);
+		//panelInferior.setBackground(Color.RED);
 		
 		JPanel panelIzquierdo = new JPanel();
-		panelIzquierdo.setBackground(Color.PINK);
+		//panelIzquierdo.setBackground(Color.PINK);
 		
 		JPanel panelDerecho = new JPanel();
-		panelDerecho.setBackground(Color.ORANGE);
+		//panelDerecho.setBackground(Color.ORANGE);
 		
-		//Botones al panel superior
-		/*for (int i = 0; i < 10; i++) {
-			JButton b = new JButton(i + "");
-			panelInferior.add(b);
-			panelInferior.add(Box.createVerticalGlue());
-		}*/
 		
 		Border emptyBorder = BorderFactory.createEmptyBorder(10,10,10,10);
 		setBorder(emptyBorder);
@@ -84,8 +78,6 @@ public class LoginView extends JPanel{
 		JLabel label2 = new JLabel("Hola");
 		label1.setForeground(Color.black);
 		label1.setFont(new Font("Arial", Font.PLAIN, 20));
-		panelIzquierdo.add(label1);
-		panelDerecho.add(label2);
 		
 		JLabel labelIniciarSesion = new JLabel("Ingrese usuario");
 		labelIniciarSesion.setForeground(Color.black);
@@ -96,7 +88,7 @@ public class LoginView extends JPanel{
 		c.gridy = 0; //En la primera fila
 		c.weighty = 0;
 		c.gridheight = 1;
-		//c.insets = new Insets(40,0,40,40);
+		//c.insets = new Insets(30,0,0,0);
 		panelCentral.add(labelIniciarSesion, c);
 		
 		JTextField textoInicioCuenta = new JTextField();
@@ -115,6 +107,7 @@ public class LoginView extends JPanel{
 		labelContrasenia.setForeground(Color.black);
 		labelContrasenia.setFont(new Font("Arial", Font.PLAIN, 20));
 		c.anchor = GridBagConstraints.CENTER;
+		c.insets = new Insets(40,0,0,0);
 		//c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 1; //En la segunda columna
 		c.gridy = 2; //En la tercera fila
@@ -125,6 +118,7 @@ public class LoginView extends JPanel{
 		
 		JPasswordField contra = new JPasswordField();
 		contra.setFont(new Font("Arial", Font.PLAIN, 30));
+		c.insets = new Insets(0,0,0,0);
 		c.anchor = GridBagConstraints.CENTER;
 		c.gridx = 1; //En la segunda columna
 		c.gridy = 3; //En la cuarta fila
@@ -134,7 +128,7 @@ public class LoginView extends JPanel{
 		
 		try {
 	        Image img = ImageIO.read(getClass().getResource("../img/SteakGames.png"));
-	        Image imgEscalada = img.getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+	        Image imgEscalada = img.getScaledInstance(250, 250, Image.SCALE_SMOOTH);
 	        JLabel labelLogo = new JLabel(new ImageIcon(imgEscalada)); 
 	        panelSuperior.add(labelLogo);
 	        
