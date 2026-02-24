@@ -1,10 +1,7 @@
 package views;
 import java.awt.BorderLayout;
-import java.awt.event.*;
 
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -15,8 +12,6 @@ import java.awt.Insets;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -37,7 +32,7 @@ public class LoginView extends JPanel{
 	public LoginView() {
 		
 		//Definir el fondo principal
-		setBackground(azulGlaous);
+		setBackground(maronLeve);
 		setLayout(new BorderLayout());
 		//setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		//add(Box.createVerticalGlue());
@@ -45,21 +40,21 @@ public class LoginView extends JPanel{
 		
 		//Crear 5 paneles para estructurar la primera faceta
 		JPanel panelSuperior = new JPanel();
-		//panelSuperior.setBackground(Color.GREEN);
+		panelSuperior.setBackground(maronLeve);
 		
 		JPanel panelCentral = new JPanel();
-		//panelCentral.setBackground(Color.BLUE);
+		panelCentral.setBackground(rosaNeon);
 		panelCentral.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		
 		JPanel panelInferior = new JPanel();
-		//panelInferior.setBackground(Color.RED);
+		panelInferior.setBackground(maronLeve);
 		
 		JPanel panelIzquierdo = new JPanel();
-		//panelIzquierdo.setBackground(Color.PINK);
+		panelIzquierdo.setBackground(maronLeve);
 		
 		JPanel panelDerecho = new JPanel();
-		//panelDerecho.setBackground(Color.ORANGE);
+		panelDerecho.setBackground(maronLeve);
 		
 		
 		Border emptyBorder = BorderFactory.createEmptyBorder(10,10,10,10);
@@ -83,19 +78,19 @@ public class LoginView extends JPanel{
 		labelIniciarSesion.setForeground(Color.black);
 		labelIniciarSesion.setFont(new Font("Arial", Font.PLAIN, 20));
 
-		c.anchor = GridBagConstraints.CENTER;
+		c.anchor = GridBagConstraints.PAGE_START;
 		c.gridx = 1; //En la segunda columna
 		c.gridy = 0; //En la primera fila
-		c.weighty = 0;
-		c.gridheight = 1;
-		//c.insets = new Insets(30,0,0,0);
+		c.weighty = 0; //Especifica como distribuir el espacio vertical, 
+		c.gridheight = 1; //Es el espacio entre los componentes siguiente, si es 0 se sobreponen, con 1 se separan de acuerdo a su tamaño, pero se quedan juntos
 		panelCentral.add(labelIniciarSesion, c);
 		
 		JTextField textoInicioCuenta = new JTextField();
 		textoInicioCuenta.setForeground(Color.BLACK);
 		textoInicioCuenta.setFont(new Font("Arial", Font.PLAIN, 30));
 		textoInicioCuenta.setSize(20, 20);
-		c.anchor = GridBagConstraints.CENTER;
+		c.anchor = GridBagConstraints.PAGE_START;
+		c.insets = new Insets(10,0,0,0);
 		c.gridx = 1; //En la segunda columna
 		c.gridy = 1; //En la segunda fila
 		c.weighty = 0;
@@ -106,25 +101,36 @@ public class LoginView extends JPanel{
 		JLabel labelContrasenia = new JLabel("Ingrese contraseña");
 		labelContrasenia.setForeground(Color.black);
 		labelContrasenia.setFont(new Font("Arial", Font.PLAIN, 20));
-		c.anchor = GridBagConstraints.CENTER;
-		c.insets = new Insets(40,0,0,0);
+		c.anchor = GridBagConstraints.PAGE_START;
+		c.insets = new Insets(50,0,0,0);
 		//c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 1; //En la segunda columna
 		c.gridy = 2; //En la tercera fila
 		c.ipadx = 0;
-
+		c.weighty = 0;  
 		panelCentral.add(labelContrasenia, c);
 		
 		
 		JPasswordField contra = new JPasswordField();
 		contra.setFont(new Font("Arial", Font.PLAIN, 30));
-		c.insets = new Insets(0,0,0,0);
-		c.anchor = GridBagConstraints.CENTER;
+		c.insets = new Insets(10,0,0,0);
+		c.anchor = GridBagConstraints.PAGE_START;
 		c.gridx = 1; //En la segunda columna
 		c.gridy = 3; //En la cuarta fila
 		c.ipadx = 200;
-		c.weighty = 0;
+		c.weighty = 1;
 		panelCentral.add(contra, c);
+		
+		//setBackground(azulGlaous);
+		JButton boton = new JButton("Iniciar sesion"); // Se crea el objeto boton de la librerias swim
+		boton.setBackground(azulGlaous);
+		boton.setForeground(Color.WHITE);
+		c.anchor = GridBagConstraints.PAGE_START;
+		c.gridx = 1; //En la segunda columna
+		c.gridy = 4; //En la quinta fila
+		c.ipadx = 0; //Vuelve al tamaño original
+		c.weighty = 5;
+		panelCentral.add(boton, c);
 		
 		try {
 	        Image img = ImageIO.read(getClass().getResource("../img/SteakGames.png"));
