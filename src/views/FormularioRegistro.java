@@ -47,6 +47,11 @@ public class FormularioRegistro extends JFrame {
 		panelComponentes.setLayout(new BoxLayout(panelComponentes, BoxLayout.Y_AXIS));
 		panelComponentes.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
 		GestorCursor.aplicarATodo(this);
+		//prueba de fuente//
+		/*JLabel lblTitulo = new JLabel("Registro");
+		lblTitulo.setFont(AppFonts.title());
+		add(lblTitulo, BorderLayout.NORTH);
+		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		/*for(int i = 0; i < 7; i++) {
 			JLabel lbl = new JLabel("Campo " + i);

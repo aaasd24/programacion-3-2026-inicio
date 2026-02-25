@@ -77,8 +77,10 @@ public class LoginView extends JPanel{
 		label1.setFont(new Font("Arial", Font.PLAIN, 20));
 		
 		JLabel labelIniciarSesion = new JLabel("Ingrese usuario");
+		//prueba de texto
+		labelIniciarSesion.setFont(AppFonts.normal());
 		labelIniciarSesion.setForeground(Color.black);
-		labelIniciarSesion.setFont(new Font("Arial", Font.PLAIN, 20));
+		//labelIniciarSesion.setFont(new Font("Arial", Font.PLAIN, 20));
 
 		c.anchor = GridBagConstraints.PAGE_START;
 		c.gridx = 1; //En la segunda columna
@@ -89,7 +91,9 @@ public class LoginView extends JPanel{
 		
 		JTextField textoInicioCuenta = new JTextField();
 		textoInicioCuenta.setForeground(Color.BLACK);
-		textoInicioCuenta.setFont(new Font("Arial", Font.PLAIN, 30));
+		//prueba de texto
+		textoInicioCuenta.setFont(AppFonts.normal());
+		//textoInicioCuenta.setFont(new Font("Arial", Font.PLAIN, 30));
 		textoInicioCuenta.setSize(20, 20);
 		c.anchor = GridBagConstraints.PAGE_START;
 		c.insets = new Insets(10,0,0,0);
@@ -102,7 +106,9 @@ public class LoginView extends JPanel{
 		
 		JLabel labelContrasenia = new JLabel("Ingrese contraseña");
 		labelContrasenia.setForeground(Color.black);
-		labelContrasenia.setFont(new Font("Arial", Font.PLAIN, 20));
+		//prueba de texto
+		labelContrasenia.setFont(AppFonts.normal());
+		//labelContrasenia.setFont(new Font("Arial", Font.PLAIN, 20));
 		c.anchor = GridBagConstraints.PAGE_START;
 		c.insets = new Insets(50,0,0,0);
 		//c.fill = GridBagConstraints.HORIZONTAL;

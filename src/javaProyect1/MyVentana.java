@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
+import javax.swing.UIManager;
 
 import assets.GestorCursor;
 import assets.AppFonts;
@@ -28,6 +29,10 @@ public class MyVentana extends JFrame {
 		Image icono = tk.getImage("../assets/SteakGames.png");
 		setIconImage(icono);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		UIManager.put("Label.font", AppFonts.normal());
+		UIManager.put("Button.font", AppFonts.title());
+		UIManager.put("TextField.font", AppFonts.small());
 		
 		
 		
