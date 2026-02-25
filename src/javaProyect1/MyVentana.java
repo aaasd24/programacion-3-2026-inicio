@@ -1,9 +1,13 @@
 package javaProyect1;
+import java.awt.Cursor;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 
+import assets.GestorCursor;
+import assets.AppFonts;
 import views.BotonsView;
 import views.FormularioRegistro;
 import views.LoginView;
@@ -21,9 +25,10 @@ public class MyVentana extends JFrame {
 		//Siempre el set visible al final del constructor
 
 		Toolkit tk = Toolkit.getDefaultToolkit();
-		Image icono = tk.getImage("src/img/SteakGames.png");
+		Image icono = tk.getImage("../assets/SteakGames.png");
 		setIconImage(icono);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		
 		
 		//MyPanel panelito = new MyPanel();
@@ -31,7 +36,8 @@ public class MyVentana extends JFrame {
 		LoginView miLogin = new LoginView(); 
 		FormularioRegistro formulario = new FormularioRegistro();
 		BotonsView prueba = new BotonsView();
-		add(formulario);
+		GestorCursor.aplicarATodo(this);
+		add(miLogin);
 		
 		setVisible(true);
 		

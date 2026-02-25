@@ -15,6 +15,8 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import assets.GestorCursor;
+import assets.AppFonts;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
@@ -43,7 +45,7 @@ public class LoginView extends JPanel{
 		panelSuperior.setBackground(maronLeve);
 		
 		JPanel panelCentral = new JPanel();
-		panelCentral.setBackground(rosaNeon);
+		panelCentral.setBackground(maronLeve);
 		panelCentral.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		
@@ -133,7 +135,7 @@ public class LoginView extends JPanel{
 		panelCentral.add(boton, c);
 		
 		try {
-	        Image img = ImageIO.read(getClass().getResource("../img/SteakGames.png"));
+	        Image img = ImageIO.read(getClass().getResource("../assets/SteakGames.png"));
 	        Image imgEscalada = img.getScaledInstance(250, 250, Image.SCALE_SMOOTH);
 	        JLabel labelLogo = new JLabel(new ImageIcon(imgEscalada)); 
 	        panelSuperior.add(labelLogo);

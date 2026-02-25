@@ -11,10 +11,14 @@ import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import assets.GestorCursor;
+import assets.AppFonts;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
+import assets.GestorCursor;
 
 public class FormularioRegistro extends JFrame {
 	
@@ -31,7 +35,7 @@ public class FormularioRegistro extends JFrame {
 		//Siempre el set visible al final del constructor
 
 		Toolkit tk = Toolkit.getDefaultToolkit();
-		Image icono = tk.getImage("src/img/SteakGames.png");
+		Image icono = tk.getImage("src/assets/SteakGames.png");
 		setIconImage(icono);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		inicializarComponentes();
@@ -42,6 +46,7 @@ public class FormularioRegistro extends JFrame {
 		JPanel panelComponentes = new JPanel();
 		panelComponentes.setLayout(new BoxLayout(panelComponentes, BoxLayout.Y_AXIS));
 		panelComponentes.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+		GestorCursor.aplicarATodo(this);
 		
 		/*for(int i = 0; i < 7; i++) {
 			JLabel lbl = new JLabel("Campo " + i);
@@ -93,7 +98,6 @@ public class FormularioRegistro extends JFrame {
 		panelComponentes.add(lblContraseniaImportante);
 		JScrollPane scroll = new JScrollPane(panelComponentes);
 		scroll.setHorizontalScrollBar(null);
-		
 		
 		
 		

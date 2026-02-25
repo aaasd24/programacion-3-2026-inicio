@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import assets.GestorCursor;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
@@ -51,7 +52,7 @@ public class BotonsView extends JPanel{
 		Image fondo = null;
 		
 		try {
-			fondo = ImageIO.read(new File("src/img/icono.png"));
+			fondo = ImageIO.read(new File("src/assets/icono.png"));
 			g2.drawImage(fondo, 0, getWidth() ,null);			
 		} catch (IOException ex) {
 			System.out.println("la imagen no existe.");

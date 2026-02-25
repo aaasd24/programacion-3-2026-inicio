@@ -6,6 +6,8 @@ import java.awt.Image;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import assets.GestorCursor;
+import assets.AppFonts;
 import javax.swing.JPanel;
 
 public class MyPanel extends JPanel{
@@ -21,8 +23,8 @@ public class MyPanel extends JPanel{
 		boton.setBounds(300, 500, 120, 50); //Ubica y establce tamaño de boton
 		
 		try {
-			//Image icono = ImageIO.read(getClass().getResource("../img/icono.png"));
-			Image icono = ImageIO.read(getClass().getResource("../img/SteakGames.png"));
+			//Image icono = ImageIO.read(getClass().getResource("src/assets/icono.png"));
+			Image icono = ImageIO.read(getClass().getResource("../assets/SteakGames.png"));
 			icono = icono.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
 			boton.setIcon(new ImageIcon(icono));
 		}catch(Exception ex) {

@@ -2,6 +2,8 @@ package views;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import assets.GestorCursor;
+import assets.AppFonts;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
