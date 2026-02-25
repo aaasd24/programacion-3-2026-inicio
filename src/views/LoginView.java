@@ -2,7 +2,6 @@ package views;
 import java.awt.BorderLayout;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -11,6 +10,7 @@ import java.awt.Image;
 import java.awt.Insets;
 
 import javax.imageio.ImageIO;
+import assets.Colores;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -24,17 +24,13 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 public class LoginView extends JPanel{
-	public Color maronLeve = new Color(158, 118 , 79);
-	public Color blancoIvory = new Color(244, 249 , 233);
-	public Color grisGunmetal = new Color(53, 57 , 60);
-	public Color rosaNeon = new Color(244, 0 , 118);
-	public Color azulGlaous = new Color(119, 133, 172);
+	
 	 
 	
 	public LoginView() {
 		
 		//Definir el fondo principal
-		setBackground(maronLeve);
+		setBackground(Colores.colorear(1));
 		setLayout(new BorderLayout());
 		//setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		//add(Box.createVerticalGlue());
@@ -42,21 +38,21 @@ public class LoginView extends JPanel{
 		
 		//Crear 5 paneles para estructurar la primera faceta
 		JPanel panelSuperior = new JPanel();
-		panelSuperior.setBackground(maronLeve);
+		panelSuperior.setBackground(Colores.colorear(1));
 		
 		JPanel panelCentral = new JPanel();
-		panelCentral.setBackground(maronLeve);
+		panelCentral.setBackground(Colores.colorear(1));
 		panelCentral.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		
 		JPanel panelInferior = new JPanel();
-		panelInferior.setBackground(maronLeve);
+		panelInferior.setBackground(Colores.colorear(1));
 		
 		JPanel panelIzquierdo = new JPanel();
-		panelIzquierdo.setBackground(maronLeve);
+		panelIzquierdo.setBackground(Colores.colorear(1));
 		
 		JPanel panelDerecho = new JPanel();
-		panelDerecho.setBackground(maronLeve);
+		panelDerecho.setBackground(Colores.colorear(1));
 		
 		
 		Border emptyBorder = BorderFactory.createEmptyBorder(10,10,10,10);
@@ -130,8 +126,8 @@ public class LoginView extends JPanel{
 		panelCentral.add(contra, c);
 		
 		//setBackground(azulGlaous);
-		JButton boton = new JButton("Iniciar sesion"); // Se crea el objeto boton de la librerias swim
-		boton.setBackground(azulGlaous);
+		JButton boton = new JButton("Iniciar sesión"); // Se crea el objeto boton de la librerias swim
+		boton.setBackground(Colores.colorear(2));
 		boton.setForeground(Color.WHITE);
 		c.anchor = GridBagConstraints.PAGE_START;
 		c.gridx = 1; //En la segunda columna
@@ -150,6 +146,13 @@ public class LoginView extends JPanel{
 	        System.out.println("No se encuentra la imagen");
 	    }
 	}
+	/*try {
+	Image icono = ImageIO.read(getClass().getResource("../img/icono.png"));
+	icono = icono.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+	boton.setIcon(new ImageIcon(icono));
+}catch(Exception ex) {
+	System.out.println("NO se encuentra imagen");
+}*/
 	
 	public static void crearEntradaDeDatos(JPanel panel) {
 		JTextField textoInicioCuenta = new JTextField();
@@ -165,23 +168,6 @@ public class LoginView extends JPanel{
 		contra.setBounds(200, 400, 400, 40);
 		add(contra);
 	}
-	public void Boton() {
-			setBackground(maronLeve);
-			JButton boton = new JButton("Iniciar sesion"); // Se crea el objeto boton de la librerias swim
-			boton.setBackground(azulGlaous);
-			boton.setForeground(Color.WHITE);
-			boton.setBounds(270, 500, 250, 50); //Ubica y establce tamaño de boton
-			
-			/*try {
-				Image icono = ImageIO.read(getClass().getResource("../img/icono.png"));
-				icono = icono.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-				boton.setIcon(new ImageIcon(icono));
-			}catch(Exception ex) {
-				System.out.println("NO se encuentra imagen");
-			}*/
-			
-			add(boton); //Agrega el boton
-		
-	}
+	
 	
 }

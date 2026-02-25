@@ -26,7 +26,7 @@ public class MyVentana extends JFrame {
 		//Siempre el set visible al final del constructor
 
 		Toolkit tk = Toolkit.getDefaultToolkit();
-		Image icono = tk.getImage("../assets/SteakGames.png");
+		Image icono = tk.getImage("src/assets/SteakGames.png");
 		setIconImage(icono);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -38,11 +38,11 @@ public class MyVentana extends JFrame {
 		
 		//MyPanel panelito = new MyPanel();
 		//add(panelito);
-		LoginView miLogin = new LoginView(); 
+		//LoginView miLogin = new LoginView(); 
 		FormularioRegistro formulario = new FormularioRegistro();
 		BotonsView prueba = new BotonsView();
 		GestorCursor.aplicarATodo(this);
-		add(miLogin);
+		add(formulario);
 		
 		setVisible(true);
 		
