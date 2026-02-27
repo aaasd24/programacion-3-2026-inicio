@@ -19,7 +19,7 @@ public class MyVentana extends JFrame {
 	public MyVentana() {
 		//setSize(100, 100);
 		//setLocation(100, 100);
-		setBounds(100, 100, 800, 800);
+		setBounds(100, 100, 650, 680);
 		setResizable(false);
 		setTitle("SteakGames");
 		setLocationRelativeTo(null);
@@ -38,13 +38,10 @@ public class MyVentana extends JFrame {
 		
 		//MyPanel panelito = new MyPanel();
 		//add(panelito);
-		//LoginView miLogin = new LoginView(); 
-		FormularioRegistro formulario = new FormularioRegistro();
-		BotonsView prueba = new BotonsView();
+		LoginView miLogin = new LoginView(); 
+		 FormularioRegistro formulario = new FormularioRegistro();
+		add(miLogin);
 		GestorCursor.aplicarATodo(this);
-		add(formulario);
-		
-		setVisible(true);
 		
 	}
 	

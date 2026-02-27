@@ -49,7 +49,7 @@ public class GridBagPanel extends JPanel{
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.ipady = 0;       //reset to default
 		c.weighty = 1.0;   //request any extra vertical space
-		c.anchor = GridBagConstraints.PAGE_END; //bottom of space
+		c.anchor = GridBagConstraints.PAGE_END; //bottom of spacean
 		c.insets = new Insets(10, 10, 10, 10); //top padding
 		c.gridx = 1;       //aligned with button 2
 		c.gridwidth = 2;   //2 columns wide
