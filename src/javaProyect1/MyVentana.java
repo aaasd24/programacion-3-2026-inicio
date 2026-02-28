@@ -7,6 +7,8 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 
+import com.formdev.flatlaf.FlatLightLaf;
+
 import assets.GestorCursor;
 import assets.AppFonts;
 import views.BotonsView;
@@ -24,7 +26,7 @@ public class MyVentana extends JFrame {
 		setTitle("SteakGames");
 		setLocationRelativeTo(null);
 		//Siempre el set visible al final del constructor
-
+		FlatLightLaf.setup(); 
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		Image icono = tk.getImage("src/assets/SteakGames.png");
 		setIconImage(icono);

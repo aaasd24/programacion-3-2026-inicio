@@ -8,7 +8,7 @@ public class Main {
        
         abrirLogin();
     }
-
+    
     public static void abrirLogin() {
         MyVentana ventana = new MyVentana();
         ventana.setVisible(true);
