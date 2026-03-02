@@ -40,7 +40,7 @@ public class FormularioRegistro extends JFrame {
 		
 		setSize(600, 680);
 		setResizable(false);
-		setTitle("SteakGames");
+		setTitle("Registrarse");
 		setLocationRelativeTo(null);
 		//Siempre el set visible al final del constructor
 
