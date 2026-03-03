@@ -13,7 +13,7 @@ public class GestorCursor {
         Image imgNormal = tk.getImage(GestorCursor.class.getResource("../assets/cursor-tenedor.png"));
         Image imgClick = tk.getImage(GestorCursor.class.getResource("../assets/cursor-tenedor-click.png"));
 
-        cursorNormal = tk.createCustomCursor(imgNormal, new Point(0, 0), "Normal");
+        cursorNormal = tk.createCustomCursor(imgNormal, new Point(2, 2), "Normal");
         cursorClick = tk.createCustomCursor(imgClick, new Point(0, 0), "Click");
     }
 

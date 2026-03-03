@@ -96,7 +96,7 @@ public class FormularioRegistro extends JFrame {
 	    c.gridx = 0; c.gridy = 4;
 	    panelComponentes.add(new JLabel("Mes:"), c);
 	    c.gridx = 1;
-	    String meses[] = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
+	    String meses[] = {"Seleccione", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
 	    JComboBox<String> comboMeses = new JComboBox<>(meses);
 	    panelComponentes.add(comboMeses, c);
 
@@ -104,7 +104,7 @@ public class FormularioRegistro extends JFrame {
 	    c.gridx = 0; c.gridy = 5;
 	    panelComponentes.add(new JLabel("Dia:"), c);
 	    c.gridx = 1;
-	    String dias[] = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"};
+	    String dias[] = {"Seleccione", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"};
 	    JComboBox<String> comboDias = new JComboBox<>(dias);
 	    panelComponentes.add(comboDias, c);
 
@@ -115,7 +115,7 @@ public class FormularioRegistro extends JFrame {
 	    JPanel panelRadio = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 	    JRadioButton rbMujer = new JRadioButton("Mujer");
 	    JRadioButton rbHombre = new JRadioButton("Hombre");
-	    JRadioButton rbExtra = new JRadioButton("Si");
+	    JRadioButton rbExtra = new JRadioButton("Otro");
 	    ButtonGroup bgSexo = new ButtonGroup();
 	    bgSexo.add(rbHombre); bgSexo.add(rbMujer); bgSexo.add(rbExtra);
 	    panelRadio.add(rbMujer); panelRadio.add(rbHombre); panelRadio.add(rbExtra);
@@ -127,7 +127,7 @@ public class FormularioRegistro extends JFrame {
 	    c.gridx = 0; c.gridy = 7;
 	    panelComponentes.add(new JLabel("Región"), c);
 	    c.gridx = 1;
-	    String regiones[] = {"MEXICO", "PERU", "MIAMI", "LOS ANGELES", "OCEANIA", "JAPON", "CHINA", "INDIA", "ALASKA", "POLO SUR", "LONDRES", "NIGERIA"};
+	    String regiones[] = {"Seleccione", "MEXICO", "PERU", "MIAMI", "LOS ANGELES", "OCEANIA", "JAPON", "CHINA", "INDIA", "ALASKA", "POLO SUR", "LONDRES", "NIGERIA"};
 	    JComboBox<String> comboRegiones = new JComboBox<>(regiones);
 	    comboRegiones.setSelectedIndex(0);
 	    panelComponentes.add(comboRegiones, c);
