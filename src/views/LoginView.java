@@ -21,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import assets.GestorCursor;
+import javaProyect1.MyVentana;
 import assets.AppFonts;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -30,7 +31,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
 public class LoginView extends JPanel{
-	
+	MyVentana ventana;
 	JLabel labelNombreEmail = new JLabel(); //Labels son los rectangulos donde solo van texto* mientras que fields son campos donde se selecciona o agrega informacion
 	JLabel labelContrasenia = new JLabel();
 	JTextField campoEmail = new JTextField();
@@ -38,9 +39,11 @@ public class LoginView extends JPanel{
 	JLabel labelErrorNombreEmail = new JLabel();
 	JLabel labelErrorContrasenia = new JLabel();
 	GridBagConstraints c = new GridBagConstraints();
-	public LoginView() {
+	public LoginView(MyVentana ventana) {
+		this.ventana = ventana;
 		setLayout(new BorderLayout());
-		setBackground(Colores.colorear(1));
+		setBackground(Colores.colorear(3));
+		
 		add(crearImagenLogo(), BorderLayout.NORTH);
 		add(crearLoginPanel(), BorderLayout.CENTER);
 		//add(crearPanelBoton(), BorderLayout.SOUTH);
@@ -179,6 +182,7 @@ public class LoginView extends JPanel{
 	//---------------------------------- metodos de configuracion
 	private JPanel crearField(String texto, Component componenteDelLabel, JLabel labelTextoDelError) {
 		JPanel panel = new JPanel();
+		panel.setBackground(Colores.colorear(1));
 		panel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -205,15 +209,17 @@ public class LoginView extends JPanel{
 
 		return label;
 	}
-	private JPanel crearPanelBoton() {
+	private JPanel crearPanelBoton(String texto1, String texto2) {
 
 		JPanel panel = new JPanel();
 
-		JButton btnValidate = new JButton("Iniciar Sesión");
+		JButton btnValidate = new JButton(texto1);
 		btnValidate.addActionListener(e -> pasarLogin());
+		JButton btnRegistrar = new JButton(texto2);
+		btnRegistrar.addActionListener(e -> pasarFormulario());
 
 		panel.add(btnValidate);
-
+		panel.add(btnRegistrar);
 		return panel;
 	}
 	private JPanel crearImagenLogo() {
@@ -238,7 +244,8 @@ public class LoginView extends JPanel{
 		
 		panel.add(crearField("Usuario", campoEmail, labelErrorNombreEmail));
 		panel.add(crearField("Constraseña", campoContrasenia, labelErrorContrasenia));
-		panel.add(crearPanelBoton());
+		panel.add(crearPanelBoton("Iniciar sesión", "Registrarse"));
+
 		return panel;
 	}
 	
@@ -288,7 +295,14 @@ public class LoginView extends JPanel{
 				"Sesion iniciada",
 				JOptionPane.INFORMATION_MESSAGE
 			);
+			new MainWindow();
+			ventana.dispose();
 		}
 	}
+	private void pasarFormulario() {
+		
+			new FormularioRegistro();
+			ventana.dispose();
+		}
 	
 }

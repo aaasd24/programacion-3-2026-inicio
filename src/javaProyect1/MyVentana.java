@@ -40,9 +40,9 @@ public class MyVentana extends JFrame {
 		
 		//MyPanel panelito = new MyPanel();
 		//add(panelito);
-		//LoginView miLogin = new LoginView(); 
-		FormularioRegistro formulario = new FormularioRegistro();
-		add(formulario);
+		LoginView miLogin = new LoginView(this); 
+		//FormularioRegistro formulario = new FormularioRegistro();
+		add(miLogin);
 		GestorCursor.aplicarATodo(this);
 		
 	}
