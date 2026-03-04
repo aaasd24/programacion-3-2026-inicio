@@ -3,6 +3,7 @@ package views;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -31,7 +32,11 @@ import javax.swing.SwingConstants;
 import assets.GestorCursor;
 
 public class FormularioRegistro extends JFrame {
-	
+	// mejor lo cambie a GridBagLayout para que no se estire todo como en el BoxLayout (el boton y demas)
+    JPanel panelComponentes = new JPanel(new GridBagLayout());
+    GridBagConstraints c = new GridBagConstraints();
+    JTextField txtNombre = new JTextField(20);
+    JLabel labelErrorNombreUsuario = new JLabel();
 	public FormularioRegistro() {
 	
 		//atributos del formulario
@@ -53,9 +58,7 @@ public class FormularioRegistro extends JFrame {
 	}
 	
 	public void inicializarComponentes() {
-	    // mejor lo cambie a GridBagLayout para que no se estire todo como en el BoxLayout (el boton y demas)
-	    JPanel panelComponentes = new JPanel(new GridBagLayout());
-	    GridBagConstraints c = new GridBagConstraints();
+	    
 	    
 	    // Configuracion de margenes 
 	    c.insets = new java.awt.Insets(8, 8, 8, 8); 
@@ -64,12 +67,13 @@ public class FormularioRegistro extends JFrame {
 	    GestorCursor.aplicarATodo(this);
 
 	    // usuario
+	    
 	    c.gridx = 0; c.gridy = 0;
 	    panelComponentes.add(new JLabel("Nombre de usuario: "), c);
 	    c.gridx = 1;
-	    JTextField txtNombre = new JTextField(20);
+	    
 	    panelComponentes.add(txtNombre, c);
-
+	    
 	    // nombre
 	    c.gridx = 0; c.gridy = 1;
 	    panelComponentes.add(new JLabel("Nombre de cuenta: "), c);
@@ -161,4 +165,38 @@ public class FormularioRegistro extends JFrame {
 	    assets.GestorCursor.aplicarATodo(this);
 	}
 	//add(panelComponentes);
+	private JPanel crearFieldLateral(String texto, Component componenteDelLabel, JLabel labelTextoDelError, int y) {
+		//Crea un panel donde ira: el nombre del campo, el campo y espacio para el error
+		JPanel panel = new JPanel();
+		panel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panel.setMaximumSize(new Dimension(350, 60));
+		
+		//crear label de texto para el nombre de cada campo
+		JLabel label = new JLabel(texto);
+		c.gridx = 0; //El texto siempre ira a la derecha
+		c.gridy = y;
+		c.gridheight = 0;
+		//label.setMaximumSize(new Dimension(Integer.MAX_VALUE, label.getPreferredSize().height));
+		panel.add(label, c);
+		//label.setHorizontalAlignment(SwingConstants.LEFT);
+		//label.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		// Acomodad y agregar el Campo
+		c.gridx = 1; //El campo ira a la izquierda
+		panel.add(componenteDelLabel, c);
+		
+		//Crear y acomodar el label de error
+		//labelTextoDelError.setAlignmentX(Component.CENTER_ALIGNMENT);
+		c.gridx = 0;
+		c.gridheight = 1;
+		panel.add(labelTextoDelError, c);
+		return panel;
+		
+	}
+	private JPanel crearFormularioView() {
+		
+		return null;
+	}
 }

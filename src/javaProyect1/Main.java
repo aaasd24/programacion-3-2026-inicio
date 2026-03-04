@@ -13,12 +13,12 @@ public class Main {
         MyVentana ventana = new MyVentana();
         ventana.setVisible(true);
     }
-
+    /*
     public static void irAlRegistro(javax.swing.JFrame ventanaActual) {
         ventanaActual.dispose(); //para cerrar el Login
         
         FormularioRegistro formulario = new FormularioRegistro();
         GestorCursor.aplicarATodo(formulario); 
         formulario.setVisible(true);
-    }
+    }*/
 }

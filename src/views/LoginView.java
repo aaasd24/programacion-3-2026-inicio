@@ -2,6 +2,8 @@ package views;
 import java.awt.BorderLayout;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -12,6 +14,7 @@ import java.awt.Insets;
 import javax.imageio.ImageIO;
 import assets.Colores;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -23,20 +26,28 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
 public class LoginView extends JPanel{
 	
-	JLabel labelIniciarSesion;
-	JTextField textoInicioCuenta;
-	JPasswordField contrasenia;
-	JLabel labelErrorUsuario;
-	JLabel labelErrorContrasenia;
+	JLabel labelNombreEmail = new JLabel(); //Labels son los rectangulos donde solo van texto* mientras que fields son campos donde se selecciona o agrega informacion
+	JLabel labelContrasenia = new JLabel();
+	JTextField campoEmail = new JTextField();
+	JPasswordField campoContrasenia = new JPasswordField();
+	JLabel labelErrorNombreEmail = new JLabel();
+	JLabel labelErrorContrasenia = new JLabel();
+	GridBagConstraints c = new GridBagConstraints();
 	public LoginView() {
+		setLayout(new BorderLayout());
+		setBackground(Colores.colorear(1));
+		add(crearImagenLogo(), BorderLayout.NORTH);
+		add(crearLoginPanel(), BorderLayout.CENTER);
+		//add(crearPanelBoton(), BorderLayout.SOUTH);
 		
 		//Definir el fondo principal
-		setBackground(Colores.colorear(1));
-		setLayout(new BorderLayout());		
+		//setBackground(Colores.colorear(1));
+		//setLayout(new BorderLayout());		
 		
 		//Crear 5 paneles para estructurar la primera faceta
 		/*	
@@ -49,23 +60,24 @@ public class LoginView extends JPanel{
 		JPanel panelDerecho = new JPanel();
 		panelDerecho.setBackground(Colores.colorear(1));
 		*/
+		/*
 		JPanel panelSuperior = new JPanel();
 		panelSuperior.setBackground(Colores.colorear(1));
 		
 		JPanel panelCentral = new JPanel();
 		panelCentral.setBackground(Colores.colorear(1));
 		panelCentral.setLayout(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
+		
 		
 		Border emptyBorder = BorderFactory.createEmptyBorder(10,10,10,10);
-		setBorder(emptyBorder);
+		setBorder(emptyBorder);*/
 		
-		
-		add(panelSuperior, BorderLayout.NORTH);
 		/*
+		add(panelSuperior, BorderLayout.NORTH);
+		
 		add(panelDerecho, BorderLayout.LINE_END);
 		add(panelIzquierdo, BorderLayout.LINE_START);
-		add(panelInferior, BorderLayout.SOUTH);*/
+		add(panelInferior, BorderLayout.SOUTH);
 		add(panelCentral, BorderLayout.CENTER);
 		
 		
@@ -162,48 +174,106 @@ public class LoginView extends JPanel{
 	        System.out.println("No se encuentra la imagen");
 	    }
 		
-		boton.addActionListener(e -> pasarLogin());
+		boton.addActionListener(e -> pasarLogin());*/
 	}
-	
-	public static void crearEntradaDeDatos(JPanel panel) {
-		JTextField textoInicioCuenta = new JTextField();
-		textoInicioCuenta.setForeground(Color.BLACK);
-		textoInicioCuenta.setFont(new Font("Arial", Font.PLAIN, 30));
+	//---------------------------------- metodos de configuracion
+	private JPanel crearField(String texto, Component componenteDelLabel, JLabel labelTextoDelError) {
+		JPanel panel = new JPanel();
+		panel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panel.setMaximumSize(new Dimension(350, 60));
+		
+		JLabel label = new JLabel(texto);
+		label.setMaximumSize(new Dimension(Integer.MAX_VALUE, label.getPreferredSize().height));
+		label.setHorizontalAlignment(SwingConstants.LEFT);
+		label.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-		panel.add(textoInicioCuenta);
+		labelTextoDelError.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panel.add(label);
+		panel.add(componenteDelLabel);
+		panel.add(labelTextoDelError);
+		return panel;
+		
 	}
-	
-	public void crearEntradaContrasenia() {
-		JPasswordField contra = new JPasswordField();
-		contra.setFont(new Font("Arial", Font.PLAIN, 30));
-		contra.setBounds(200, 400, 400, 40);
-		add(contra);
+	private JLabel crearLabelError() {
+		JLabel label = new JLabel();
+		label.setFont(AppFonts.small());
+		label.setForeground(Color.RED);
+		label.setHorizontalAlignment(SwingConstants.LEFT);
+		label.setMaximumSize(new Dimension(Integer.MAX_VALUE, label.getPreferredSize().height));
+
+		return label;
+	}
+	private JPanel crearPanelBoton() {
+
+		JPanel panel = new JPanel();
+
+		JButton btnValidate = new JButton("Iniciar Sesión");
+		btnValidate.addActionListener(e -> pasarLogin());
+
+		panel.add(btnValidate);
+
+		return panel;
+	}
+	private JPanel crearImagenLogo() {
+		JPanel panel = new JPanel();
+		try {
+	        Image img = ImageIO.read(getClass().getResource("../assets/SteakGames.png"));
+	        Image imgEscalada = img.getScaledInstance(250, 250, Image.SCALE_SMOOTH);
+	        JLabel labelLogo = new JLabel(new ImageIcon(imgEscalada)); 
+	        panel.add(labelLogo);
+	        
+	    } catch (Exception ex) {
+	        System.out.println("No se encuentra la imagen");
+	    }
+		return panel;
+	}
+	private JPanel crearLoginPanel() {
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
+		labelErrorNombreEmail = crearLabelError();
+		labelErrorContrasenia = crearLabelError();
+		
+		panel.add(crearField("Usuario", campoEmail, labelErrorNombreEmail));
+		panel.add(crearField("Constraseña", campoContrasenia, labelErrorContrasenia));
+		panel.add(crearPanelBoton());
+		return panel;
 	}
 	
 	
 	//------------------------------------------------- Validar el login
-	private void mostrarErrorUsuario(String texto) {
-		labelErrorUsuario.setText(texto);
-		labelErrorUsuario.setVisible(true);
+	private boolean validarNombreUsuario() {
+		if(campoEmail.getText().trim().isEmpty()) {
+			labelErrorNombreEmail.setText("Nombre de usuario es obligatorio");
+			labelErrorNombreEmail.setVisible(true);
+			return false;
+		}
+		return true;
 		
 	}
-	private void mostrarErrorContrasenia(String texto) {
-		labelErrorContrasenia.setText(texto);
-		labelErrorContrasenia.setVisible(true);
+	private boolean validarContrasenia() {
+		if(String.valueOf(campoContrasenia.getPassword()).trim().isEmpty()) {
+			labelErrorContrasenia.setText("La contraseña es obligatoria");
+			labelErrorContrasenia.setVisible(true);
+			return false;
+		}
+		return true;
 		
 	}
 	private void resetearMensajesError() {
-		labelErrorContrasenia.setText("");
-		labelErrorUsuario.setText("");
+		//labelErrorContrasenia.setText("");
+		//labelErrorNombreUsuario.setText("");
+		labelErrorNombreEmail.setVisible(false);
+		labelErrorContrasenia.setVisible(false);
 	}
-	private boolean validarLogin(String usuario, String contrasenia) {
+	private boolean validarLogin() {
 		resetearMensajesError();
-		if(usuario.trim().isEmpty()){
-			mostrarErrorUsuario("Es obligatorio el usuario");
+		if(!validarNombreUsuario()) {
 			return false;
 		}
-		if(contrasenia.trim().isEmpty()) {
-			mostrarErrorContrasenia("Es obligatorioa la contrasenia");
+		if(!validarContrasenia()) {
 			return false;
 		}
 		return true;
@@ -211,7 +281,7 @@ public class LoginView extends JPanel{
 	
 	//---------------- Funcion para ver si se han llenado ambos campos para pasarñ
 	private void pasarLogin() {
-		if(validarLogin(textoInicioCuenta.getText(), String.valueOf(contrasenia.getPassword()))) {
+		if(validarLogin()) {
 			JOptionPane.showMessageDialog(
 				this,
 				"Se inició la sesión",
