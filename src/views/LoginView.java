@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -209,21 +210,23 @@ public class LoginView extends JPanel{
 
 		return label;
 	}
-	private JPanel crearPanelBoton(String texto1, String texto2) {
+	private JPanel crearPanelBoton(String texto1, String tipoDeListener) {
 
 		JPanel panel = new JPanel();
-
-		JButton btnValidate = new JButton(texto1);
-		btnValidate.addActionListener(e -> pasarLogin());
-		JButton btnRegistrar = new JButton(texto2);
-		btnRegistrar.addActionListener(e -> pasarFormulario());
-
-		panel.add(btnValidate);
-		panel.add(btnRegistrar);
+		panel.setBackground(Colores.colorear(1));
+		JButton boton = new JButton(texto1);
+		boton.setSize(50, 50);
+		if(tipoDeListener.equals("contrasenia")){
+			boton.addActionListener(e -> pasarFormulario());
+		}else if(tipoDeListener.equals("NombreUsuario")) {
+			boton.addActionListener(e -> pasarLogin());
+		}
+		panel.add(boton);
 		return panel;
 	}
 	private JPanel crearImagenLogo() {
 		JPanel panel = new JPanel();
+		panel.setBackground(Colores.colorear(1));
 		try {
 	        Image img = ImageIO.read(getClass().getResource("../assets/SteakGames.png"));
 	        Image imgEscalada = img.getScaledInstance(250, 250, Image.SCALE_SMOOTH);
@@ -239,13 +242,14 @@ public class LoginView extends JPanel{
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
+		panel.setBackground(Colores.colorear(1));
 		labelErrorNombreEmail = crearLabelError();
 		labelErrorContrasenia = crearLabelError();
 		
 		panel.add(crearField("Usuario", campoEmail, labelErrorNombreEmail));
 		panel.add(crearField("Constraseña", campoContrasenia, labelErrorContrasenia));
-		panel.add(crearPanelBoton("Iniciar sesión", "Registrarse"));
-
+		panel.add(crearPanelBoton("Iniciar sesión", "NombreUsuario"));
+		panel.add(crearPanelBoton("Registrarse", "contrasenia"));
 		return panel;
 	}
 	
@@ -270,20 +274,24 @@ public class LoginView extends JPanel{
 		
 	}
 	private void resetearMensajesError() {
-		//labelErrorContrasenia.setText("");
-		//labelErrorNombreUsuario.setText("");
+		labelErrorContrasenia.setText("");
+		labelErrorNombreEmail.setText("");
 		labelErrorNombreEmail.setVisible(false);
 		labelErrorContrasenia.setVisible(false);
 	}
 	private boolean validarLogin() {
+		boolean validado;
 		resetearMensajesError();
 		if(!validarNombreUsuario()) {
-			return false;
+			validado = false;
 		}
 		if(!validarContrasenia()) {
-			return false;
+			validado = false;
 		}
-		return true;
+		else {
+			validado = true;
+		}
+		return validado;
 	}
 	
 	//---------------- Funcion para ver si se han llenado ambos campos para pasarñ
