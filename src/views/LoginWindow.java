@@ -1,4 +1,4 @@
-package javaProyect1;
+package views;
 import java.awt.Cursor;
 import java.awt.Image;
 import java.awt.Point;
@@ -11,14 +11,10 @@ import com.formdev.flatlaf.FlatLightLaf;
 
 import assets.GestorCursor;
 import assets.AppFonts;
-import views.BotonsView;
-import views.FormularioRegistro;
-import views.LoginView;
-import views.MyPanel;
 
-public class MyVentana extends JFrame {
+public class LoginWindow extends JFrame {
 	
-	public MyVentana() {
+	public LoginWindow() {
 		//setSize(100, 100);
 		//setLocation(100, 100);
 		setBounds(100, 100, 650, 680);
@@ -34,14 +30,9 @@ public class MyVentana extends JFrame {
 		
 		UIManager.put("Label.font", AppFonts.normal());
 		UIManager.put("Button.font", AppFonts.title());
-		UIManager.put("TextField.font", AppFonts.small());
-		
-		
-		
-		//MyPanel panelito = new MyPanel();
-		//add(panelito);
+		UIManager.put("TextField.font", AppFonts.small());		
+
 		LoginView miLogin = new LoginView(this); 
-		//FormularioRegistro formulario = new FormularioRegistro();
 		add(miLogin);
 		GestorCursor.aplicarATodo(this);
 		

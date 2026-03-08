@@ -22,7 +22,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import assets.GestorCursor;
-import javaProyect1.MyVentana;
 import assets.AppFonts;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -32,7 +31,9 @@ import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
 public class LoginView extends JPanel{
-	MyVentana ventana;
+	
+	//Se declara todos los elementos necesarios al panel
+	LoginWindow ventana;
 	JLabel labelNombreEmail = new JLabel(); //Labels son los rectangulos donde solo van texto* mientras que fields son campos donde se selecciona o agrega informacion
 	JLabel labelContrasenia = new JLabel();
 	JTextField campoEmail = new JTextField();
@@ -40,154 +41,49 @@ public class LoginView extends JPanel{
 	JLabel labelErrorNombreEmail = new JLabel();
 	JLabel labelErrorContrasenia = new JLabel();
 	GridBagConstraints c = new GridBagConstraints();
-	public LoginView(MyVentana ventana) {
+	public LoginView(LoginWindow ventana) {
+		
 		this.ventana = ventana;
 		setLayout(new BorderLayout());
 		setBackground(Colores.colorear(3));
 		
+		campoEmail.setMaximumSize(new Dimension(Integer.MAX_VALUE, campoEmail.getPreferredSize().height));
+		campoContrasenia.setMaximumSize(new Dimension(Integer.MAX_VALUE, campoContrasenia.getPreferredSize().height));
 		add(crearImagenLogo(), BorderLayout.NORTH);
 		add(crearLoginPanel(), BorderLayout.CENTER);
-		//add(crearPanelBoton(), BorderLayout.SOUTH);
-		
-		//Definir el fondo principal
-		//setBackground(Colores.colorear(1));
-		//setLayout(new BorderLayout());		
-		
-		//Crear 5 paneles para estructurar la primera faceta
-		/*	
-		JPanel panelInferior = new JPanel();
-		panelInferior.setBackground(Colores.colorear(1));
-		
-		JPanel panelIzquierdo = new JPanel();
-		panelIzquierdo.setBackground(Colores.colorear(1));
-		
-		JPanel panelDerecho = new JPanel();
-		panelDerecho.setBackground(Colores.colorear(1));
-		*/
-		/*
-		JPanel panelSuperior = new JPanel();
-		panelSuperior.setBackground(Colores.colorear(1));
-		
-		JPanel panelCentral = new JPanel();
-		panelCentral.setBackground(Colores.colorear(1));
-		panelCentral.setLayout(new GridBagLayout());
-		
-		
-		Border emptyBorder = BorderFactory.createEmptyBorder(10,10,10,10);
-		setBorder(emptyBorder);*/
-		
-		/*
-		add(panelSuperior, BorderLayout.NORTH);
-		
-		add(panelDerecho, BorderLayout.LINE_END);
-		add(panelIzquierdo, BorderLayout.LINE_START);
-		add(panelInferior, BorderLayout.SOUTH);
-		add(panelCentral, BorderLayout.CENTER);
-		
-		
-		labelIniciarSesion = new JLabel("Ingrese usuario");
-		labelIniciarSesion.setFont(AppFonts.normal());
-		labelIniciarSesion.setForeground(Color.black);
-		c.anchor = GridBagConstraints.PAGE_START;
-		c.gridx = 1; //En la segunda columna
-		c.gridy = 0; //En la primera fila
-		c.weighty = 0; //Especifica como distribuir el espacio vertical, 
-		c.gridheight = 1; //Es el espacio entre los componentes siguiente, si es 0 se sobreponen, con 1 se separan de acuerdo a su tamaño, pero se quedan juntos
-		panelCentral.add(labelIniciarSesion, c);
-		
-		textoInicioCuenta = new JTextField();
-		textoInicioCuenta.setForeground(Color.BLACK);
-		textoInicioCuenta.setFont(AppFonts.normal());
-		textoInicioCuenta.setSize(20, 20);
-		c.anchor = GridBagConstraints.PAGE_START;
-		c.insets = new Insets(10,0,0,0);
-		c.gridx = 1; //En la segunda columna
-		c.gridy = 1; //En la segunda fila
-		c.weighty = 0;
-		c.ipadx = 200;
 
-		panelCentral.add(textoInicioCuenta, c);
-		
-		labelErrorUsuario = new JLabel("");
-		labelErrorUsuario.setFont(AppFonts.small());
-		labelErrorUsuario.setForeground(Color.red);
-		labelErrorUsuario.setVisible(true);
-		c.anchor = GridBagConstraints.PAGE_START;
-		c.insets = new Insets(00,0,0,0);
-		c.gridx = 1; //En la segunda columna
-		c.gridy = 2; //En la tercera fila
-		c.ipadx = 0;
-		c.weighty = 0;  
-		panelCentral.add(labelErrorUsuario, c);
-		
-		JLabel labelContrasenia = new JLabel("Ingrese contraseña");
-		labelContrasenia.setForeground(Color.black);
-		labelContrasenia.setFont(AppFonts.normal());
-		c.anchor = GridBagConstraints.PAGE_START;
-		c.insets = new Insets(50,0,0,0);
-		c.gridx = 1; //En la segunda columna
-		c.gridy = 2; //En la tercera fila
-		c.ipadx = 0;
-		c.weighty = 0;  
-		panelCentral.add(labelContrasenia, c);
-		
-		
-		contrasenia = new JPasswordField();
-		contrasenia.setFont(AppFonts.normal());
-		c.insets = new Insets(10,0,0,0);
-		c.anchor = GridBagConstraints.PAGE_START;
-		textoInicioCuenta.setSize(20, 20);
-		c.gridx = 1; //En la segunda columna
-		c.gridy = 3; //En la cuarta fila
-		c.ipadx = 200;
-		c.weighty = 1;
-		panelCentral.add(contrasenia, c);
-		
-		labelErrorContrasenia = new JLabel("");
-		labelErrorContrasenia.setFont(AppFonts.small());
-		labelErrorContrasenia.setForeground(Color.red);
-		labelErrorContrasenia.setVisible(true);
-		//labelContrasenia.setFont(new Font("Arial", Font.PLAIN, 20));
-		c.anchor = GridBagConstraints.PAGE_START;
-		c.insets = new Insets(55,0,0,0);
-		c.gridx = 1; //En la segunda columna
-		c.gridy = 3; //En la Cuarta fila
-		c.ipadx = 0;
-		c.weighty = 0;  
-		panelCentral.add(labelErrorContrasenia, c);
-		
-		//setBackground(azulGlaous);
-		JButton boton = new JButton("Iniciar sesión"); // Se crea el objeto boton de la librerias swim
-		boton.setBackground(Colores.colorear(2));
-		boton.setForeground(Color.WHITE);
-		c.anchor = GridBagConstraints.PAGE_START;
-		c.insets = new Insets(0,0,0,0);
-		c.gridx = 1; //En la segunda columna
-		c.gridy = 4; //En la quinta fila
-		c.ipadx = 0; //Vuelve al tamaño original
-		c.weighty = 5;
-		panelCentral.add(boton, c);
-		
-		try {
-	        Image img = ImageIO.read(getClass().getResource("../assets/SteakGames.png"));
-	        Image imgEscalada = img.getScaledInstance(250, 250, Image.SCALE_SMOOTH);
-	        JLabel labelLogo = new JLabel(new ImageIcon(imgEscalada)); 
-	        panelSuperior.add(labelLogo);
-	        
-	    } catch (Exception ex) {
-	        System.out.println("No se encuentra la imagen");
-	    }
-		
-		boton.addActionListener(e -> pasarLogin());*/
 	}
-	//---------------------------------- metodos de configuracion
+	//---------------------------------------------------------------------------------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------------------------------------------------------------------------------
+	//------------------------------------------------------------ METODOS DE CONFIGURACION -------------------------------------------------------------------
+	//---------------------------------------------------------------------------------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------------------------------------------------------------------------------
+	
+	//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Metodo para crear un campo con su texto
+	
+	
+	/*
+	 * Metodo privado que devuelve un JPanel, requiere de un String(para el label que describre brevemente el campo), un Objeto referencia de "Component" ya sea un textFiel, password field entre otros*,
+	 * y por último pide un JLabel de "Error" si no esta lleno el campo*, este label se crea con el metodo "crearLableError" previamente.
+	 * Proceso:
+	 * = Se crea un panel, y se asigana los siguientes atributos:
+	 * 			# Color cyan ---->  cambiar a transparente o cafe designado <-----
+	 * 			# Se crea un borde vacio con 5 pixeles de borde en la parte Superior, e inferior, los laterales quedan en 0
+	 * 			# Se crea una capa que se ordenara de manera lineal hacia abajo con BoxLayaout, que se colocara dentro del panel y cuya orientación será en el eje Y
+	 * 			# El panel se alineará el componente en el centro del eje X
+	 * 			# El tamaño del panel será en un maximo de 350 px de largo y 70 de alto
+	 *  = Se crea el Label del panel que indica la descripcion breve del campo a llenar
+	 *  		# Asiga el tamaño maximo del Label, ocupara el maximo valor posible en lo ancho, y tendra el tamaño de preferencia en la altura respect al panel
+	 * 			# La orientacion horizontal del texto que tendra el label será hacia la isquierda con rexpecto al componente ingresado
+	 * 			#El aliniamiento del label en el eje X sera con respecto al centro del centro del componente  
+	 */
 	private JPanel crearField(String texto, Component componenteDelLabel, JLabel labelTextoDelError) {
 		JPanel panel = new JPanel();
-		panel.setBackground(Colores.colorear(1));
+		panel.setBackground(Color.cyan);
 		panel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		panel.setMaximumSize(new Dimension(350, 60));
+		panel.setMaximumSize(new Dimension(350, 70));
 		
 		JLabel label = new JLabel(texto);
 		label.setMaximumSize(new Dimension(Integer.MAX_VALUE, label.getPreferredSize().height));
@@ -213,13 +109,20 @@ public class LoginView extends JPanel{
 	private JPanel crearPanelBoton(String texto1, String tipoDeListener) {
 
 		JPanel panel = new JPanel();
-		panel.setBackground(Colores.colorear(1));
+		panel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panel.setMaximumSize(new Dimension(350, 60));
+		
+		
+		//Se declara el boton
 		JButton boton = new JButton(texto1);
-		boton.setSize(50, 50);
+		
+		//Depende del boton, tendra un listener propio
 		if(tipoDeListener.equals("contrasenia")){
 			boton.addActionListener(e -> pasarFormulario());
+			panel.setBackground(Color.blue);
 		}else if(tipoDeListener.equals("NombreUsuario")) {
 			boton.addActionListener(e -> pasarLogin());
+			panel.setBackground(Color.pink);
 		}
 		panel.add(boton);
 		return panel;
@@ -274,13 +177,11 @@ public class LoginView extends JPanel{
 		
 	}
 	private void resetearMensajesError() {
-		labelErrorContrasenia.setText("");
-		labelErrorNombreEmail.setText("");
 		labelErrorNombreEmail.setVisible(false);
 		labelErrorContrasenia.setVisible(false);
 	}
 	private boolean validarLogin() {
-		boolean validado;
+		boolean validado = false;
 		resetearMensajesError();
 		if(!validarNombreUsuario()) {
 			validado = false;
@@ -288,7 +189,7 @@ public class LoginView extends JPanel{
 		if(!validarContrasenia()) {
 			validado = false;
 		}
-		else {
+		if(validarContrasenia() && validarNombreUsuario()){
 			validado = true;
 		}
 		return validado;

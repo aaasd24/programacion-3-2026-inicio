@@ -1,17 +1,21 @@
 package javaProyect1;
 
 import views.FormularioRegistro;
+import views.LoginWindow;
 import assets.GestorCursor;
 
 public class Main {
     public static void main(String[] args) {
-       
-        abrirLogin();
+    	abrirLogin();
     }
     
     public static void abrirLogin() {
-        MyVentana ventana = new MyVentana();
+        LoginWindow ventana = new LoginWindow();
         ventana.setVisible(true);
+    }
+    public static void abrirFormulario() {
+        FormularioRegistro formularioVentana = new FormularioRegistro();
+        formularioVentana.setVisible(true);
     }
     
     public static void irAlRegistro(javax.swing.JFrame ventanaActual) {
