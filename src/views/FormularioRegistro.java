@@ -2,6 +2,7 @@ package views;
 
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -33,9 +34,11 @@ import assets.GestorCursor;
 
 public class FormularioRegistro extends JFrame {
 	// mejor lo cambie a GridBagLayout para que no se estire todo como en el BoxLayout (el boton y demas)
+	//Crear Componentes necesarios de la ventana
     JPanel panelComponentes = new JPanel(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
     JTextField txtNombre = new JTextField(20);
+    
     JLabel labelErrorNombreUsuario = new JLabel();
 	public FormularioRegistro() {
 	
@@ -67,13 +70,9 @@ public class FormularioRegistro extends JFrame {
 	    GestorCursor.aplicarATodo(this);
 
 	    // usuario
-	    
-	    c.gridx = 0; c.gridy = 0;
-	    panelComponentes.add(new JLabel("Nombre de usuario: "), c);
-	    c.gridx = 1;
-	    
-	    panelComponentes.add(txtNombre, c);
-	    
+	    agregarComponente(0, 0, new JLabel("Nombre de usuario: "));
+	    agregarComponente(1, 0, txtNombre);
+	    //agregarComponente(1, 1, crearErrorLabel("La cuenta es obligatoria", labelErrorNombreUsuario));
 	    // nombre
 	    c.gridx = 0; c.gridy = 1;
 	    panelComponentes.add(new JLabel("Nombre de cuenta: "), c);
@@ -195,8 +194,16 @@ public class FormularioRegistro extends JFrame {
 		return panel;
 		
 	}
-	private JPanel crearFormularioView() {
+	private void agregarComponente(int posColumna, int posFilas, Component componenteAgregado) {
+		c.gridx = posColumna;
+		c.gridy = posFilas;
+		panelComponentes.add(componenteAgregado, c);
 		
-		return null;
+	}
+	private JLabel crearErrorLabel(String texto, JLabel labelError) {
+		labelError.setText(texto);
+		labelError.setBackground(Color.red);
+		labelError.setVisible(true);
+		return labelError;
 	}
 }
