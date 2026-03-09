@@ -6,7 +6,7 @@ import assets.GestorCursor;
 
 public class Main {
     public static void main(String[] args) {
-    	abrirLogin();
+    	abrirFormulario();
     }
     
     public static void abrirLogin() {
