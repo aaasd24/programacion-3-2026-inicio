@@ -6,7 +6,7 @@ import assets.GestorCursor;
 
 public class Main {
     public static void main(String[] args) {
-    	abrirFormulario();
+    	abrirLogin();
     }
     
     public static void abrirLogin() {
@@ -26,3 +26,7 @@ public class Main {
         formulario.setVisible(true);
     }
 }
+
+//idea para modificar boton: investigar como podemos modificar el boton para que se encienda en llamas cuando presionas o pasas el cursor por encima//
+//modificar boton de registro para que en lugar de boton sea texto clicleable/
+//TODO CAMBIAR PALETA DE COLORES(URGE)//

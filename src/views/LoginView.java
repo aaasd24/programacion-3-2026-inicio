@@ -3,6 +3,7 @@ import java.awt.BorderLayout;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -11,6 +12,8 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagLayoutInfo;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.imageio.ImageIO;
 import assets.Colores;
@@ -18,6 +21,7 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -111,10 +115,10 @@ public class LoginView extends JPanel{
 		JPanel panel = new JPanel();
 		panel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		panel.setMaximumSize(new Dimension(350, 60));
-		
-		
 		//Se declara el boton
 		JButton boton = new JButton(texto1);
+		cambiarFondo(boton,Colores.colorear(1));
+		
 		
 		//Depende del boton, tendra un listener propio
 		if(tipoDeListener.equals("contrasenia")){
@@ -141,6 +145,8 @@ public class LoginView extends JPanel{
 	    }
 		return panel;
 	}
+	
+	
 	private JPanel crearLoginPanel() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -152,7 +158,9 @@ public class LoginView extends JPanel{
 		panel.add(crearField("Usuario", campoEmail, labelErrorNombreEmail));
 		panel.add(crearField("Constraseña", campoContrasenia, labelErrorContrasenia));
 		panel.add(crearPanelBoton("Iniciar sesión", "NombreUsuario"));
-		panel.add(crearPanelBoton("Registrarse", "contrasenia"));
+		//panel.add(crearPanelBoton("Registrarse", "contrasenia"));
+		panel.add(labelRegistro());
+		
 		return panel;
 	}
 	
@@ -213,5 +221,32 @@ public class LoginView extends JPanel{
 			new FormularioRegistro();
 			ventana.dispose();
 		}
+	
+	private void cambiarFondo(JComponent c, Color color) {
+		setBackground(color);
+		setForeground(color);
+		
+	}
+	private JPanel labelRegistro() {
+		JPanel panel = new JPanel();
+		JLabel lblRegister = new JLabel("¿No tienes cuenta? Regístrate aquí");
+		panel.setBackground(Colores.colorear(1));
+		lblRegister.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		lblRegister.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				pasarFormulario();
+			}
+			
+			public void mouseEntered(MouseEvent e) {
+				lblRegister.setForeground(Colores.colorear(0));
+			}
+			
+			public void mouseExited(MouseEvent e) {
+				lblRegister.setForeground(Color.BLACK);
+			}
+		});
+		panel.add(lblRegister);
+		return panel;
+	}
 	
 }
