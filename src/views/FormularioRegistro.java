@@ -1,14 +1,12 @@
 package views;
 
-
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.Toolkit;
 
 import javax.swing.BorderFactory;
@@ -37,18 +35,19 @@ import javax.swing.event.DocumentListener;
 
 import assets.GestorCursor;
 
+@SuppressWarnings("serial")
 public class FormularioRegistro extends JFrame {
 	// mejor lo cambie a GridBagLayout para que no se estire todo como en el BoxLayout (el boton y demas)
 	//Crear Componentes necesarios de la ventana
     JPanel panelComponentes = new JPanel(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
+    
     JTextField txtNombre = new JTextField(20);
-    JLabel labelErrorNombreEmail = new JLabel();
-	JLabel labelErrorContrasenia = new JLabel();
-    JLabel labelErrorNombreUsuario = new JLabel();
-    JTextField txtNombreCuenta;
+    JTextField txtEmail = new JTextField(20);
+    
+    JTextField txtAnioNacimiento = new JTextField(20);
+    JPasswordField txtContra = new JPasswordField(20);
     JLabel lblTituloFecha;
-    JTextField txtAnioNacimiento;
     JComboBox<String> comboMeses;
     JComboBox<String> comboDias;
     JPanel panelRadio; 
@@ -57,15 +56,14 @@ public class FormularioRegistro extends JFrame {
     JRadioButton rbExtra; 
     ButtonGroup bgSexo;
     JComboBox<String> comboRegiones; 
-    JPasswordField txtContra;
+    
     JCheckBox chkAceptoCondiciones;
     JButton boton;
     JScrollPane scroll;
     private JLabel lblErrorNombre;
-    private JLabel lblErrorCuenta;
 	private JLabel lblErrorEmail;
-	private JLabel lblErrorCombo;
 	private JLabel lblErrorGenero;
+	private JLabel lblErrorContrasenia;
 	private JLabel lblErrorTerminos;
 	private JLabel lblErrorDia;
 	private JLabel lblErrorMes;
@@ -75,8 +73,6 @@ public class FormularioRegistro extends JFrame {
 	
 		//atributos del formulario
 		//NOmbre usuario y nombre de cuenta, Fecha de nacimiento, genero, datos bancarios y su contraseña y su csv. contraseña de cuenta, ubicacion/region 
-		
-		
 		setSize(600, 680);
 		setResizable(false);
 		setTitle("Registrarse");
@@ -92,73 +88,53 @@ public class FormularioRegistro extends JFrame {
 	
 	public void inicializarComponentes() {
 	    
-		lblErrorNombre = createErrorLabel("a");
-		lblErrorEmail = createErrorLabel("b");
-		labelErrorContrasenia = createErrorLabel("c");
-		lblErrorGenero = createErrorLabel("s");
-		lblErrorTerminos = createErrorLabel("s");
-		lblErrorAnio = createErrorLabel("s");
-		lblErrorMes = createErrorLabel("s");
-		lblErrorDia = createErrorLabel("s");
-		lblErrorRegion = createErrorLabel("s");
+		lblErrorNombre = createErrorLabel(" ");
+		lblErrorEmail = createErrorLabel(" ");
+		lblErrorGenero = createErrorLabel(" ");
+		lblErrorTerminos = createErrorLabel(" ");
+		lblErrorAnio = createErrorLabel(" ");
+		lblErrorMes = createErrorLabel(" ");
+		lblErrorDia = createErrorLabel(" ");
+		lblErrorRegion = createErrorLabel(" ");
+		lblErrorContrasenia = createErrorLabel(" ");
+		
 	    // Configuracion de margenes 
-	    c.insets = new java.awt.Insets(8, 8, 8, 8); 
+	    c.insets = new java.awt.Insets(2, 2, 2, 2); 
 	    c.fill = GridBagConstraints.HORIZONTAL;
 	
 	    GestorCursor.aplicarATodo(this);
 
 	    // usuario
-	    agregarComponente(0, 0, new JLabel("Nombre de usuario: "));
-	    agregarComponente(0, 0, lblErrorNombre);
-	    agregarComponente(1, 0, txtNombre);
-	    /*agregarComponente(0, 3, new JLabel("Email: "));
-	    agregarComponente(1, 3, txtNombreCuenta);
-	    agregarComponente(0, 4, lblErrorEmail);
-	    agregarComponente(1, 0, new JLabel("Nombre de usuario: "));*/
-
-	   // agregarComponente(1, 2, crearErrorLabel("La cuenta es obligatoria", labelErrorNombreUsuario));
+	    agregarComponente(0, 0, new JLabel("Nombre de usuario: "), lblErrorNombre, txtNombre);
+	    
 	    // nombre
-	    c.gridx = 0; c.gridy = 1;
-	    panelComponentes.add(new JLabel("Nombre de cuenta: "), c);
-	    c.gridx = 1;
-	    JTextField txtNombreCuenta = new JTextField(20);
-	    panelComponentes.add(txtNombreCuenta, c);
+	    agregarComponente(0, 2, new JLabel("Email: "), lblErrorEmail, txtEmail);
 
 	    // Título de la sección Fecha de nacimiento (Fila propia)
-	    c.gridx = 0; c.gridy = 2;
 	    c.gridwidth = 2; //acuerdate que son las columnas
 	    lblTituloFecha = new JLabel("Fecha de nacimiento:");
-	    lblTituloFecha.setFont(lblTituloFecha.getFont().deriveFont(java.awt.Font.BOLD));
-	    panelComponentes.add(lblTituloFecha, c);
+	    //lblTituloFecha.setFont(lblTituloFecha.getFont().deriveFont(java.awt.Font.BOLD));
+	    agregarComponente(0, 4, lblTituloFecha);
+
 	    
 	    // año 
 	    c.gridwidth = 1; 
-	    c.gridx = 0; c.gridy = 3;
-	    panelComponentes.add(new JLabel("Año:"), c);
-	    c.gridx = 1;
-	     txtAnioNacimiento = new JTextField(20);
-	    panelComponentes.add(txtAnioNacimiento, c);
+	    agregarComponente(0, 5, new JLabel("Año: "), lblErrorAnio, txtAnioNacimiento);
+
 
 	    // mes
-	    c.gridx = 0; c.gridy = 4;
-	    panelComponentes.add(new JLabel("Mes:"), c);
-	    c.gridx = 1;
 	    String meses[] = {"Seleccione", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
 	    comboMeses = new JComboBox<>(meses);
-	    panelComponentes.add(comboMeses, c);
+	    agregarComponente(0, 7, new JLabel("Mes:"), lblErrorMes, comboMeses);
 
 	    // dia
-	    c.gridx = 0; c.gridy = 5;
-	    panelComponentes.add(new JLabel("Dia:"), c);
-	    c.gridx = 1;
 	    String dias[] = {"Seleccione", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"};
 	    comboDias = new JComboBox<>(dias);
-	    panelComponentes.add(comboDias, c);
+	    agregarComponente(0, 9, new JLabel("Dia:"), lblErrorDia, comboDias);
 
-	    // radiobuttons
-	    c.gridx = 0; c.gridy = 6;
-	    panelComponentes.add(new JLabel("Sexo"), c);
 	    
+	    
+	    // radiobuttons
 	    panelRadio = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 	    rbMujer = new JRadioButton("Mujer");
 	    rbHombre = new JRadioButton("Hombre");
@@ -166,63 +142,67 @@ public class FormularioRegistro extends JFrame {
 	    bgSexo = new ButtonGroup();
 	    bgSexo.add(rbHombre); bgSexo.add(rbMujer); bgSexo.add(rbExtra);
 	    panelRadio.add(rbMujer); panelRadio.add(rbHombre); panelRadio.add(rbExtra);
-	    
-	    c.gridx = 1;
-	    panelComponentes.add(panelRadio, c);
+	    agregarComponente(0, 11, new JLabel("Genero:"), lblErrorGenero, panelRadio);
+
 
 	    // region
-	    c.gridx = 0; c.gridy = 7;
-	    panelComponentes.add(new JLabel("Región"), c);
-	    c.gridx = 1;
+	    //c.gridx = 1;
 	    String regiones[] = {"Seleccione", "MEXICO", "PERU", "MIAMI", "LOS ANGELES", "OCEANIA", "JAPON", "CHINA", "INDIA", "ALASKA", "POLO SUR", "LONDRES", "NIGERIA"};
 	    comboRegiones = new JComboBox<>(regiones);
 	    comboRegiones.setSelectedIndex(0);
-	    panelComponentes.add(comboRegiones, c);
-
+	    agregarComponente(0, 13, new JLabel("Region:"), lblErrorRegion, comboRegiones);
+	    
 	    // contraseña
-	    c.gridx = 0; c.gridy = 8;
-	    panelComponentes.add(new JLabel("Contraseña:"), c);
-	    c.gridx = 1;
-	    txtContra = new JPasswordField();
-	    panelComponentes.add(txtContra, c);
+	    agregarComponente(0, 15, new JLabel("Contraseña:"), lblErrorContrasenia, txtContra);
+	    
 
 	    // terminos
-	    c.gridx = 0; c.gridy = 9;
 	    c.gridwidth = 2; 
-	    chkAceptoCondiciones = new JCheckBox("He leído y aceptado los terminos y condiciones de la plataforma", true);
-	    panelComponentes.add(chkAceptoCondiciones, c);
-
+	    chkAceptoCondiciones = new JCheckBox("He leído y aceptado los terminos y condiciones de la plataforma", false);
+	    agregarComponente(0, 17, chkAceptoCondiciones, lblErrorTerminos);
+	    
 	    // boton
-	    c.gridx = 0; c.gridy = 10;
-	    c.gridwidth = 2;
 	    c.ipady = 15; 
 	    JButton boton = new JButton("Crear cuenta");
 	    boton.setBackground(assets.Colores.colorear(1));
 	    boton.addActionListener(e -> validateForm());
-	    panelComponentes.add(boton, c);
-
+	    agregarComponente(0, 19, boton);
+	    assignListeners();
+	    
 	    // todo pal scroll
 	    scroll = new JScrollPane(panelComponentes);
 	    scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	    add(scroll);
 	    //con esto hago el mouse jalar en todo//
 	    assets.GestorCursor.aplicarATodo(this);
-	    assignListeners();
+	    
 	}
-	//add(panelComponentes);
 
 	
-	private void agregarComponente(int posColumna, int posFilas, Component componenteAgregado) {
+	private void agregarComponente(int posColumna, int posFilas, Component nombreComponenteAgregado, Component labelErrorCampo, Component campoAgregado) {
+		c.gridx = posColumna;
+		c.gridy = posFilas;
+		panelComponentes.add(nombreComponenteAgregado, c);
+		c.gridx = posColumna + 1;
+		panelComponentes.add(campoAgregado, c);
+		c.gridy += 1;
+		panelComponentes.add(labelErrorCampo, c);
+		
+	}private void agregarComponente(int posColumna, int posFilas, Component componenteAgregado) {
+	
 		c.gridx = posColumna;
 		c.gridy = posFilas;
 		panelComponentes.add(componenteAgregado, c);
 		
 	}
-	private JLabel crearErrorLabel(String texto, JLabel labelError) {
-		labelError.setText(texto);
-		labelError.setBackground(Color.red);
-		labelError.setVisible(true);
-		return labelError;
+	private void agregarComponente(int posColumna, int posFilas, Component componenteAgregado, Component labelErrorCampo) {
+		c.gridx = posColumna;
+		c.gridy = posFilas;
+		panelComponentes.add(componenteAgregado, c);
+		c.gridx += 1;
+		c.gridy += 1;
+		panelComponentes.add(labelErrorCampo, c);
+		
 	}
 	private JLabel createErrorLabel(String texto) {
 		JLabel label = new JLabel(texto);
@@ -233,48 +213,70 @@ public class FormularioRegistro extends JFrame {
 
 		return label;
 	}
+	private void pasarAMenu() {
+		JOptionPane.showMessageDialog(
+			this,
+			"Se inició la sesión",
+			"Sesion iniciada",
+			JOptionPane.INFORMATION_MESSAGE
+		);
+		new MainWindow();
+		dispose();
+	}
 	private void validateForm() {
-		resetErrorLabels();
-
 		boolean valid = true;
 
 		if (!validateName()) {
 			valid = false;
 		}
-
 		if (!validateEmail()) {
 			valid = false;
 		}
-
-		if(!validateComboBox()) 
+		if(!validateComboRegion()) {
+			valid = false;
+		}
+		if(!validateAnio()) 
         	valid = false;
-        
+		
+		if(!validateComboMes()) 
+        	valid = false;
+		
+		if(!validateComboDia()) 
+        	valid = false;
+		
         if(!validateGender()) 
         	valid = false;
         
         if(!validateTerms()) 
         	valid = false;
-       
+        
+        if(!validateContrasenia()) 
+        	valid = false;
 
 		if (valid) {
-			JOptionPane.showMessageDialog(this, "Registro exitoso");
+			//JOptionPane.showMessageDialog(this, "Registro exitoso");
+			pasarAMenu();
 		}
 		
 
 	}
-	private void resetErrorLabels() {
-		labelErrorNombreEmail.setText("");
-		lblErrorEmail.setText("");
-		lblErrorCombo.setText("");
-		lblErrorGenero.setText("");
-		lblErrorTerminos.setText("");
-		lblErrorRegion.setText("");
-		lblErrorDia.setText("");
-		lblErrorMes.setText("");
-		lblErrorAnio.setText("");
+	private boolean validarJTextField(JTextField campoChecar, JLabel labelError) {
+		if (campoChecar.getText().trim().isEmpty()) {
+			labelError.setText("Es obligatorio llenar este campo");
+			return false;
+		}
+		//Checa si el Jtextfied agregado es especifico para el JTextfield de Email, si es así debera ingresar un @ c
+		//System.out.println(campoChecar.getDocument().equals(txtEmail.getDocument()));
+		if(campoChecar.getDocument().equals(txtEmail.getDocument())) {
+			if (!campoChecar.getText().contains("@")) {
+				labelError.setText("Email inválido");
+				return false;
+			}
+		}
+		labelError.setText(" ");
+		return true;
 	}
 	private boolean validateName() {
-
 		if (txtNombre.getText().trim().isEmpty()) {
 			lblErrorNombre.setText("El nombre es obligatorio");
 			return false;
@@ -282,29 +284,63 @@ public class FormularioRegistro extends JFrame {
 
 		return true;
 	}
+	
+	private boolean validateAnio() {
+		if (txtAnioNacimiento.getText().trim().isEmpty()) {
+			lblErrorAnio.setText("El año es obligatorio");
+			return false;
+		}
+		lblErrorAnio.setText(" ");
+		return true;
+	}
+	
+	private boolean validateContrasenia() {
 
+		if (String.valueOf(txtContra.getPassword()).trim().isEmpty()) {
+			lblErrorContrasenia.setText("La contraseña es obligatoria");
+			return false;
+		}
+
+		return true;
+	}
 	private boolean validateEmail() {
 
-		if (labelErrorNombreEmail.getText().trim().isEmpty()) {
+		if (txtEmail.getText().trim().isEmpty()) {
 			lblErrorEmail.setText("El email es obligatorio");
 			return false;
 		}
 
-		if (!labelErrorNombreEmail.getText().contains("@")) {
+		if (!txtEmail.getText().contains("@")) {
 			lblErrorEmail.setText("Email inválido");
 			return false;
 		}
 
 		return true;
 	}
-
-	private boolean validateComboBox() {
-
-		if (comboRegiones.getSelectedIndex() == 0) {
-			lblErrorCombo.setText("Seleccione un país");
+	private boolean validateComboMes() {
+		if (comboMeses.getSelectedIndex() == 0) {
+			lblErrorMes.setText("Seleccione un mes");
 			return false;
 		}
+		lblErrorMes.setText(" ");
+		return true;
+	}
+	private boolean validateComboDia() {
 
+		if (comboDias.getSelectedIndex() == 0) {
+			lblErrorDia.setText("Seleccione un Día");
+			return false;
+		}
+		lblErrorDia.setText(" ");
+		return true;
+	}
+	private boolean validateComboRegion() {
+
+		if (comboRegiones.getSelectedIndex() == 0) {
+			lblErrorRegion.setText("Seleccione un país");
+			return false;
+		}
+		lblErrorRegion.setText(" ");
 		return true;
 	}
 
@@ -314,7 +350,7 @@ public class FormularioRegistro extends JFrame {
 			lblErrorGenero.setText("Seleccione un género");
 			return false;
 		}
-
+		lblErrorGenero.setText(" ");
 		return true;
 	}
 
@@ -324,37 +360,45 @@ public class FormularioRegistro extends JFrame {
 			lblErrorTerminos.setText("Debe aceptar los términos");
 			return false;
 		}
-
+		lblErrorTerminos.setText(" ");
 		return true;
 	}
+	
 	private void assignListeners() {
 		comboRegiones.addActionListener(e -> {
-			validateComboBox();
+			validateComboRegion();
+		});
+		comboMeses.addActionListener(e -> {
+			validateComboMes();
+		});
+		comboDias.addActionListener(e -> {
+			validateComboDia();
 		});
 		
 		chkAceptoCondiciones.addActionListener(e -> validateTerms());
 		
-		txtNombre.getDocument().addDocumentListener(new DocumentListener() {
+		checarSiCompletoCampo(txtNombre, lblErrorNombre);
+		checarSiCompletoCampo(txtEmail, lblErrorEmail);
+		checarSiCompletoCampo(txtAnioNacimiento, lblErrorAnio);
+		checarSiCompletoCampo(txtContra, lblErrorContrasenia);
+	}
+	private void checarSiCompletoCampo(JTextField campoARellenar, JLabel labelError) {
+		campoARellenar.getDocument().addDocumentListener(new DocumentListener() {
 			
 			@Override
 			public void removeUpdate(DocumentEvent e) {
-				validateName();
+				validarJTextField(campoARellenar, labelError);
 			}
 			
 			@Override
 			public void insertUpdate(DocumentEvent e) {
-				validateName();
+				validarJTextField(campoARellenar, labelError);
 			}
 			
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				validateName();
+				validarJTextField(campoARellenar, labelError);
 			}
-
-			
-			
 		});
-		
-		
 	}
 }
