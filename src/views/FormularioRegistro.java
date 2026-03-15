@@ -8,6 +8,11 @@ import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -400,5 +405,38 @@ public class FormularioRegistro extends JFrame {
 				validarJTextField(campoARellenar, labelError);
 			}
 		});
+		
+	
+	
+	addWindowListener(new WindowAdapter() {
+		@Override
+		public void windowOpened(WindowEvent e) {
+			comboRegiones.requestFocusInWindow();
+		}
+	});
+	
+	txtNombre.addFocusListener(new FocusAdapter() {
+		@Override
+		public void focusGained(FocusEvent e) {
+			txtNombre.selectAll();
+		}
+	});
+	
+	txtEmail.addFocusListener(new FocusAdapter() {
+		@Override
+		public void focusGained(FocusEvent e) {
+			txtEmail.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
+		}
+		
+		@Override
+		public void focusLost(FocusEvent e) {
+			txtEmail.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+		}
+		
+		
+	});
+	
 	}
+	
+	
 }

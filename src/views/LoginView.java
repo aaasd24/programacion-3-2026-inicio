@@ -12,8 +12,12 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagLayoutInfo;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.imageio.ImageIO;
 import assets.Colores;
@@ -56,7 +60,7 @@ public class LoginView extends JPanel{
 		add(crearImagenLogo(), BorderLayout.NORTH);
 		add(crearLoginPanel(), BorderLayout.CENTER);
 
-	}
+	
 	//---------------------------------------------------------------------------------------------------------------------------------------------------------
 	//---------------------------------------------------------------------------------------------------------------------------------------------------------
 	//------------------------------------------------------------ METODOS DE CONFIGURACION -------------------------------------------------------------------
@@ -81,6 +85,53 @@ public class LoginView extends JPanel{
 	 * 			# La orientacion horizontal del texto que tendra el label será hacia la isquierda con rexpecto al componente ingresado
 	 * 			#El aliniamiento del label en el eje X sera con respecto al centro del centro del componente  
 	 */
+	
+	ventana.addWindowListener(new WindowListener() {
+		
+		@Override
+		public void windowOpened(WindowEvent e) {
+			System.out.println("Se abrió la ventana");
+			
+		}
+		
+		@Override
+		public void windowIconified(WindowEvent e) {
+			System.out.println("Se minimizó");
+			
+		}
+		
+		@Override
+		public void windowDeiconified(WindowEvent e) {
+			System.out.println("Se volvió a abrir");
+			
+		}
+		
+		@Override
+		public void windowDeactivated(WindowEvent e) {
+			System.out.println("Perdió el focus");
+			
+		}
+		
+		@Override
+		public void windowClosing(WindowEvent e) {
+			handleClose();
+			
+		}
+		
+		@Override
+		public void windowClosed(WindowEvent e) {
+			System.out.println("Se cerró");
+			
+		}
+		
+		@Override
+		public void windowActivated(WindowEvent e) {
+			System.out.println("Obtuvo el focus");
+			
+		}
+	});
+ }
+	
 	private JPanel crearField(String texto, Component componenteDelLabel, JLabel labelTextoDelError) {
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.cyan);
@@ -145,6 +196,7 @@ public class LoginView extends JPanel{
 	    }
 		return panel;
 	}
+	
 	
 	
 	private JPanel crearLoginPanel() {
@@ -245,8 +297,32 @@ public class LoginView extends JPanel{
 				lblRegister.setForeground(Color.BLACK);
 			}
 		});
+		
+		
+		
+		campoEmail.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					validarLogin();
+				}
+			}
+		});
 		panel.add(lblRegister);
 		return panel;
+		}
+
+	private void handleClose() {
+		int option = JOptionPane.showConfirmDialog(this, "¿Seguro que deseas regresar? Se perderán todos los datos");
+		
+		if(option == JOptionPane.YES_OPTION) {
+			System.exit(0);
+			/*new LoginWindow();
+					dispose();*/
+		}
+		
 	}
-	
+
 }
+
