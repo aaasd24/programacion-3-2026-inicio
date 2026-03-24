@@ -6,7 +6,7 @@ public class Colores {
 	
 		
 		static Color maronLeve = new Color(158, 118 , 79);
-		static Color blancoIvory = new Color(244, 249 , 233);
+		static Color blancoIvory = new Color(244, 249 , 233); //quitar esta madre
 		static Color grisGunmetal = new Color(53, 57 , 60);
 		static Color rosaNeon = new Color(244, 0 , 118);
 		static Color azulGlaous = new Color(119, 133, 172);
