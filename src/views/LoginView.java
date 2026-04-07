@@ -10,6 +10,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridBagLayoutInfo;
+import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.KeyAdapter;
@@ -30,6 +31,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import assets.GestorCursor;
+import exception.InvalidPasswordException;
+import exception.InvalidUserException;
 import assets.AppFonts;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -134,7 +137,7 @@ public class LoginView extends JPanel{
 	
 	private JPanel crearField(String texto, Component componenteDelLabel, JLabel labelTextoDelError) {
 		JPanel panel = new JPanel();
-		panel.setBackground(Color.cyan);
+		panel.setBackground(Colores.colorear(1));
 		panel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -177,7 +180,7 @@ public class LoginView extends JPanel{
 			panel.setBackground(Color.blue);
 		}else if(tipoDeListener.equals("NombreUsuario")) {
 			boton.addActionListener(e -> pasarLogin());
-			panel.setBackground(Color.pink);
+			panel.setBackground(Colores.colorear(1));
 		}
 		panel.add(boton);
 		return panel;
@@ -228,7 +231,7 @@ public class LoginView extends JPanel{
 		
 	}
 	private boolean validarContrasenia() {
-		if(String.valueOf(campoContrasenia.getPassword()).trim().isEmpty()) {
+		if(String.valueOf(campoContrasenia.getPassword()).trim().isEmpty() ) {
 			labelErrorContrasenia.setText("La contraseña es obligatoria");
 			labelErrorContrasenia.setVisible(true);
 			return false;
@@ -240,15 +243,23 @@ public class LoginView extends JPanel{
 		labelErrorNombreEmail.setVisible(false);
 		labelErrorContrasenia.setVisible(false);
 	}
-	private boolean validarLogin() {
+	private boolean validarLogin() throws InvalidUserException, InvalidPasswordException{
 		boolean validado = false;
 		resetearMensajesError();
 		if(!validarNombreUsuario()) {
 			validado = false;
+			throw new InvalidUserException("jajajaja");
 		}
-		if(!validarContrasenia()) {
+		if(!validarContrasenia()) {	
 			validado = false;
 		}
+		if(!campoEmail.getText().equals("Juan@gmail.com") && validarNombreUsuario()) {
+			throw new InvalidUserException("Usuario laosdfsdakf");
+		}
+		if(!String.valueOf(campoContrasenia.getPassword()).trim().equals("Banana") && validarContrasenia()) {
+			throw new InvalidPasswordException("errorrr");
+		}
+			
 		if(validarContrasenia() && validarNombreUsuario()){
 			validado = true;
 		}
@@ -257,15 +268,24 @@ public class LoginView extends JPanel{
 	
 	//---------------- Funcion para ver si se han llenado ambos campos para pasarñ
 	private void pasarLogin() {
-		if(validarLogin()) {
-			JOptionPane.showMessageDialog(
-				this,
-				"Se inició la sesión",
-				"Sesion iniciada",
-				JOptionPane.INFORMATION_MESSAGE
-			);
-			new MainWindow();
-			ventana.dispose();
+		try {
+			if(validarLogin()) {
+				JOptionPane.showMessageDialog(
+					this,
+					"Se inició la sesión",
+					"Sesion iniciada",
+					JOptionPane.INFORMATION_MESSAGE
+				);
+				new MainWindow();
+				ventana.dispose();
+			}
+		} catch (InvalidUserException e) {
+			resetearMensajesError();
+			labelErrorNombreEmail.setVisible(true);
+			labelErrorNombreEmail.setText("Nombre de usuario es obligatorio");
+		} catch (InvalidPasswordException e) {
+			System.out.println("lñhjkñluñik");
+			labelErrorContrasenia.setVisible(true);
 		}
 	}
 	private void pasarFormulario() {
@@ -299,13 +319,19 @@ public class LoginView extends JPanel{
 		});
 		
 		
-		
+		//funcion para darle enter a iniciar sesion
 		campoEmail.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				
 				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-					validarLogin();
+					try {
+						validarLogin();
+					} catch (InvalidUserException e1) {
+						System.out.println("hola");
+					} catch (InvalidPasswordException e1) {
+						System.out.println("Adios");
+					}
 				}
 			}
 		});
