@@ -22,7 +22,7 @@ public class LoginWindow extends JFrame {
 		setTitle("SteakGames");
 		setLocationRelativeTo(null);
 		//Siempre el set visible al final del constructor
-		FlatLightLaf.setup(); 
+		//FlatLightLaf.setup(); 
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		Image icono = tk.getImage("src/assets/SteakGames.png");
 		setIconImage(icono);

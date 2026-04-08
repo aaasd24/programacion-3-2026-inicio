@@ -51,6 +51,7 @@ public class LoginView extends JPanel{
 	JPasswordField campoContrasenia = new JPasswordField();
 	JLabel labelErrorNombreEmail = new JLabel();
 	JLabel labelErrorContrasenia = new JLabel();
+	
 	GridBagConstraints c = new GridBagConstraints();
 	public LoginView(LoginWindow ventana) {
 		
@@ -60,6 +61,8 @@ public class LoginView extends JPanel{
 		
 		campoEmail.setMaximumSize(new Dimension(Integer.MAX_VALUE, campoEmail.getPreferredSize().height));
 		campoContrasenia.setMaximumSize(new Dimension(Integer.MAX_VALUE, campoContrasenia.getPreferredSize().height));
+		labelErrorNombreEmail.setForeground(Color.RED);
+		labelErrorNombreEmail.setText("Error en nom,bre usuario");
 		add(crearImagenLogo(), BorderLayout.NORTH);
 		add(crearLoginPanel(), BorderLayout.CENTER);
 
@@ -156,9 +159,11 @@ public class LoginView extends JPanel{
 		
 	}
 	private JLabel crearLabelError() {
-		JLabel label = new JLabel();
+		JLabel label = new JLabel(" ");
 		label.setFont(AppFonts.small());
+		label.setVisible(true);
 		label.setForeground(Color.RED);
+		label.setBackground(Color.BLUE);
 		label.setHorizontalAlignment(SwingConstants.LEFT);
 		label.setMaximumSize(new Dimension(Integer.MAX_VALUE, label.getPreferredSize().height));
 
@@ -240,25 +245,25 @@ public class LoginView extends JPanel{
 		
 	}
 	private void resetearMensajesError() {
-		labelErrorNombreEmail.setVisible(false);
-		labelErrorContrasenia.setVisible(false);
+		//labelErrorNombreEmail.setVisible(false);
+		//labelErrorContrasenia.setVisible(false);
 	}
 	private boolean validarLogin() throws InvalidUserException, InvalidPasswordException{
 		boolean validado = false;
 		resetearMensajesError();
 		if(!validarNombreUsuario()) {
 			validado = false;
-			throw new InvalidUserException("jajajaja");
+			//throw new InvalidUserException("jajajaja");
 		}
 		if(!validarContrasenia()) {	
 			validado = false;
-		}
+		}/*
 		if(!campoEmail.getText().equals("Juan@gmail.com") && validarNombreUsuario()) {
 			throw new InvalidUserException("Usuario laosdfsdakf");
 		}
 		if(!String.valueOf(campoContrasenia.getPassword()).trim().equals("Banana") && validarContrasenia()) {
 			throw new InvalidPasswordException("errorrr");
-		}
+		}*/
 			
 		if(validarContrasenia() && validarNombreUsuario()){
 			validado = true;
@@ -280,9 +285,10 @@ public class LoginView extends JPanel{
 				ventana.dispose();
 			}
 		} catch (InvalidUserException e) {
-			resetearMensajesError();
+			//resetearMensajesError();
 			labelErrorNombreEmail.setVisible(true);
-			labelErrorNombreEmail.setText("Nombre de usuario es obligatorio");
+			System.out.println(labelErrorNombreEmail.getText());
+			System.out.println("Holaaaa");
 		} catch (InvalidPasswordException e) {
 			System.out.println("lñhjkñluñik");
 			labelErrorContrasenia.setVisible(true);
