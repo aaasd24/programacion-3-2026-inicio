@@ -1,7 +1,8 @@
 package views;
-import java.awt.Cursor;
+
+
+
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
@@ -12,7 +13,9 @@ import com.formdev.flatlaf.FlatLightLaf;
 import assets.GestorCursor;
 import assets.AppFonts;
 
+@SuppressWarnings("serial")
 public class LoginWindow extends JFrame {
+	private LoginView loginView;
 	
 	public LoginWindow() {
 		//setSize(100, 100);
@@ -20,9 +23,7 @@ public class LoginWindow extends JFrame {
 		setBounds(100, 100, 650, 680);
 		setResizable(false);
 		setTitle("SteakGames");
-		setLocationRelativeTo(null);
-		//Siempre el set visible al final del constructor
-		//FlatLightLaf.setup(); 
+		FlatLightLaf.setup(); 
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		Image icono = tk.getImage("src/assets/SteakGames.png");
 		setIconImage(icono);
@@ -32,10 +33,13 @@ public class LoginWindow extends JFrame {
 		UIManager.put("Button.font", AppFonts.title());
 		UIManager.put("TextField.font", AppFonts.small());		
 
-		LoginView miLogin = new LoginView(this); 
-		add(miLogin);
+		loginView = new LoginView(this); 
+		add(loginView);
 		GestorCursor.aplicarATodo(this);
 		
+	}
+	public LoginView getLoginView() {
+		return loginView;
 	}
 	
 }

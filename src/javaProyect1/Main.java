@@ -1,5 +1,6 @@
 package javaProyect1;
 
+import controlers.LoginControler;
 import views.FormularioRegistro;
 import views.LoginWindow;
 import assets.GestorCursor;
@@ -11,6 +12,7 @@ public class Main {
     
     public static void abrirLogin() {
         LoginWindow ventana = new LoginWindow();
+        new LoginControler(ventana.getLoginView());
         ventana.setVisible(true);
     }
     public static void abrirFormulario() {
@@ -28,9 +30,8 @@ public class Main {
 }
 
 //TODO idea para modificar boton: investigar como podemos modificar el boton para que se encienda en llamas cuando presionas o pasas el cursor por encima//
-//TODO modificar boton de registro para que en lugar de boton sea texto clicleable/
 //TODO CAMBIAR PALETA DE COLORES(URGE)//
 //TODO modificar y agregar que en el formulario solo se pueda agregar numeros en la edad y letras en el nombre//
-//TODO agregar atajo para darle enter en el login o formulario//
 //TODO marcar focus para facilitar el llenado o correcion de formulario//
+//TODO checar los superWarnigns que deje en algunos archivos, no se que hacen pero se debe investigar
 
