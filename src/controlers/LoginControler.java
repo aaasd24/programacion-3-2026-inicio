@@ -20,13 +20,22 @@ import views.MainWindow;
 
 
 public class LoginControler {
-	private LoginView view;
 	
+	//Atributos
+	private LoginView view;
+	/**
+	 * Constructor de View
+	 * @param view
+	 */
 	public LoginControler(LoginView view) {
 		this.view = view;
 		registrerListener();
 	}
 	
+	/**
+	 * fncuion para agregar las listener a todos los campos y botones
+	 * Y asigna la funcion que realizaran
+	 */
 	private void registrerListener() {
 		view.getLblRegister().addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -95,22 +104,28 @@ public class LoginControler {
 			
 			@Override
 			public void windowActivated(WindowEvent e) {
-				System.out.println("Obtuvo el focus");
-				
+				System.out.println("Obtuvo el focus");			
 			}
 		});
 	}
-
+	
+	/**
+	 * Funcion que inmediatamente abre la otra ventana de formulario
+	 */
 	private void pasarFormulario() {
 			new FormularioRegistro();
 			view.getVentana().dispose();
 	}
 	
 	
+	/**
+	 * Crea usuario temporal para el ejercicio Usa try catch
+	 * intenta- Conseguir un usuario(El temporal) y comprueba que existe.
+	 * Si es asi pasa a la ventana principal
+	 * Sino Lanza un erro de excepcion 
+	 */
 	private void pasarLogin() {
-		
-		Usuario usuarioPresente = new Usuario("Juan", "tu@gmail.com", "Contra123");
-		
+		Usuario usuarioPresente = new Usuario("Juan", "tu@gmail.com", "Contra123");	
 		try {
 			if(validarLogin(usuarioPresente)) {
 				JOptionPane.showMessageDialog(
@@ -127,44 +142,62 @@ public class LoginControler {
 			mostrarErrorContrasenia("Credenciales incorrectas");
 		}
 	}
-	/*
-	 * Metodo para confirmar cerrar ventana
+	
+	/**
+	 * Metodo para confirmar cerrar ventana, Si presiona la opcion si, se cierra
 	 */
 	private void handleClose() {
 		int option = JOptionPane.showConfirmDialog(view, "¿Seguro que deseas regresar? Se perderán todos los datos");
-		
 		if(option == JOptionPane.YES_OPTION) {
 			System.exit(0);
-			/*new LoginWindow();
-					dispose();*/
 		}else {
-			//System.exit(0);
+			;
 		}
 		
 	}
+	
+	/**
+	 * Obtiene el label de errod el campo correo y reescribe con el nuevo String
+	 * @param texto
+	 */
 	private void mostrarErrorEmail(String texto) {
 		view.getLabelErrorNombreEmail().setText(texto);
 		view.getLabelErrorNombreEmail().setVisible(true);
 	}
+	
+	/**
+	 * Obtiene el label de error del campo contraseñoa, y reescribe un nuevo String
+	 * @param texto
+	 */
 	private void mostrarErrorContrasenia(String texto) {
 		view.getLabelErrorContrasenia().setText(texto);
 		view.getLabelErrorContrasenia().setVisible(true);
 	}
 	
+	/**
+	 * Obtiene los label de Error de cada campo y los vuelve invisibles
+	 */
 	public void resetearMensajesError() {
 		view.getLabelErrorNombreEmail().setVisible(false);
 		view.getLabelErrorContrasenia().setVisible(false);
 	}
 
-
+	/**
+	 * Si el campo indicado esta vacio, DEvuelve false caso contrario devuelve true
+	 * @return
+	 */
 	private boolean validarLLenadoEmail() {
 		if(view.getCampoEmail().getText().trim().isEmpty()) {
 			mostrarErrorEmail("Correo incorrecto");
 			return false;
 		}
-		return true;
-		
+		return true;	
 	}
+	
+	/**
+	 * Si el campo indicado esta vacio devuelve false
+	 * @return booleano
+	 */
 	private boolean validarLLenadoContrasenia() {
 	if(String.valueOf(view.getCampoContrasenia().getPassword()).trim().isEmpty() ) {
 		mostrarErrorContrasenia("Contraseña invalida");
@@ -173,9 +206,15 @@ public class LoginControler {
 	return true;
 	
 }
-	
-	
-	
+	/**
+	 * Recibe un usuario y comprueba si primero tiene todos los campos estan llenos llamando una funcion
+	 * Luego Comprueba si el correo de usuario es correcto, y tmabien comprueba si la contraseña es igual a la constraseña del usuario
+	 * Si cumple con lo anterior devuelve true
+	 * @param usuario
+	 * @return booleano
+	 * @throws InvalidUserException
+	 * @throws InvalidPasswordException
+	 */
 	private boolean validarLogin(Usuario usuario) throws InvalidUserException, InvalidPasswordException{
 		boolean validado = false;
 		resetearMensajesError();
