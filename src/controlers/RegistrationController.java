@@ -8,6 +8,8 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
+
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -15,13 +17,20 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import models.Usuario;
+import repositorio.RepositorioUsuarios;
+
 public class RegistrationController {
 
     private FormularioRegistro view;
-
+    private RepositorioUsuarios repoUs;
+    
+    
     //el controlador recibe la vista para poder leer y modificar sus componentes
     public RegistrationController(FormularioRegistro view) {
         this.view = view;
+        this.repoUs = new RepositorioUsuarios();
+        initListeners();
     }
 
     //aqui se asignan todos los eventos que antes estaban en la vista
@@ -64,8 +73,18 @@ public class RegistrationController {
                 view.getTxtEmail().setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
             }
         });
+        
     }
 
+    private void guardarNuevoUsuario(Usuario usuarioNuevo) {
+    	try {
+    		repoUs.guardarUsuario(usuarioNuevo);
+    		JOptionPane.showMessageDialog(view, "Usuario registrado");
+    	}catch(IOException ex) {
+    		JOptionPane.showMessageDialog(view, ex.getMessage());
+    	}
+    }
+    
     private void validateForm() {
         boolean valid = true;
 
@@ -85,6 +104,8 @@ public class RegistrationController {
     }
 
     private void pasarAMenu() {
+    	Usuario usuarioNuevo = new Usuario(view.getNombreUsuario(), view.getEmailUsuario(), view.getPasswordusuario(), view.getRegion(), view.getAnio(), view.getMes(), view.getDia());
+    	guardarNuevoUsuario(usuarioNuevo);
         JOptionPane.showMessageDialog(
             view,
             "Se inició la sesión",

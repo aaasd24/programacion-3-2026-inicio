@@ -202,4 +202,14 @@ public class FormularioRegistro extends JFrame {
     public JLabel getLblErrorMes() { return lblErrorMes; }
     public JLabel getLblErrorAnio() { return lblErrorAnio; }
     public JLabel getLblErrorRegion() { return lblErrorRegion; }
+
+    public String getNombreUsuario() { return txtNombre.getText(); }
+    
+    public String getEmailUsuario() { return txtEmail.getText();}
+    public String getPasswordusuario() { return  String.valueOf(txtEmail.getText()); }
+    public String getRegion() { return String.valueOf(comboRegiones.getSelectedItem());}
+    public String getAnio() { return txtAnioNacimiento.getText();}
+    public String getMes() { return String.valueOf(comboMeses.getSelectedItem());}
+    public String getDia() { return String.valueOf(comboDias.getSelectedItem()); }
+    
 }
