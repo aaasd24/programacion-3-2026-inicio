@@ -1,4 +1,4 @@
-package controlers;
+package controllers;
 
 import views.FormularioRegistro;
  import views.MainWindow; 
@@ -18,42 +18,76 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import models.Usuario;
+import views.MainWindow;
 import repositorio.RepositorioUsuarios;
 
 public class RegistrationController {
 
     private FormularioRegistro view;
-    private RepositorioUsuarios repoUs;
+    private RepositorioUsuarios repositorio;
+   
     
     
     //el controlador recibe la vista para poder leer y modificar sus componentes
     public RegistrationController(FormularioRegistro view) {
         this.view = view;
-        this.repoUs = new RepositorioUsuarios();
+        this.repositorio = new RepositorioUsuarios();
         initListeners();
+        
     }
 
     //aqui se asignan todos los eventos que antes estaban en la vista
+    //acabo de modficarlo de tal manera que antes de asignar una accion a cada componente, recorremos los que ya existen y los borramos basicamente, 
+    //asi evitas que el controlador que se creaba varias veces por error y hacia que el registro se duplicara, se acumulara, osea ahora ya no xd
     public void initListeners() {
+        // --- 1. LIMPIAR Y ASIGNAR BOTÓN PRINCIPAL ---
+        for (java.awt.event.ActionListener al : view.getBoton().getActionListeners()) {
+            view.getBoton().removeActionListener(al);
+        }
         view.getBoton().addActionListener(e -> validateForm());
 
+        // --- 2. LIMPIAR Y ASIGNAR COMBOBOXES ---
+        // ------Regiones---------
+        for (java.awt.event.ActionListener al : view.getComboRegiones().getActionListeners()) {
+            view.getComboRegiones().removeActionListener(al);
+        }
         view.getComboRegiones().addActionListener(e -> validateComboRegion());
+
+        //----- Meses-------
+        for (java.awt.event.ActionListener al : view.getComboMeses().getActionListeners()) {
+            view.getComboMeses().removeActionListener(al);
+        }
         view.getComboMeses().addActionListener(e -> validateComboMes());
+
+        // ---Días----
+        for (java.awt.event.ActionListener al : view.getComboDias().getActionListeners()) {
+            view.getComboDias().removeActionListener(al);
+        }
         view.getComboDias().addActionListener(e -> validateComboDia());
-        
+
+        // ---------------LIMPIAR Y ASIGNAR CHECKBOX --------------
+        for (java.awt.event.ActionListener al : view.getChkAceptoCondiciones().getActionListeners()) {
+            view.getChkAceptoCondiciones().removeActionListener(al);
+        }
         view.getChkAceptoCondiciones().addActionListener(e -> validateTerms());
-        
+
+        // --------VALIDACIONES EN TIEMPO REAL (TEXTFIELDS) --------
         checarSiCompletoCampo(view.getTxtNombre(), view.getLblErrorNombre());
         checarSiCompletoCampo(view.getTxtEmail(), view.getLblErrorEmail());
         checarSiCompletoCampo(view.getTxtAnioNacimiento(), view.getLblErrorAnio());
         checarSiCompletoCampo(view.getTxtContra(), view.getLblErrorContrasenia());
 
+        // -------LIMPIAR Y ASIGNAR EVENTOS DE VENTANA -------
+        for (java.awt.event.WindowListener wl : view.getWindowListeners()) {
+            view.removeWindowListener(wl);
+        }
         view.addWindowListener(new WindowAdapter() {
             @Override
             public void windowOpened(WindowEvent e) {
                 view.getComboRegiones().requestFocusInWindow();
             }
         });
+    
         
         view.getTxtNombre().addFocusListener(new FocusAdapter() {
             @Override
@@ -78,16 +112,17 @@ public class RegistrationController {
 
     private void guardarNuevoUsuario(Usuario usuarioNuevo) {
     	try {
-    		repoUs.guardarUsuario(usuarioNuevo);
-    		JOptionPane.showMessageDialog(view, "Usuario registrado");
+    		repositorio.guardarUsuario(usuarioNuevo);
     	}catch(IOException ex) {
-    		JOptionPane.showMessageDialog(view, ex.getMessage());
+    		JOptionPane.showMessageDialog(view,"Error al guardar: " + ex.getMessage());
     	}
     }
     
     private void validateForm() {
+    	view.getBoton().setEnabled(false); // Deshabilitar temporalmente(prueba para ver si con esto se dejan de duplicar los usuarios)(no era esto)
         boolean valid = true;
 
+        
         if (!validateName()) valid = false;
         if (!validateEmail()) valid = false;
         if (!validateComboRegion()) valid = false;
@@ -100,11 +135,23 @@ public class RegistrationController {
 
         if (valid) {
             pasarAMenu();
+        } else {
+            view.getBoton().setEnabled(true); 
         }
     }
 
     private void pasarAMenu() {
-    	Usuario usuarioNuevo = new Usuario(view.getNombreUsuario(), view.getEmailUsuario(), view.getPasswordusuario(), view.getRegion(), view.getAnio(), view.getMes(), view.getDia());
+    	view.getBoton().setEnabled(false);
+    	
+    	Usuario usuarioNuevo = new Usuario(
+    			view.getNombreUsuario(), 
+    			view.getEmailUsuario(),
+    			view.getPasswordusuario(), 
+    			view.getRegion(), view.getAnio(),
+    			view.getMes(),
+    			view.getDia()
+    	);
+    	
     	guardarNuevoUsuario(usuarioNuevo);
         JOptionPane.showMessageDialog(
             view,

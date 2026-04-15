@@ -21,11 +21,10 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import assets.GestorCursor;
+import controllers.RegistrationController;
 import assets.AppFonts;
 import assets.Colores; 
-import assets.ErrorLabel; 
-
-import controlers.RegistrationController;
+import assets.ErrorLabel;
 
 @SuppressWarnings("serial")
 public class FormularioRegistro extends JFrame {
@@ -206,7 +205,7 @@ public class FormularioRegistro extends JFrame {
     public String getNombreUsuario() { return txtNombre.getText(); }
     
     public String getEmailUsuario() { return txtEmail.getText();}
-    public String getPasswordusuario() { return  String.valueOf(txtEmail.getText()); }
+    public String getPasswordusuario() { return  String.valueOf(txtContra.getPassword()); }
     public String getRegion() { return String.valueOf(comboRegiones.getSelectedItem());}
     public String getAnio() { return txtAnioNacimiento.getText();}
     public String getMes() { return String.valueOf(comboMeses.getSelectedItem());}

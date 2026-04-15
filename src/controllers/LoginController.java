@@ -1,4 +1,4 @@
-package controlers;
+package controllers;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -19,7 +19,7 @@ import views.LoginView;
 import views.MainWindow;
 
 
-public class LoginControler {
+public class LoginController {
 	
 	//Atributos
 	private LoginView view;
@@ -27,7 +27,7 @@ public class LoginControler {
 	 * Constructor de View
 	 * @param view
 	 */
-	public LoginControler(LoginView view) {
+	public LoginController(LoginView view) {
 		this.view = view;
 		registrerListener();
 	}
@@ -113,8 +113,10 @@ public class LoginControler {
 	 * Funcion que inmediatamente abre la otra ventana de formulario
 	 */
 	private void pasarFormulario() {
-			new FormularioRegistro();
-			view.getVentana().dispose();
+	    FormularioRegistro registroVista = new FormularioRegistro();
+	    // otra modificacion para ver si esto era lo que duplicaba los usuarios(se crea el controlador una sola vez)
+	    new RegistrationController(registroVista); 
+	    view.getVentana().dispose();
 	}
 	
 	

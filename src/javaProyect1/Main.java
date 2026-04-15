@@ -1,9 +1,9 @@
 package javaProyect1;
 
-import controlers.LoginControler;
 import views.FormularioRegistro;
 import views.LoginWindow;
 import assets.GestorCursor;
+import controllers.LoginController;
 
 public class Main {
     public static void main(String[] args) {
@@ -11,8 +11,8 @@ public class Main {
     }
     
     public static void abrirLogin() {
-        LoginWindow ventana = new LoginWindow();
-        new LoginControler(ventana.getLoginView());
+    	LoginWindow ventana = new LoginWindow();
+        new LoginController(ventana.getLoginView());
         ventana.setVisible(true);
     }
     public static void abrirFormulario() {
@@ -21,8 +21,7 @@ public class Main {
     }
     
     public static void irAlRegistro(javax.swing.JFrame ventanaActual) {
-        ventanaActual.dispose(); //para cerrar el Login
-        
+    	ventanaActual.dispose(); 
         FormularioRegistro formulario = new FormularioRegistro();
         GestorCursor.aplicarATodo(formulario); 
         formulario.setVisible(true);

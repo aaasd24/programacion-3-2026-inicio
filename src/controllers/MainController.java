@@ -1,4 +1,4 @@
-package controlers;
+package controllers;
 
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
@@ -9,11 +9,11 @@ import javax.swing.JOptionPane;
 import views.LoginWindow;
 import views.MainWindow;
 
-public class MainControler {
+public class MainController {
 	
 	private MainWindow view;
 	
-	public MainControler(MainWindow view) {
+	public MainController(MainWindow view) {
 		this.view = view;
 		
 	}
@@ -35,7 +35,7 @@ public class MainControler {
 		System.out.println(option);
 
 		if (option == JOptionPane.YES_OPTION) {
-			new LoginControler(new LoginWindow().getLoginView());
+			new LoginController(new LoginWindow().getLoginView());
 			view.dispose();
 		}
 	}
