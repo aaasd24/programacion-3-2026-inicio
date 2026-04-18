@@ -2,12 +2,15 @@ package javaProyect1;
 
 import views.FormularioRegistro;
 import views.LoginWindow;
-import assets.GestorCursor;
+import views.MainWindow;
 import controllers.LoginController;
 
 public class Main {
     public static void main(String[] args) {
-    	abrirLogin();
+    	//abrirLogin();
+    	abrirMain();
+    	//abrirFormulario();
+    	
     }
     
     public static void abrirLogin() {
@@ -19,12 +22,9 @@ public class Main {
         FormularioRegistro formularioVentana = new FormularioRegistro();
         formularioVentana.setVisible(true);
     }
-    
-    public static void irAlRegistro(javax.swing.JFrame ventanaActual) {
-    	ventanaActual.dispose(); 
-        FormularioRegistro formulario = new FormularioRegistro();
-        GestorCursor.aplicarATodo(formulario); 
-        formulario.setVisible(true);
+    public static void abrirMain() {
+    	MainWindow mainWind = new MainWindow();
+    	mainWind.setVisible(true);
     }
 }
 

@@ -1,12 +1,20 @@
 package views;
 
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.FlowLayout;
 import java.awt.event.KeyEvent;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+import controllers.MainController;
 
 @SuppressWarnings("serial")
 public class MainWindow extends JFrame {
@@ -23,6 +31,17 @@ public class MainWindow extends JFrame {
 	private JMenuItem opcion2;
 	private JMenuItem opcion3;
 	
+	public JButton botonVerUsuario;
+	public JButton botonHome;
+	
+	public final static String HOME = "HOME";
+	public final static String USERS = "USERS";
+	
+	public UsuarioView panelUsuario;
+	
+	private CardLayout cardLayout;
+	private JPanel contenedor;
+	
 	public MainWindow() {
 		
 		setSize(500,500);
@@ -30,6 +49,19 @@ public class MainWindow extends JFrame {
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setMenu();
+		JPanel panel = new JPanel();
+		JPanel panelBoton = new JPanel();
+		panel.setLayout(new BorderLayout());
+		add(panel);
+		
+		crearBarraNav();
+		crearVistas();
+		//botonVerUsuario = new JButton("Ver usuarios");
+		//panelBoton.add(botonVerUsuario, BorderLayout.CENTER);
+		//panel.add(panelBoton);
+		
+		MainController mainControl = new MainController(this);
+		mainControl.registerListeners();
 		setVisible(true);
 		
 	}
@@ -106,7 +138,21 @@ public class MainWindow extends JFrame {
 		return opcion3;
 	}
 
-
+	/**
+	 * 
+	 */
+	public JButton getBotonVerUsuario() {
+		return botonVerUsuario;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public JButton getBotonHome() {
+		return botonHome;
+	}
+	
 	public void setMenu() {
 		
 		mb = new JMenuBar();
@@ -142,6 +188,7 @@ public class MainWindow extends JFrame {
 		opcion2 = new JMenuItem("Opción 2");
 		otraOpcion.add(opcion2);
 		
+		
 	}
 
 	public int confirmExit() {
@@ -151,6 +198,35 @@ public class MainWindow extends JFrame {
 	        "¿Seguro?",
 	        JOptionPane.YES_NO_OPTION
 	    );
+	}
+	
+	public void crearBarraNav() {
+		JPanel barraNav = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		botonHome = new JButton("Inicio");
+		botonVerUsuario = new JButton("Usuarios");
+		
+		barraNav.add(botonHome);
+		barraNav.add(botonVerUsuario);
+		
+		add(barraNav, BorderLayout.NORTH);		
+		
+	}
+	
+	public void crearVistas() {
+		cardLayout = new CardLayout();
+		contenedor = new JPanel(cardLayout);
+		
+		JPanel panelHome = new JPanel();
+		panelHome.add(new JLabel("BIenvenido al sistema"));
+		panelUsuario = new UsuarioView();
+		
+		contenedor.add(panelHome, HOME);
+		contenedor.add(panelUsuario, USERS);
+		
+		add(contenedor, BorderLayout.CENTER);
+	}
+	public void mostrarVista(String vista) {
+		cardLayout.show(contenedor, vista);
 	}
 	
 }

@@ -8,6 +8,8 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import javax.swing.BorderFactory;
@@ -18,7 +20,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import models.Usuario;
-import views.MainWindow;
 import repositorio.RepositorioUsuarios;
 
 public class RegistrationController {
@@ -41,32 +42,38 @@ public class RegistrationController {
     //asi evitas que el controlador que se creaba varias veces por error y hacia que el registro se duplicara, se acumulara, osea ahora ya no xd
     public void initListeners() {
         // --- 1. LIMPIAR Y ASIGNAR BOTÓN PRINCIPAL ---
-        for (java.awt.event.ActionListener al : view.getBoton().getActionListeners()) {
+        for (ActionListener al : view.getBoton().getActionListeners()) {
             view.getBoton().removeActionListener(al);
         }
         view.getBoton().addActionListener(e -> validateForm());
 
         // --- 2. LIMPIAR Y ASIGNAR COMBOBOXES ---
         // ------Regiones---------
-        for (java.awt.event.ActionListener al : view.getComboRegiones().getActionListeners()) {
+        for (ActionListener al : view.getComboRegiones().getActionListeners()) {
             view.getComboRegiones().removeActionListener(al);
         }
         view.getComboRegiones().addActionListener(e -> validateComboRegion());
 
+        
+        // --- 3. LIMPIAR Y ASIGNAR Listener GENERO ---
+        // ------Regiones---------
+        view.getRbHombre().addActionListener(e -> validateGender());
+        view.getRbMujer().addActionListener(e -> validateGender());
+
         //----- Meses-------
-        for (java.awt.event.ActionListener al : view.getComboMeses().getActionListeners()) {
+        for (ActionListener al : view.getComboMeses().getActionListeners()) {
             view.getComboMeses().removeActionListener(al);
         }
         view.getComboMeses().addActionListener(e -> validateComboMes());
 
         // ---Días----
-        for (java.awt.event.ActionListener al : view.getComboDias().getActionListeners()) {
+        for (ActionListener al : view.getComboDias().getActionListeners()) {
             view.getComboDias().removeActionListener(al);
         }
         view.getComboDias().addActionListener(e -> validateComboDia());
 
         // ---------------LIMPIAR Y ASIGNAR CHECKBOX --------------
-        for (java.awt.event.ActionListener al : view.getChkAceptoCondiciones().getActionListeners()) {
+        for (ActionListener al : view.getChkAceptoCondiciones().getActionListeners()) {
             view.getChkAceptoCondiciones().removeActionListener(al);
         }
         view.getChkAceptoCondiciones().addActionListener(e -> validateTerms());
@@ -78,7 +85,7 @@ public class RegistrationController {
         checarSiCompletoCampo(view.getTxtContra(), view.getLblErrorContrasenia());
 
         // -------LIMPIAR Y ASIGNAR EVENTOS DE VENTANA -------
-        for (java.awt.event.WindowListener wl : view.getWindowListeners()) {
+        for (WindowListener wl : view.getWindowListeners()) {
             view.removeWindowListener(wl);
         }
         view.addWindowListener(new WindowAdapter() {
@@ -147,7 +154,9 @@ public class RegistrationController {
     			view.getNombreUsuario(), 
     			view.getEmailUsuario(),
     			view.getPasswordusuario(), 
-    			view.getRegion(), view.getAnio(),
+    			view.getRegion(), 
+    			view.getGenero(),
+    			view.getAnio(),
     			view.getMes(),
     			view.getDia()
     	);

@@ -23,8 +23,6 @@ import javax.swing.SwingConstants;
 import assets.GestorCursor;
 import controllers.RegistrationController;
 import assets.AppFonts;
-import assets.Colores; 
-import assets.ErrorLabel;
 
 @SuppressWarnings("serial")
 public class FormularioRegistro extends JFrame {
@@ -210,5 +208,14 @@ public class FormularioRegistro extends JFrame {
     public String getAnio() { return txtAnioNacimiento.getText();}
     public String getMes() { return String.valueOf(comboMeses.getSelectedItem());}
     public String getDia() { return String.valueOf(comboDias.getSelectedItem()); }
+    public char getGenero() { 
+    	if(rbHombre.isSelected()) {
+    		return 'H';
+    	}
+    	if(rbMujer.isSelected()) {
+    		return 'M';
+    	}
+    	return 'n';
+    }
     
 }
