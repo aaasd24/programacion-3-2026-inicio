@@ -5,10 +5,11 @@ import tablamodelos.Tablamodelousuario;
 import models.Usuario;
 import views.UsuarioView;
 import views.FormularioRegistro;
+import views.FormularioUsuarioDialog;
 
 public class UserController {
 
-	private Usuario view;
+	private UsuarioView view;
 	private RepositorioUsuarios repo;
 	private Tablamodelousuario model;
 	
@@ -17,9 +18,10 @@ public class UserController {
 		repo = new RepositorioUsuarios();
 		
 		view.getBtnAdd().addActionListener(e -> {
-			UserFormDialog form = new UserFormDialog(null, null);
+			FormularioUsuarioDialog form = new FormularioUsuarioDialog(null, null);
 			form.setVisible(true);
 		});
+		
 	}
 	
 }

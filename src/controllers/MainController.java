@@ -20,8 +20,9 @@ public class MainController {
 	
 	private MainWindow view;
 	public JButton BotonVerUsuarios;
+	private UserController usuarioControler;
 	
-	public MainController(MainWindow view) {
+	public MainController(MainWindow view) {	
 		this.view = view;
 		
 	}

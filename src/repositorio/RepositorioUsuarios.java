@@ -44,4 +44,26 @@ public class RepositorioUsuarios {
 		return usuarios;
 		
 	}
+	public void updateAll(List<Usuario> listaUsuarios) throws IOException {
+	    try (BufferedWriter writer = new BufferedWriter(
+	            new OutputStreamWriter(new FileOutputStream(FILE), StandardCharsets.UTF_8))) {
+
+	        for (Usuario usuarioActual : listaUsuarios) {
+	            writer.write(usuarioActual.toCsv());
+	            writer.newLine();
+	        }
+	    }
+	}
+	
+	public void delete(int indice) throws IOException {
+		List<Usuario> users = obtenerUsuarios();
+		users.remove(indice);
+		updateAll(users);
+	}
+	
+	public void update(int index, Usuario updatedUser) throws IOException {
+		List<Usuario> users = obtenerUsuarios();
+		users.set(index, updatedUser);
+		updateAll(users);
+	}
 }

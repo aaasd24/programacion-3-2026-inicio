@@ -40,10 +40,10 @@ public class FormularioUsuarioDialog extends JDialog{
     private JButton btnSave;
     private JButton btnCancel;
 
-    private User user;
+    private Usuario user;
     private boolean saved = false;
     		
-    public UserFormDialog(JFrame parent, User user) {
+    public FormularioUsuarioDialog(JFrame parent, Usuario user) {
     	super(parent, true);
     	
     	this.user = user;
