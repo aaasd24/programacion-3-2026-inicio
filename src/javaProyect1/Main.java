@@ -7,7 +7,7 @@ import controllers.LoginController;
 
 public class Main {
     public static void main(String[] args) {
-    	//abrirLogin();
+    	abrirLogin();
     	abrirMain();
     	//abrirFormulario();
     	

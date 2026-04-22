@@ -52,5 +52,14 @@ public class Tablamodelousuario extends AbstractTableModel{
 		
 		return null;
 	}
+	public Usuario getUserAt(int row) {
+		return Usuario.get(row);
+	}
+	
+	public void setUsers(List<Usuario> usuarios) {
+		this.usuarios = usuarios;
+		fireTableDataChanged();
+	}
+	
 
 }

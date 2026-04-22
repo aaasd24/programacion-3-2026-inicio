@@ -28,25 +28,25 @@ public class Usuario {
 		this.dia = dia;
 	}
 	/**
-	 * @return the nombre
+	 * @return el nombre
 	 */
 	public String getNombre() {
 		return nombre;
 	}
 	/**
-	 * @return the correo
+	 * @return el correo
 	 */
 	public String getCorreo() {
 		return correo;
 	}
 	/**
-	 * @return the contrasenia
+	 * @return la contrasenia
 	 */
 	public String getContrasenia() {
 		return contrasenia;
 	}
 	/**
-	 * @return the pais
+	 * @return el pais
 	 */
 	public String getRegion() {
 		return region;
@@ -75,6 +75,6 @@ public class Usuario {
 		return new Usuario(nombre, contrasenia, correo, region, genero.charAt(0), anio, meses, dia); 
 		
 	}
-	
+
 	
 }
