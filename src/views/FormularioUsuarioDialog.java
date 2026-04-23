@@ -146,14 +146,74 @@ public class FormularioUsuarioDialog extends JDialog{
 
 		return panel;
 	}
+    private void loadData() {
+    	if(user != null) {
+    		txtName.setText(user.getNombre());
+            txtEmail.setText(user.getCorreo());
+            cboCountry.setSelectedItem(user.getRegion());
+
+            if (user.getGenero() == 'M') {
+                rbtnMale.setSelected(true);
+            } else {
+                rbtnFemale.setSelected(true);
+            }
+
+            //txtDescription.setText(user.getDescription());
+
+            //List<String> langs = user.getLanguages();
+/*
+            int[] indices = new int[langs.size()];
+            int i = 0;
+
+            for (String lang : langs) {
+                if (lang.equals("Java")) indices[i++] = 0;
+                else if (lang.equals("C++")) indices[i++] = 1;
+                else if (lang.equals("Python")) indices[i++] = 2;
+                else if (lang.equals("JavaScript")) indices[i++] = 3;
+            }*/
+
+            //lstLanguages.setSelectedIndices(indices);
+    	}
+    }
     
-    		
-    		
-    		
-    		
-    		
-    		
-    		
-    		;
+    private void save() {
+    	String name = txtName.getText();
+    	String email = txtEmail.getText();
+        String country = (String) cboCountry.getSelectedItem();
+
+        char gender = rbtnMale.isSelected() ? 'M' : 'F';
+
+        String description = txtDescription.getText();
+
+       //List<String> languages = new ArrayList<>();
+
+        //List<String> selected = lstLanguages.getSelectedValuesList();
+/*
+        for (String lang : selected) {
+            languages.add(lang);
+        }*/
+        
+        if(user == null) {
+        	user = new Usuario(name, email);
+        }else {
+        	user.setName(name);
+        	user.setEmail(email);
+        	user.setCountry(country);
+            user.setGender(gender);
+            //user.setDescription(description);
+            user.setLanguages(languages);
+        }
+        
+        saved = true;
+        dispose();
+    }
+
+    public boolean isSaved() {
+    	return saved;
+    }
+    
+    public User getUser() {
+    	return user;
+    }
 
 }

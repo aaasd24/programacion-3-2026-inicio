@@ -51,6 +51,10 @@ public class MainController {
 		}
 	}
 	private void mostrarUsuarios() {
+		if(usuarioControler == null) {
+			usuarioControler = new UserController(view.panelUsuario);
+		}
+		usuarioControler.loadUsers();
 		RepositorioUsuarios repositorioUsuarios = new RepositorioUsuarios();
 		try {
 			List<Usuario> listaUsuarios = repositorioUsuarios.obtenerUsuarios();
@@ -63,6 +67,11 @@ public class MainController {
 		}catch(IOException ex) {
 			JOptionPane.showMessageDialog(view, ex.getMessage());
 		}
+	}
+	
+	private void updateMenuState(String viewName) {
+		view.botonVerUsuario.setEnabled(!viewName.equals(MainWindow.USERS));
+		view.botonHome.setEnabled(!viewName.equals(MainWindow.HOME));
 	}
 	
 	
