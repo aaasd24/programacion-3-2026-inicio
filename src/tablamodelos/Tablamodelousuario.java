@@ -6,6 +6,7 @@ import javax.swing.table.AbstractTableModel;
 
 import models.Usuario;
 
+
 public class Tablamodelousuario extends AbstractTableModel{
 	
 	private List<Usuario> listaUsuarios;

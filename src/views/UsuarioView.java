@@ -38,8 +38,9 @@ public class UsuarioView extends JPanel{
 	}
 	
 	public void setModeloTable(Tablamodelousuario modelo) {
-		tabla.setModel(modelo);
-		
+		this.tabla.setModel(modelo);
+		this.tabla.revalidate();
+	    this.tabla.repaint();
 	}
 	
 	public JTable getTable() {

@@ -48,15 +48,16 @@ public class FormularioUsuarioDialog extends JDialog{
     	
     	this.user = user;
     	
-    	setSize(400, 500);
+    	setSize(400, 600);
         setLocationRelativeTo(parent);
         setLayout(new BorderLayout());
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         
         add(createTitlePanel(), BorderLayout.NORTH);
-        add(createButtonPanel());
-        add(createFormPanel(), BorderLayout.SOUTH);
-        
+        add(createFormPanel(), BorderLayout.CENTER);
+        add(createButtonPanel(), BorderLayout.SOUTH);
+        loadData();
+        btnSave.addActionListener(e -> save());
     }
     
     private JPanel createTitlePanel() {
@@ -177,31 +178,20 @@ public class FormularioUsuarioDialog extends JDialog{
     }
     
     private void save() {
-    	String name = txtName.getText();
-    	String email = txtEmail.getText();
-        String country = (String) cboCountry.getSelectedItem();
+    	String nombre = txtName.getText();
+    	String correo = txtEmail.getText();
+        String region = (String) cboCountry.getSelectedItem();
 
-        char gender = rbtnMale.isSelected() ? 'M' : 'F';
+        char genero = rbtnMale.isSelected() ? 'M' : 'F';
 
-        String description = txtDescription.getText();
-
-       //List<String> languages = new ArrayList<>();
-
-        //List<String> selected = lstLanguages.getSelectedValuesList();
-/*
-        for (String lang : selected) {
-            languages.add(lang);
-        }*/
         
         if(user == null) {
-        	user = new Usuario(name, email);
+        	user = new Usuario(nombre, correo);
         }else {
-        	user.setName(name);
-        	user.setEmail(email);
-        	user.setCountry(country);
-            user.setGender(gender);
-            //user.setDescription(description);
-            user.setLanguages(languages);
+        	user.setNombre(nombre);
+        	user.setCorreo(correo);
+        	user.setRegion(region);
+            user.setGenero(genero);
         }
         
         saved = true;
@@ -212,7 +202,7 @@ public class FormularioUsuarioDialog extends JDialog{
     	return saved;
     }
     
-    public User getUser() {
+    public Usuario getUsuario() {
     	return user;
     }
 

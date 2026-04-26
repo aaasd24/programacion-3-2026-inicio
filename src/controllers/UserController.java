@@ -13,63 +13,87 @@ import views.UsuarioView;
 import views.FormularioRegistro;
 import views.FormularioUsuarioDialog;
 
+//TODO A LEER 25/04/26: haz de cuenta we, que si le das a editar o agregar uno nuevo(usuario) si te deja y todo chingon, ya jala, pero se esta usando el formulario de ejemplo de la clase, no el nuestro(corregir) 
+
+
 public class UserController {
 
-	private UsuarioView view;
-	private RepositorioUsuarios repo;
-	private Tablamodelousuario model;
-	
-	public UserController(UsuarioView view) {
-		this.view = view;
-		repo = new RepositorioUsuarios();
-		
-		view.getBtnAdd().addActionListener(e -> {
-			FormularioUsuarioDialog form = new FormularioUsuarioDialog(null, null);
-			form.setVisible(true);
-		});
-		
-	}
-	public void loadUsers() {	
-		System.out.println("Carga usuarios");
-		try {
-			List<Usuario> users = repo.obtenerUsuarios();
-			
-			if(model == null) {
-				model = new Tablamodelousuario(users);
-				view.setModeloTable(model);
-			}else {
-				model.setUsers(users);
-			}
-			
-		}catch (IOException ex) {
-			JOptionPane.showMessageDialog(view, ex.getMessage());
-		}
-	}
-	
-	private void openForm(Usuario user) {
-		
-		FormularioUsuarioDialog dialog = new FormularioUsuarioDialog(null, user);
-		dialog.setVisible(true);
-		
-		if(dialog.isSaved()) {
-			Usuario savedUser = dialog.
-			
-			try {
-				if(user == null) {
-					repo.save(savedUser);
-				}else {
-					int row = view.getSelectedRow();
-					repo.update(row, savedUser);
-				}
-				
-				loadUsers();
-			}catch(Exception e) {
-				e.printStackTrace();
-				JOptionPane.showMessageDialog(view, e.getMessage());
-			}
-			
-		}
-		
-	}
-	
-}
+    private UsuarioView view;
+    private RepositorioUsuarios repo;
+    private Tablamodelousuario model;
+
+    public UserController(UsuarioView view) {
+        this.view = view;
+        this.repo = new RepositorioUsuarios();
+
+        // BOTÓN AGREGAR
+        view.getBtnAdd().addActionListener(e -> openForm(null));
+
+        // BOTÓN EDITAR (Si tienes el getter en tu view)
+        view.getBtnEdit().addActionListener(e -> {
+            int row = view.getSelectedRow();
+            if (row != -1) {
+                Usuario seleccionado = model.getUserAt(row);
+                openForm(seleccionado);
+            } else {
+                JOptionPane.showMessageDialog(view, "Selecciona un usuario para editar");
+            }
+        });
+        
+        // BOTÓN ELIMINAR
+        view.getBtnDelete().addActionListener(e -> {
+            int row = view.getSelectedRow();
+            if (row != -1) {
+                try {
+                    repo.delete(row); // Borra del CSV
+                    loadUsers();      // Recarga la tabla
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(view, "Error al eliminar: " + ex.getMessage());
+                }
+            }
+        });
+    }
+    
+    public void loadUsers() {	
+        try {
+            List<Usuario> listaFresca = repo.obtenerUsuarios();
+            if(model == null) {
+                model = new Tablamodelousuario(listaFresca);
+                view.setModeloTable(model);
+            } else {
+                model.setUsers(listaFresca);
+            }
+            
+            view.getTable().revalidate();
+            view.getTable().repaint();
+            
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void openForm(Usuario user) {
+        // null para el parent, user para saber si es edición o nuevo
+        FormularioUsuarioDialog dialog = new FormularioUsuarioDialog(null, user);
+        dialog.setVisible(true);
+
+        if (dialog.isSaved()) {
+            Usuario savedUser = dialog.getUsuario(); 
+
+            try {
+                if (user == null) { //usuario nuevo
+                    repo.guardarUsuario(savedUser); 
+                } else {//actualizar usuario
+                    int row = view.getSelectedRow();
+                    repo.update(row, savedUser);
+                    this.loadUsers(); 
+                }
+                
+                
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(view, "Error al guardar: " + e.getMessage());
+            }
+        }
+    }
+}  

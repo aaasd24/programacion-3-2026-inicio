@@ -11,6 +11,11 @@ public class Usuario {
 	private String anio;
 	private String dia;
 	
+	public Usuario(String nombre, String correo) {
+		this.nombre = nombre;
+		this.correo = correo;
+	}
+	
 	public Usuario(String nombre, String correo, String contrasenia) {
 		this.nombre = nombre;
 		this.correo = correo;
@@ -59,6 +64,32 @@ public class Usuario {
 		return "Y: " + anio + " M: " + meses + " D: " + dia;
 	}
 	
+	
+	
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	public void setCorreo(String correo) {
+		this.correo = correo;
+	}
+	public void setContrasenia(String contrasenia) {
+		this.contrasenia = contrasenia;
+	}
+	public void setGenero(char genero) {
+		this.genero = genero;
+	}
+	public void setRegion(String region) {
+		this.region = region;
+	}
+	public void setMeses(String meses) {
+		this.meses = meses;
+	}
+	public void setAnio(String anio) {
+		this.anio = anio;
+	}
+	public void setDia(String dia) {
+		this.dia = dia;
+	}
 	public String toCsv() {
 		return nombre + "," + contrasenia + "," + correo + "," + region + "," + genero +  "," + anio + "," + meses + "," + dia;
 	}
@@ -72,8 +103,16 @@ public class Usuario {
 		String anio = data[5];
 		String meses = data[6];
 		String dia = data[7];
-		return new Usuario(nombre, contrasenia, correo, region, genero.charAt(0), anio, meses, dia); 
 		
+		return new Usuario(
+				nombre,
+				contrasenia, 
+				correo, region,
+				genero.charAt(0),
+				anio,
+				meses,
+				dia
+				); 
 	}
 
 	

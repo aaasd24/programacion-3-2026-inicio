@@ -56,14 +56,14 @@ public class RepositorioUsuarios {
 	}
 	
 	public void delete(int indice) throws IOException {
-		List<Usuario> users = obtenerUsuarios();
-		users.remove(indice);
-		updateAll(users);
+		List<Usuario> lista = obtenerUsuarios();
+		lista.remove(indice);
+		updateAll(lista);
 	}
 	
 	public void update(int index, Usuario updatedUser) throws IOException {
-		List<Usuario> users = obtenerUsuarios();
-		users.set(index, updatedUser);
-		updateAll(users);
+		List<Usuario> usuarios = obtenerUsuarios();
+		usuarios.set(index, updatedUser);
+		updateAll(usuarios);
 	}
 }

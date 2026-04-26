@@ -27,7 +27,7 @@ public class RegistrationController {
     private FormularioRegistro view;
     private RepositorioUsuarios repositorio;
    
-    
+   
     
     //el controlador recibe la vista para poder leer y modificar sus componentes
     public RegistrationController(FormularioRegistro view) {

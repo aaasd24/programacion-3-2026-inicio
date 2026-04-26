@@ -20,7 +20,7 @@ public class MainController {
 	
 	private MainWindow view;
 	public JButton BotonVerUsuarios;
-	private UserController usuarioControler;
+	private UserController usuarioController;
 	
 	public MainController(MainWindow view) {	
 		this.view = view;
@@ -51,10 +51,10 @@ public class MainController {
 		}
 	}
 	private void mostrarUsuarios() {
-		if(usuarioControler == null) {
-			usuarioControler = new UserController(view.panelUsuario);
+		if(usuarioController == null) {
+			usuarioController = new UserController(view.panelUsuario);
 		}
-		usuarioControler.loadUsers();
+		usuarioController.loadUsers();
 		RepositorioUsuarios repositorioUsuarios = new RepositorioUsuarios();
 		try {
 			List<Usuario> listaUsuarios = repositorioUsuarios.obtenerUsuarios();
@@ -63,7 +63,7 @@ public class MainController {
 			
 			view.panelUsuario.setModeloTable(tablaUsuarios);
 			
-			view.mostrarVista(view.USERS);
+			view.mostrarVista(MainWindow.USERS);
 		}catch(IOException ex) {
 			JOptionPane.showMessageDialog(view, ex.getMessage());
 		}

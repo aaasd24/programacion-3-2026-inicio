@@ -60,7 +60,7 @@ public class LoginController {
 		 * Agrega al LoginWindow un listener
 		 * 
 		 * @param windowListener                     |
-		 * TODO requerrimos de esto forzosamente?    v
+		 * 
 		 */
 		view.getVentana().addWindowListener(new WindowListener() {
 			
