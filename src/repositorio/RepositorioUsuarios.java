@@ -5,17 +5,27 @@ import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.File;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
 import models.Usuario;
-
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+// 28/04/26: voy a implementar el ejemplo de la maestra aunque al parecer necesitamos descargar algo aparte para poder usar estas librerias, asi que por ahora como no esta nada actualizado en la guia para instalar, lo voy a dejar implementado pero como tal "no funcionando"(mañana vemos que pedo)//
 public class RepositorioUsuarios {
 
 	
-	private final String FILE = "src/assets/files/usuarios.csv";
+	private final String FILE = "src/assets/files/usuarios.json";
+	
+	
+	private final ObjectMapper mapper = 
+			new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+	
+	
 	
 	public void guardarUsuario(Usuario usuarioNuevo) throws IOException{
 		List<Usuario> actuales = obtenerUsuarios();
@@ -28,31 +38,54 @@ public class RepositorioUsuarios {
 			writer.newLine();
 			
 		} 
+		
+		List<Usuario> users = obtenerUsuarios();
+		users.addAll(actuales); //eclipse me pidio cambiar de add() to addAll()//
+		updateAll(actuales);
+		
+		
 	}
+	
+	
+	
+	
 	public List<Usuario> obtenerUsuarios() throws IOException{
 		
-		List<Usuario> usuarios = new ArrayList<Usuario>();
-		try(BufferedReader reader = new BufferedReader(new FileReader(FILE))){
+		//List<Usuario> usuarios = new ArrayList<Usuario>();
+		File file = new File(FILE);
+		
+		if(!file.exists() || file.length() == 0) {
+			return new ArrayList<>();
+		
+		/*try(BufferedReader reader = new BufferedReader(new FileReader(FILE))){
 			String linea;
 			while((linea = reader.readLine()) != null) {
 				Usuario usuario = Usuario.fromCsv(linea);
 				usuarios.add(usuario);
 				
-			}
+			}*/
 			
 		}
-		return usuarios;
+	
+	
+		//return usuarios;
+		
+		return mapper.readValue(
+				file, 
+				new TypeReference<List<User>>() {}
+			);
 		
 	}
 	public void updateAll(List<Usuario> listaUsuarios) throws IOException {
-	    try (BufferedWriter writer = new BufferedWriter(
+	   /* try (BufferedWriter writer = new BufferedWriter(
 	            new OutputStreamWriter(new FileOutputStream(FILE), StandardCharsets.UTF_8))) {
 
 	        for (Usuario usuarioActual : listaUsuarios) {
 	            writer.write(usuarioActual.toCsv());
 	            writer.newLine();
 	        }
-	    }
+	    }*/
+		 mapper.writeValue(new File(FILE), listaUsuarios);
 	}
 	
 	public void delete(int indice) throws IOException {
