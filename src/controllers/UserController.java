@@ -38,6 +38,7 @@ public class UserController {
             } else {
                 JOptionPane.showMessageDialog(view, "Selecciona un usuario para editar");
             }
+            this.loadUsers();
         });
         
         // BOTÓN ELIMINAR
@@ -51,10 +52,13 @@ public class UserController {
                     JOptionPane.showMessageDialog(view, "Error al eliminar: " + ex.getMessage());
                 }
             }
+           
         });
+        
     }
     
-    public void loadUsers() {	
+    public void loadUsers() {
+    	System.out.println("Se muestra usuarios");
         try {
             List<Usuario> listaFresca = repo.obtenerUsuarios();
             if(model == null) {
@@ -73,6 +77,7 @@ public class UserController {
     }
 
     private void openForm(Usuario user) {
+    	
         // null para el parent, user para saber si es edición o nuevo
         FormularioUsuarioDialog dialog = new FormularioUsuarioDialog(null, user);
         dialog.setVisible(true);
@@ -82,11 +87,12 @@ public class UserController {
 
             try {
                 if (user == null) { //usuario nuevo
+                	System.out.println("Se crea nuevo usuario");
                     repo.guardarUsuario(savedUser); 
                 } else {//actualizar usuario
                     int row = view.getSelectedRow();
                     repo.update(row, savedUser);
-                    this.loadUsers(); 
+                    
                 }
                 
                 
@@ -94,6 +100,7 @@ public class UserController {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(view, "Error al guardar: " + e.getMessage());
             }
+
         }
     }
 }  

@@ -13,11 +13,9 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
@@ -25,17 +23,17 @@ import models.Usuario;
 
 public class FormularioUsuarioDialog extends JDialog{
 
-	private JTextField txtName;
+	private JTextField txtNombre;
     private JTextField txtEmail;
-    private JTextArea txtDescription;
-
-    private JComboBox<String> cboCountry;
+    private JTextField txtAnioNacimiento = new JTextField(20);
+    private JComboBox<String> comboMeses;
+    private JComboBox<String> comboDias;
+    private JComboBox<String> comboRegiones;
+    
 
     private JRadioButton rbtnMale;
     private JRadioButton rbtnFemale;
     private ButtonGroup genderGroup;
-
-    private JList<String> lstLanguages;
 
     private JButton btnSave;
     private JButton btnCancel;
@@ -76,7 +74,7 @@ public class FormularioUsuarioDialog extends JDialog{
         panel.add(btnSave);
         panel.add(btnCancel);
         
-        //btnSave.addActionListener(e -> save());
+        btnSave.addActionListener(e -> save());
         btnCancel.addActionListener(e -> dispose());
         
         return panel;
@@ -93,11 +91,21 @@ public class FormularioUsuarioDialog extends JDialog{
 		scroll.setHorizontalScrollBar(null);
 		scroll.getVerticalScrollBar().setUnitIncrement(14);
 
-		txtName = new JTextField();
+		txtNombre = new JTextField();
 
 		txtEmail = new JTextField();
+		
+		txtAnioNacimiento = new JTextField();
+		
+		String regiones[] = {"Seleccione", "MEXICO", "PERU", "MIAMI", "LOS ANGELES", "OCEANIA", "JAPON", "CHINA", "INDIA", "ALASKA", "POLO SUR", "LONDRES", "NIGERIA"};
+        comboRegiones = new JComboBox<>(regiones);
+        comboRegiones.setSelectedIndex(0);
 
-		cboCountry = new JComboBox<>(new String[] { "Seleccione", "México", "USA", "Canada" });
+        String meses[] = {"Seleccione", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
+        comboMeses = new JComboBox<>(meses);
+
+        String dias[] = {"Seleccione", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"};
+        comboDias = new JComboBox<>(dias);
 
 		rbtnMale = new JRadioButton("Masculino");
 		rbtnMale.setActionCommand("M");
@@ -109,22 +117,19 @@ public class FormularioUsuarioDialog extends JDialog{
 		genderGroup.add(rbtnMale);
 		genderGroup.add(rbtnFemale);
 
-		txtDescription = new JTextArea(4, 20);
 
-		lstLanguages = new JList<>(new String[] { "Java", "C++", "Python", "JavaScript" });
-
-		panel.add(createField("Nombre:", txtName));
+		panel.add(createField("Nombre:", txtNombre));
 		panel.add(createField("Email:", txtEmail));
-		panel.add(createField("País:", cboCountry));
+		panel.add(createField("Anio", txtAnioNacimiento));
+		panel.add(createField("Mes:", comboMeses));
+		panel.add(createField("Dia:", comboDias));
+		panel.add(createField("Region:", comboRegiones));
 
 		JPanel genderPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		genderPanel.add(rbtnMale);
 		genderPanel.add(rbtnFemale);
 
 		panel.add(createField("Género:", genderPanel));
-
-		panel.add(createField("Descripción:", new JScrollPane(txtDescription)));
-		panel.add(createField("Lenguajes:", new JScrollPane(lstLanguages)));
 
 
 		return scroll;
@@ -149,9 +154,9 @@ public class FormularioUsuarioDialog extends JDialog{
 	}
     private void loadData() {
     	if(user != null) {
-    		txtName.setText(user.getNombre());
+    		txtNombre.setText(user.getNombre());
             txtEmail.setText(user.getCorreo());
-            cboCountry.setSelectedItem(user.getRegion());
+            comboRegiones.setSelectedItem(user.getRegion());
 
             if (user.getGenero() == 'M') {
                 rbtnMale.setSelected(true);
@@ -159,43 +164,36 @@ public class FormularioUsuarioDialog extends JDialog{
                 rbtnFemale.setSelected(true);
             }
 
-            //txtDescription.setText(user.getDescription());
-
-            //List<String> langs = user.getLanguages();
-/*
-            int[] indices = new int[langs.size()];
-            int i = 0;
-
-            for (String lang : langs) {
-                if (lang.equals("Java")) indices[i++] = 0;
-                else if (lang.equals("C++")) indices[i++] = 1;
-                else if (lang.equals("Python")) indices[i++] = 2;
-                else if (lang.equals("JavaScript")) indices[i++] = 3;
-            }*/
-
-            //lstLanguages.setSelectedIndices(indices);
+            txtAnioNacimiento.setText(user.getAnio());
+            comboMeses.setSelectedItem(user.getMes());
+            comboDias.setSelectedItem(user.getDia());
+            
     	}
     }
     
     private void save() {
-    	String nombre = txtName.getText();
+    	String nombre = txtNombre.getText();
     	String correo = txtEmail.getText();
-        String region = (String) cboCountry.getSelectedItem();
-
+        String region = (String) comboRegiones.getSelectedItem();
+        String anio = txtAnioNacimiento.getText();
+        String mes = (String) comboMeses.getSelectedItem();
+        String dia = (String) comboDias.getSelectedItem();
+        
         char genero = rbtnMale.isSelected() ? 'M' : 'F';
 
         
         if(user == null) {
-        	user = new Usuario(nombre, correo);
+        	this.user = new Usuario(nombre, correo, region, genero, anio, mes, dia);
         }else {
-        	user.setNombre(nombre);
-        	user.setCorreo(correo);
-        	user.setRegion(region);
-            user.setGenero(genero);
+        	this.user.setNombre(nombre);
+        	this.user.setCorreo(correo);
+        	this.user.setRegion(region);
+            this.user.setGenero(genero);
         }
         
         saved = true;
         dispose();
+        
     }
 
     public boolean isSaved() {

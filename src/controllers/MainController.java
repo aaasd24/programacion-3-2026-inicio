@@ -10,9 +10,7 @@ import java.io.IOException;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
-import models.Usuario;
-import repositorio.RepositorioUsuarios;
-import tablamodelos.Tablamodelousuario;
+
 import views.LoginWindow;
 import views.MainWindow;
 
@@ -38,15 +36,17 @@ public class MainController {
 			}
 		});
 		view.getBotonVerUsuario().addActionListener(e -> mostrarUsuarios());
-		view.getBotonHome().addActionListener(e -> view.mostrarVista(view.HOME));
+		view.getBotonHome().addActionListener(e -> {
+			view.mostrarVista(MainWindow.HOME);
+			updateMenuState(MainWindow.HOME);
+		}
+				);
 		
 	}
 	private void handleClose() {
-		//int option = view.confirmExit();
-		//System.out.println(option);
 		int option = JOptionPane.showConfirmDialog(view, "¿Seguro que deseas regresar? Se perderán todos los datos");
 		if (option == JOptionPane.YES_OPTION) {
-			new LoginController(new LoginWindow().getLoginView());
+			//new LoginController(new LoginWindow().getLoginView());
 			view.dispose();
 		}
 	}
@@ -55,18 +55,9 @@ public class MainController {
 			usuarioController = new UserController(view.panelUsuario);
 		}
 		usuarioController.loadUsers();
-		RepositorioUsuarios repositorioUsuarios = new RepositorioUsuarios();
-		try {
-			List<Usuario> listaUsuarios = repositorioUsuarios.obtenerUsuarios();
-			
-			Tablamodelousuario  tablaUsuarios = new Tablamodelousuario(listaUsuarios);
-			
-			view.panelUsuario.setModeloTable(tablaUsuarios);
-			
-			view.mostrarVista(MainWindow.USERS);
-		}catch(IOException ex) {
-			JOptionPane.showMessageDialog(view, ex.getMessage());
-		}
+		view.mostrarVista(MainWindow.USERS);
+		updateMenuState(MainWindow.USERS);
+		
 	}
 	
 	private void updateMenuState(String viewName) {

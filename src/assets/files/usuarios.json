@@ -1,0 +1,10 @@
+[ {
+  "nombre" : "esa",
+  "correo" : "asdf@gmail.com",
+  "contrasenia" : null,
+  "region" : "MEXICO",
+  "genero" : "F",
+  "anio" : "2010",
+  "mes" : "Marzo",
+  "dia" : "2"
+} ]

@@ -7,14 +7,14 @@ import javax.swing.table.AbstractTableModel;
 import models.Usuario;
 
 
+@SuppressWarnings("serial")
 public class Tablamodelousuario extends AbstractTableModel{
 	
 	private List<Usuario> listaUsuarios;
 	private final String[] nombreColumnas = {
 			"Nombre",
 			"Correo",
-			"Region",
-			"Genero"			
+			"Region"			
 	};
 	
 	public Tablamodelousuario(List<Usuario> usuarios) {
@@ -47,8 +47,7 @@ public class Tablamodelousuario extends AbstractTableModel{
 			return usuarioActual.getCorreo();
 		case 2:
 			return usuarioActual.getRegion();
-		case 3:
-			return usuarioActual.getFechaString();
+
 		}
 		
 		return null;
