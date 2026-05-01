@@ -72,7 +72,7 @@ public class RepositorioUsuarios {
 		
 		return mapper.readValue(
 				file, 
-				new TypeReference<List<User>>() {}
+				new TypeReference<List<Usuario>>() {}
 			);
 		
 	}
