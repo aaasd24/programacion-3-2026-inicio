@@ -1,10 +1,19 @@
 [ {
-  "nombre" : "esa",
-  "correo" : "asdf@gmail.com",
+  "nombre" : "jorge",
+  "correo" : "el@jaja.xd",
   "contrasenia" : null,
-  "region" : "MEXICO",
-  "genero" : "F",
+  "region" : "ALASKA",
+  "genero" : "M",
   "anio" : "2010",
+  "mes" : "Octubre",
+  "dia" : "23"
+}, {
+  "nombre" : "ella",
+  "correo" : "ella@nose",
+  "contrasenia" : null,
+  "region" : "PERU",
+  "genero" : "F",
+  "anio" : "2001",
   "mes" : "Marzo",
-  "dia" : "2"
+  "dia" : "4"
 } ]

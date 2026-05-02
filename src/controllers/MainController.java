@@ -1,17 +1,11 @@
 package controllers;
 
-import java.util.List;
-
-import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
-
-import views.LoginWindow;
 import views.MainWindow;
 
 public class MainController {

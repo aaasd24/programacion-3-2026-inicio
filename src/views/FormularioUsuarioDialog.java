@@ -21,6 +21,7 @@ import javax.swing.SwingConstants;
 
 import models.Usuario;
 
+@SuppressWarnings("serial")
 public class FormularioUsuarioDialog extends JDialog{
 
 	private JTextField txtNombre;

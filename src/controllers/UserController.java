@@ -10,11 +10,7 @@ import javax.swing.JOptionPane;
 
 import models.Usuario;
 import views.UsuarioView;
-import views.FormularioRegistro;
 import views.FormularioUsuarioDialog;
-
-//TODO A LEER 25/04/26: haz de cuenta we, que si le das a editar o agregar uno nuevo(usuario) si te deja y todo chingon, ya jala, pero se esta usando el formulario de ejemplo de la clase, no el nuestro(corregir) 
-
 
 public class UserController {
 
@@ -38,7 +34,6 @@ public class UserController {
             } else {
                 JOptionPane.showMessageDialog(view, "Selecciona un usuario para editar");
             }
-            this.loadUsers();
         });
         
         // BOTÓN ELIMINAR
@@ -47,6 +42,7 @@ public class UserController {
             if (row != -1) {
                 try {
                     repo.delete(row); // Borra del CSV
+                    System.out.println("Se borro  un usuario");
                     loadUsers();      // Recarga la tabla
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(view, "Error al eliminar: " + ex.getMessage());
@@ -79,6 +75,7 @@ public class UserController {
     private void openForm(Usuario user) {
     	
         // null para el parent, user para saber si es edición o nuevo
+    	System.out.println("Creando nuevo usuario");
         FormularioUsuarioDialog dialog = new FormularioUsuarioDialog(null, user);
         dialog.setVisible(true);
 
@@ -89,12 +86,14 @@ public class UserController {
                 if (user == null) { //usuario nuevo
                 	System.out.println("Se crea nuevo usuario");
                     repo.guardarUsuario(savedUser); 
+                    
                 } else {//actualizar usuario
+                	System.out.println("Se edito un usuario");
                     int row = view.getSelectedRow();
                     repo.update(row, savedUser);
                     
                 }
-                
+                this.loadUsers();
                 
             } catch (Exception e) {
                 e.printStackTrace();

@@ -31,6 +31,4 @@ public class Main {
 //TODO idea para modificar boton: investigar como podemos modificar el boton para que se encienda en llamas cuando presionas o pasas el cursor por encima//
 //TODO CAMBIAR PALETA DE COLORES(URGE)//
 //TODO modificar y agregar que en el formulario solo se pueda agregar numeros en la edad y letras en el nombre//
-//TODO marcar focus para facilitar el llenado o correcion de formulario//
-//TODO checar los superWarnigns que deje en algunos archivos, no se que hacen pero se debe investigar
 

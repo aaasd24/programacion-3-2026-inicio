@@ -16,7 +16,9 @@ public class AppFonts {
 			base = new Font("Times New Roman", Font.PLAIN, 14);
 		}
 	}
-	
+	public static Font negrita() {
+		return base.deriveFont(Font.BOLD, 14f);
+	}
 	public static Font normal() {
 		return base.deriveFont(20f);
 	}

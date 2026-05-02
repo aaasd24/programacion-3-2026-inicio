@@ -1,15 +1,24 @@
 package views;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.JTableHeader;
 
+import assets.AppFonts;
 import tablamodelos.Tablamodelousuario;
 
+@SuppressWarnings("serial")
 public class UsuarioView extends JPanel{
 
 	private JButton btnEdit;
@@ -33,12 +42,103 @@ public class UsuarioView extends JPanel{
         panelButtons.add(btnAdd);
         panelButtons.add(btnEdit);
         panelButtons.add(btnDelete);
-        
+        estilizarTabla();
         add(panelButtons, BorderLayout.NORTH);
 	}
 	
+	/**
+	 * Esta funcion le da el detallismo a la tabla de usuarios. Mas abajo hay indicaciones para que puedas editarla aca chido.
+	 */
+	public void estilizarTabla() {
+		//Altura de llas celdas y configuraciones por defecto.
+		tabla.setRowHeight(35);
+		
+		tabla.setShowGrid(true);
+		tabla.setGridColor(new Color(230, 230, 230));
+		tabla.setBackground(Color.WHITE);
+		tabla.setForeground(Color.BLACK);
+		tabla.setFont(AppFonts.normal());
+		
+		//Colores que se asignan cuando es seleccionado una celda. TODO cambia colores a tu gusto
+		tabla.setSelectionBackground(new Color(52, 152, 219));
+		tabla.setSelectionForeground(Color.WHITE);
+		
+		//Establece que solo uno se puede seleccionar
+		tabla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
+		//Configuracion por defecto de la cabeza de la tabla. TODO cambia color, tamaño y estilo de letra al que más convenga
+		JTableHeader header = tabla.getTableHeader();
+		header.setBackground(new Color(44, 62, 80)); //Color de fondo
+		header.setForeground(Color.WHITE);			//Color de letra
+		header.setFont(AppFonts.negrita());			//Estilo de letra
+		header.setPreferredSize(new Dimension(0, 40));	//Tamaño de la celda
+		header.setReorderingAllowed(false);				//Nose
+		
+		//Funcion que incia que todo vaya bien supongo.
+		tabla.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                //Aqui se cambia los colores de fondo para que no todo se vea blanco
+                
+                /*
+                 * Por defecnto si no es seleccionado, las filas pares son de color blanco y las impares de un blanco mas oscuro
+                 * La letra siempre de color negro
+                 */
+                if (!isSelected) {
+                    if (row % 2 == 0) {
+                        c.setBackground(Color.WHITE);
+                    } else {
+                        c.setBackground(new Color(245, 245, 245));
+                    }
+
+                    c.setForeground(Color.BLACK);
+                }
+				
+                /*
+                 * Si es la columna 1, esta letra sera negrita y con color azul siempre y cuando no sea SELECCIONADA
+                 * 
+                 * Por defecto todo estara en normal.
+                 */
+				if(column == 1) {
+					c.setFont(AppFonts.negrita());
+					if(!isSelected) {
+						c.setForeground(new Color(41, 128, 185));
+					}
+				} else {
+					c.setFont(AppFonts.normal());
+				}
+			
+				
+				return c;
+				
+			}
+			
+		});
+		
+	}
 	public void setModeloTable(Tablamodelousuario modelo) {
 		this.tabla.setModel(modelo);
+		//establace los tamaños de cada columna, Solo usamos 3 filas 
+	    if(tabla.getColumnCount() >= 1) {
+			tabla.getColumnModel().getColumn(0).setPreferredWidth(80);
+		}
+		
+		if(tabla.getColumnCount() >= 2) {
+			tabla.getColumnModel().getColumn(1).setPreferredWidth(200);
+		}
+		
+		if(tabla.getColumnCount() >= 3) {
+			tabla.getColumnModel().getColumn(2).setPreferredWidth(50);
+		}
+		
+		DefaultTableCellRenderer center = new DefaultTableCellRenderer();
+		center.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		if(tabla.getColumnCount() >= 1) {
+			tabla.getColumnModel().getColumn(0).setCellRenderer(center);
+		}
 		this.tabla.revalidate();
 	    this.tabla.repaint();
 	}

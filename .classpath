@@ -10,5 +10,11 @@
 	<classpathentry kind="lib" path="/home/e/Desktop/jackson-annotations-2.17.0.jar"/>
 	<classpathentry kind="lib" path="/home/e/Desktop/jackson-core-2.17.0.jar"/>
 	<classpathentry kind="lib" path="/home/e/Desktop/jackson-databind-2.17.0.jar"/>
+	<classpathentry kind="lib" path="/home/e/Downloads/commons-8.0.4.jar"/>
+	<classpathentry kind="lib" path="/home/e/Downloads/io-8.0.4.jar"/>
+	<classpathentry kind="lib" path="/home/e/Downloads/kernel-8.0.4.jar"/>
+	<classpathentry kind="lib" path="/home/e/Downloads/layout-8.0.4.jar"/>
+	<classpathentry kind="lib" path="/home/e/Downloads/slf4j-api-2.0.13.jar"/>
+	<classpathentry kind="lib" path="/home/e/Downloads/slf4j-simple-2.0.13.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
