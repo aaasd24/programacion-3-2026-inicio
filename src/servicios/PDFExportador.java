@@ -31,7 +31,7 @@ import models.Usuario;
 public class PDFExportador {
 
 	
-	public void esportarUsuarios(List<Usuario> usuarios, File archivo) throws IOException{
+	public void exportarUsuarios(List<Usuario> usuarios, File archivo) throws IOException{
 		try (PdfDocument pdfDoc = new PdfDocument(new PdfWriter(archivo));
 				Document doc = new Document(pdfDoc, PageSize.LETTER.rotate());)	{
 			

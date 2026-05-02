@@ -38,11 +38,11 @@ public class MainController {
 		
 	}
 	private void handleClose() {
-		int option = JOptionPane.showConfirmDialog(view, "¿Seguro que deseas regresar? Se perderán todos los datos");
-		if (option == JOptionPane.YES_OPTION) {
+		//int option = JOptionPane.showConfirmDialog(view, "¿Seguro que deseas regresar? Se perderán todos los datos");
+		//if (option == JOptionPane.YES_OPTION) {
 			//new LoginController(new LoginWindow().getLoginView());
 			view.dispose();
-		}
+		//}
 	}
 	private void mostrarUsuarios() {
 		if(usuarioController == null) {

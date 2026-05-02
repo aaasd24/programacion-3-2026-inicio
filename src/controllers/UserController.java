@@ -1,8 +1,11 @@
 package controllers;
 
 import repositorio.RepositorioUsuarios;
+import servicios.PDFExportador;
 import tablamodelos.Tablamodelousuario;
 
+import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -17,10 +20,13 @@ public class UserController {
     private UsuarioView view;
     private RepositorioUsuarios repo;
     private Tablamodelousuario model;
+    private PDFExportador expPDF;
+    
 
     public UserController(UsuarioView view) {
         this.view = view;
         this.repo = new RepositorioUsuarios();
+        this.expPDF = new PDFExportador();
 
         // BOTÓN AGREGAR
         view.getBtnAdd().addActionListener(e -> openForm(null));
@@ -50,6 +56,7 @@ public class UserController {
             }
            
         });
+        view.getBtnExportarPDF().addActionListener(e -> generarPdf());
         
     }
     
@@ -102,4 +109,25 @@ public class UserController {
 
         }
     }
+    
+public void generarPdf() {
+		
+		File file = view.seleccionarPdfFile();
+		
+		if(file == null) {
+			return;
+		}
+		
+		try {
+			expPDF.exportarUsuarios(repo.obtenerUsuarios(), file); 
+			if(Desktop.isDesktopSupported()) {
+				Desktop.getDesktop().open(file);
+			}
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			JOptionPane.showMessageDialog(view, "Error al exportar");
+		}
+		
+		
+	}
 }  
