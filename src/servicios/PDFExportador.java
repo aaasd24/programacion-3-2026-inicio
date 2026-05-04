@@ -46,7 +46,7 @@ public class PDFExportador {
 
 				doc.add(img);
 			}
-			doc.add(new Paragraph("Reporte de Usuarios").setBold().setFontSize(12)
+			doc.add(( new Paragraph("Reporte de Usuarios")).setBold().setFontSize(12)
 					.setTextAlignment(TextAlignment.CENTER));
 
 			doc.add(new Paragraph("").setMarginTop(30));

@@ -32,3 +32,13 @@ public class Main {
 //TODO CAMBIAR PALETA DE COLORES(URGE)//
 //TODO modificar y agregar que en el formulario solo se pueda agregar numeros en la edad y letras en el nombre//
 
+
+
+
+
+
+
+
+
+
+

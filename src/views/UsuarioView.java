@@ -19,7 +19,9 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 
 import assets.AppFonts;
+import assets.Colores;
 import tablamodelos.Tablamodelousuario;
+
 
 @SuppressWarnings("serial")
 public class UsuarioView extends JPanel{
@@ -51,16 +53,19 @@ public class UsuarioView extends JPanel{
         add(panelButtons, BorderLayout.NORTH);
 	}
 	
+
+	
 	/**
 	 * Esta funcion le da el detallismo a la tabla de usuarios. Mas abajo hay indicaciones para que puedas editarla aca chido.
+	 * (con madre we, voy a intentar ver como poner los bordes de fuego en los botones)
 	 */
 	public void estilizarTabla() {
-		//Altura de llas celdas y configuraciones por defecto.
+		//Altura de las celdas y configuraciones por defecto.
 		tabla.setRowHeight(35);
 		
 		tabla.setShowGrid(true);
 		tabla.setGridColor(new Color(230, 230, 230));
-		tabla.setBackground(Color.WHITE);
+		tabla.setBackground(Colores.colorear(1));
 		tabla.setForeground(Color.BLACK);
 		tabla.setFont(AppFonts.normal());
 		
@@ -73,7 +78,7 @@ public class UsuarioView extends JPanel{
 		
 		//Configuracion por defecto de la cabeza de la tabla. TODO cambia color, tamaño y estilo de letra al que más convenga
 		JTableHeader header = tabla.getTableHeader();
-		header.setBackground(new Color(44, 62, 80)); //Color de fondo
+		header.setBackground(Colores.colorear(2)); //Color de fondo
 		header.setForeground(Color.WHITE);			//Color de letra
 		header.setFont(AppFonts.negrita());			//Estilo de letra
 		header.setPreferredSize(new Dimension(0, 40));	//Tamaño de la celda
@@ -93,9 +98,9 @@ public class UsuarioView extends JPanel{
                  */
                 if (!isSelected) {
                     if (row % 2 == 0) {
-                        c.setBackground(Color.WHITE);
+                        c.setBackground(Colores.colorear(1));
                     } else {
-                        c.setBackground(new Color(245, 245, 245));
+                        c.setBackground(Colores.colorear(1));
                     }
 
                     c.setForeground(Color.BLACK);
@@ -109,7 +114,7 @@ public class UsuarioView extends JPanel{
 				if(column == 1) {
 					c.setFont(AppFonts.negrita());
 					if(!isSelected) {
-						c.setForeground(new Color(41, 128, 185));
+						c.setForeground(Color.BLACK);
 					}
 				} else {
 					c.setFont(AppFonts.normal());

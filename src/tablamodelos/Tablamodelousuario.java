@@ -14,7 +14,7 @@ public class Tablamodelousuario extends AbstractTableModel{
 	private final String[] nombreColumnas = {
 			"Nombre",
 			"Correo",
-			"Region"			
+			"Región"			
 	};
 	
 	public Tablamodelousuario(List<Usuario> usuarios) {

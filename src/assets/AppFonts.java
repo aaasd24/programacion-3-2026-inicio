@@ -4,9 +4,10 @@ import java.awt.Font;
 
 public class AppFonts {
 
-	private static Font base;
+	public static Font base;
 	
 	static {
+		
 		try {
 			base = Font.createFont(
 					Font.TRUETYPE_FONT, 
@@ -31,4 +32,6 @@ public class AppFonts {
 		return base.deriveFont(Font.BOLD, 35f);
 	}
 	
+	
 }
+	
