@@ -1,32 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
+	<classpathentry excluding="lib/" kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-21">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="src/assets/flatlaf-3.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/irvin/Downloads/iText-Core-9.6.0-only-jars/barcodes-9.6.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/irvin/Downloads/iText-Core-9.6.0-only-jars/bouncy-castle-adapter-9.6.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/irvin/Downloads/iText-Core-9.6.0-only-jars/bouncy-castle-connector-9.6.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/irvin/Downloads/iText-Core-9.6.0-only-jars/bouncy-castle-fips-adapter-9.6.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/irvin/Downloads/iText-Core-9.6.0-only-jars/brotli-compressor-9.6.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/irvin/Downloads/iText-Core-9.6.0-only-jars/commons-9.6.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/irvin/Downloads/iText-Core-9.6.0-only-jars/font-asian-9.6.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/irvin/Downloads/iText-Core-9.6.0-only-jars/forms-9.6.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/irvin/Downloads/iText-Core-9.6.0-only-jars/hyph-9.6.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/irvin/Downloads/iText-Core-9.6.0-only-jars/io-9.6.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/irvin/Downloads/iText-Core-9.6.0-only-jars/kernel-9.6.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/irvin/Downloads/iText-Core-9.6.0-only-jars/layout-9.6.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/irvin/Downloads/iText-Core-9.6.0-only-jars/pdfa-9.6.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/irvin/Downloads/iText-Core-9.6.0-only-jars/pdftest-9.6.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/irvin/Downloads/iText-Core-9.6.0-only-jars/pdfua-9.6.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/irvin/Downloads/iText-Core-9.6.0-only-jars/sign-9.6.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/irvin/Downloads/iText-Core-9.6.0-only-jars/styled-xml-parser-9.6.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/irvin/Downloads/iText-Core-9.6.0-only-jars/svg-9.6.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/irvin/Downloads/jackson-annotations-2.18.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/irvin/Downloads/jackson-core-2.18.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/irvin/Downloads/jackson-databind-2.18.2.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-annotations-2.17.0.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-core-2.17.0 (1).jar"/>
+	<classpathentry kind="lib" path="lib/jackson-databind-2.17.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
