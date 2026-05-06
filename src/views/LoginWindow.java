@@ -8,8 +8,6 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 
-import com.formdev.flatlaf.FlatLightLaf;
-
 import assets.GestorCursor;
 import assets.AppFonts;
 

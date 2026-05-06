@@ -1,19 +1,19 @@
 [ {
-  "nombre" : "jorge",
-  "correo" : "el@jaja.xd",
-  "contrasenia" : null,
-  "region" : "ALASKA",
-  "genero" : "M",
-  "anio" : "2010",
-  "mes" : "Octubre",
-  "dia" : "23"
-}, {
-  "nombre" : "ella",
+  "nombre" : "elle",
   "correo" : "ella@nose",
   "contrasenia" : null,
   "region" : "PERU",
   "genero" : "F",
   "anio" : "2001",
+  "mes" : "Marzo",
+  "dia" : "4"
+}, {
+  "nombre" : "pedro",
+  "correo" : "pp@jajajajaja.com",
+  "contrasenia" : null,
+  "region" : "POLO SUR",
+  "genero" : "M",
+  "anio" : "-200 AC",
   "mes" : "Marzo",
   "dia" : "4"
 } ]

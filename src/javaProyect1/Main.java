@@ -10,6 +10,7 @@ public class Main {
     	//abrirLogin();
     	abrirMain();
     	//abrirFormulario();
+    	System.out.println("jalando");
     	
     }
     

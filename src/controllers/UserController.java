@@ -110,7 +110,7 @@ public class UserController {
         }
     }
     
-public void generarPdf() {
+    public void generarPdf() {
 		
 		File file = view.seleccionarPdfFile();
 		
@@ -125,7 +125,7 @@ public void generarPdf() {
 			}
 		}catch(Exception ex) {
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(view, "Error al exportar");
+			JOptionPane.showMessageDialog(view, "Error al exportar no soporta el sistema");
 		}
 		
 		
