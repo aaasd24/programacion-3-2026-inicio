@@ -50,7 +50,14 @@ public class RegistrationController {
     //asi evitas que el controlador que se creaba varias veces por error y hacia que el registro se duplicara, se acumulara, osea ahora ya no xd
     public void initListeners() {
         // --- 1. LIMPIAR Y ASIGNAR BOTÓN PRINCIPAL ---
+    	for (ActionListener al : view.getBotonCrear().getActionListeners()) {
+            view.getBotonCrear().removeActionListener(al);
+        }
         view.getBotonCrear().addActionListener(e -> validateForm());
+        
+        for (ActionListener al : view.getBotonCancelar().getActionListeners()) {
+            view.getBotonCancelar().removeActionListener(al);
+        }
         view.getBotonCancelar().addActionListener(e -> {
         	new LoginWindow();
         	view.dispose();
@@ -98,6 +105,9 @@ public class RegistrationController {
         checarSiCompletoCampo(view.getTxtEmail(), view.getLblErrorEmail());
         checarSiCompletoCampo(view.getTxtContra(), view.getLblErrorContrasenia());
         
+        for (ActionListener al : view.getBotonSeleccionarImagen().getActionListeners()) {
+            view.getBotonSeleccionarImagen().removeActionListener(al);
+        }
         view.getBotonSeleccionarImagen().addActionListener(e -> view.elegirImagen());
         
 

@@ -14,6 +14,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import utils.ThemeManager;
+
 import controllers.MainController;
 
 @SuppressWarnings("serial")
@@ -175,6 +177,13 @@ public class MainWindow extends JFrame {
 		salir.setMnemonic(KeyEvent.VK_S);
 		archivo.add(salir);
 		
+		JMenuItem theme = new JMenuItem("Cambiar modo");
+	    theme.addActionListener(e -> {
+	    	ThemeManager.toggle();
+	    });
+	    
+	    
+	    mb.add(theme);
 		otraOpcion= new JMenu("Otra opción");
 		otraOpcion.setMnemonic(KeyEvent.VK_O);
 		mb.add(otraOpcion);
@@ -228,6 +237,12 @@ public class MainWindow extends JFrame {
 	public void mostrarVista(String vista) {
 		cardLayout.show(contenedor, vista);
 	}
+	public void setWindowSize(int width, int height) {
+		setSize(width, height);
+	}
 	
+	public void setWindowLocation(int x, int y) {
+		setLocation(x, y);
+	}
 }
 

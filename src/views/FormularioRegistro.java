@@ -150,7 +150,7 @@ public class FormularioRegistro extends JFrame {
         panel.add(crearCampo("Genero", panelRadio, lblErrorGenero));
         panel.add(crearCampo("Region", comboRegiones, lblErrorRegion));
         
-
+        //Panel de  seleccionar imagen
         botonSeleccionarImagen = new JButton("Seleccionar imagen");
 
 		lblImagenNombre = new JLabel("Ninguna imagen seleccionada");
@@ -161,7 +161,6 @@ public class FormularioRegistro extends JFrame {
 		
 		JPanel imagePanel = new JPanel();
 		imagePanel.setLayout(new BoxLayout(imagePanel, BoxLayout.Y_AXIS));
-
 		botonSeleccionarImagen.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblImagenPrevia.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblImagenNombre.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -172,6 +171,7 @@ public class FormularioRegistro extends JFrame {
 
 		panel.add(crearCampo("Foto:", imagePanel, lblErrorImage));
 		
+		//TODO Panel de los botones, Cehcar los tamaños de los botones
 		
 		JPanel termsPanel = new JPanel();
 		chkAceptoCondiciones = new JCheckBox("He leído los terminos y condiciones");

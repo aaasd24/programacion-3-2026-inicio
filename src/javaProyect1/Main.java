@@ -8,12 +8,13 @@ import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 
 import controllers.LoginController;
+import utils.ThemeManager;
 
 public class Main {
     public static void main(String[] args) {
-    	FlatLightLaf.setup(); 
-    	abrirLogin();
-    	//abrirMain();
+    	ThemeManager.applySavedTheme();
+    	//abrirLogin();
+    	abrirMain();
     	//abrirFormulario();
     	System.out.println("jalando");
     	

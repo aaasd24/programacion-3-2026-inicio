@@ -1,0 +1,21 @@
+[ {
+  "nombre" : "Pedro",
+  "correo" : "kasdf@gasjhd",
+  "contrasenia" : "q3jp029ec",
+  "region" : "LOS ANGELES",
+  "genero" : "H",
+  "anio" : "2004",
+  "mes" : "Abril",
+  "dia" : "23",
+  "imagenPath" : "./images/1c89e35d-dc6a-4735-891b-674c3444106c.png"
+}, {
+  "nombre" : "adfa",
+  "correo" : "as@gdf",
+  "contrasenia" : "asdfg",
+  "region" : "CHINA",
+  "genero" : "H",
+  "anio" : "2013",
+  "mes" : "Septiembre",
+  "dia" : "30",
+  "imagenPath" : "./images/217c2a2e-fbaf-47ef-b3fd-3ce743e4da23.png"
+} ]

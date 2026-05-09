@@ -13,7 +13,11 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 public class RepositorioUsuarios {
 
 	
-	private final String FILE = "src/assets/files/usuarios.json";
+	private final String FILE = "."
+			+ File.separator 
+			+ "data"
+			+ File.separator
+			+ "users.json";
 	
 	
 	private final ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
@@ -27,15 +31,12 @@ public class RepositorioUsuarios {
 		
 		
 	}
-	
-	
-	
-	
+
 	public List<Usuario> obtenerUsuarios() throws IOException{
 		
 		//List<Usuario> usuarios = new ArrayList<Usuario>();
 		File file = new File(FILE);
-		
+		file.getParentFile().mkdirs();
 		if(!file.exists() || file.length() == 0) {
 			return new ArrayList<>();
 			
@@ -46,7 +47,11 @@ public class RepositorioUsuarios {
 		
 	}
 	public void updateAll(List<Usuario> listaUsuarios) throws IOException {
-		 mapper.writeValue(new File(FILE), listaUsuarios);
+		File file = new File(FILE);
+		file.getParentFile().mkdir();
+		
+	    mapper.writeValue(file, listaUsuarios);
+		// mapper.writeValue(new File(FILE), listaUsuarios);
 	}
 	
 	public void delete(int indice) throws IOException {

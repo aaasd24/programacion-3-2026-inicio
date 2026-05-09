@@ -6,7 +6,8 @@
   "genero" : "M",
   "anio" : "2000",
   "mes" : "Marzo",
-  "dia" : "9"
+  "dia" : "9",
+  "imagenPath" : null
 }, {
   "nombre" : "juan",
   "correo" : "juan@yaho.com",
@@ -15,5 +16,16 @@
   "genero" : "H",
   "anio" : "2000",
   "mes" : "Marzo",
-  "dia" : "30"
-} ]
+  "dia" : "30",
+  "imagenPath" : null
+}, {
+  "nombre" : "Jhon",
+  "correo" : "Hjon2@fma",
+  "contrasenia" : "20rasdf",
+  "region" : "MIAMI",
+  "genero" : "H",
+  "anio" : "2005",
+  "mes" : "Abril",
+  "dia" : "11",
+  "imagenPath" : "./images/8402428d-b2a4-4b0b-947f-c5840ceb0665.jpg"
+}]
