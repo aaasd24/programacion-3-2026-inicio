@@ -10,6 +10,7 @@ public class Usuario {
 	private String anio;
 	private String mes;
 	private String dia;
+	private String ImagenPath;
 	
 	public Usuario() {
 		
@@ -21,18 +22,9 @@ public class Usuario {
 		this.contrasenia = contrasenia;
 		
 	}
-	public Usuario(String nombre, String correo, String region, char genero, String anio, String mes, String dia) {
-		this.nombre = nombre;
-		this.correo = correo;
-		this.region = region;
-		this.genero = genero;
-		this.anio = anio;
-		this.mes = mes;
-		this.dia = dia;
-	}
 	
 	
-	public Usuario(String nombre, String correo, String contrasenia, String region, char genero, String anio, String mes, String dia) {
+	public Usuario(String nombre, String correo, String contrasenia, String region, char genero, String anio, String mes, String dia, String ImagenPath) {
 		this.nombre = nombre;
 		this.correo = correo;
 		this.contrasenia = contrasenia;
@@ -41,6 +33,7 @@ public class Usuario {
 		this.anio = anio;
 		this.mes = mes;
 		this.dia = dia;
+		this.ImagenPath = ImagenPath;
 	}
 	/**
 	 * @return el nombre
@@ -86,6 +79,14 @@ public class Usuario {
 	
 	
 	
+	/**
+	 * @return the imagenPath
+	 */
+	public String getImagenPath() {
+		return ImagenPath;
+	}
+
+
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
@@ -110,28 +111,15 @@ public class Usuario {
 	public void setDia(String dia) {
 		this.dia = dia;
 	}
+
+	/**
+	 * @param imagenPath the imagenPath to set
+	 */
+	public void setImagenPath(String imagenPath) {
+		ImagenPath = imagenPath;
+	}
 	public String toCsv() {
 		return nombre + "," + correo + "," + region + "," + genero +  "," + anio + "," + mes + "," + dia;
-	}
-	public static Usuario fromCsv(String datosUsuario) {
-		String[] data = datosUsuario.split(",");
-		String nombre = data[0];
-		//String contrasenia = data[1];
-		String correo = data[1];
-		String region = data[2];
-		String genero = String.valueOf(data[3]);
-		String anio = data[4];
-		String meses = data[5];
-		String dia = data[6];
-		
-		return new Usuario(
-				nombre,
-				correo, region,
-				genero.charAt(0),
-				anio,
-				meses,
-				dia
-				); 
 	}
 
 	

@@ -1,6 +1,7 @@
 package views;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -9,16 +10,20 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import assets.AppFonts;
+import controllers.FormularioUsuarioDialogController;
 import models.Usuario;
 
 @SuppressWarnings("serial")
@@ -27,25 +32,32 @@ public class FormularioUsuarioDialog extends JDialog{
 	private JTextField txtNombre;
     private JTextField txtEmail;
     private JTextField txtAnioNacimiento = new JTextField(20);
+    private JComboBox<String> comboAnios;
     private JComboBox<String> comboMeses;
     private JComboBox<String> comboDias;
     private JComboBox<String> comboRegiones;
     
-
     private JRadioButton rbtnMale;
     private JRadioButton rbtnFemale;
     private ButtonGroup genderGroup;
 
+    private JLabel lblErrorNombre;
+    private JLabel lblErrorEmail;
+    private JLabel lblErrorGenero;
+    private JLabel lblErrorDia;
+    private JLabel lblErrorMes;
+    private JLabel lblErrorAnio;
+    private JLabel lblErrorRegion;
+    
     private JButton btnSave;
     private JButton btnCancel;
 
+    private FormularioUsuarioDialogController controlador;
     private Usuario user;
     private boolean saved = false;
     		
-    public FormularioUsuarioDialog(JFrame parent, Usuario user) {
+    public FormularioUsuarioDialog(JFrame parent) {
     	super(parent, true);
-    	
-    	this.user = user;
     	
     	setSize(400, 600);
         setLocationRelativeTo(parent);
@@ -55,8 +67,10 @@ public class FormularioUsuarioDialog extends JDialog{
         add(createTitlePanel(), BorderLayout.NORTH);
         add(createFormPanel(), BorderLayout.CENTER);
         add(createButtonPanel(), BorderLayout.SOUTH);
-        loadData();
-        btnSave.addActionListener(e -> save());
+        //loadData();
+        //controlador = new FormularioUsuarioDialogController(this );
+        //controlador.inicializarListeners();
+        //btnSave.addActionListener(e -> save());
     }
     
     private JPanel createTitlePanel() {
@@ -66,7 +80,6 @@ public class FormularioUsuarioDialog extends JDialog{
     }
     
     private JPanel createButtonPanel() {
-
         JPanel panel = new JPanel();
 
         btnSave = new JButton("Guardar");
@@ -75,14 +88,21 @@ public class FormularioUsuarioDialog extends JDialog{
         panel.add(btnSave);
         panel.add(btnCancel);
         
-        btnSave.addActionListener(e -> save());
-        btnCancel.addActionListener(e -> dispose());
-        
         return panel;
     }
 
     private JScrollPane createFormPanel() {
 
+    	lblErrorNombre = createErrorLabel(" ");
+        lblErrorEmail = createErrorLabel(" ");
+        lblErrorGenero = createErrorLabel(" ");
+        //lblErrorTerminos = createErrorLabel(" ");
+        lblErrorAnio = createErrorLabel(" ");
+        lblErrorMes = createErrorLabel(" ");
+        lblErrorDia = createErrorLabel(" ");
+        lblErrorRegion = createErrorLabel(" ");
+
+        
     	JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
@@ -96,11 +116,14 @@ public class FormularioUsuarioDialog extends JDialog{
 
 		txtEmail = new JTextField();
 		
-		txtAnioNacimiento = new JTextField();
+		
 		
 		String regiones[] = {"Seleccione", "MEXICO", "PERU", "MIAMI", "LOS ANGELES", "OCEANIA", "JAPON", "CHINA", "INDIA", "ALASKA", "POLO SUR", "LONDRES", "NIGERIA"};
         comboRegiones = new JComboBox<>(regiones);
         comboRegiones.setSelectedIndex(0);
+        
+        String anios[] = {"Seleccione", "2000","2001","2002","2003","2004","2005","2006","2007","2008","2009","2010","2011","2012","2013","2014","2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025","2026",};
+        comboAnios = new JComboBox<>(anios);
 
         String meses[] = {"Seleccione", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
         comboMeses = new JComboBox<>(meses);
@@ -117,26 +140,25 @@ public class FormularioUsuarioDialog extends JDialog{
 		genderGroup = new ButtonGroup();
 		genderGroup.add(rbtnMale);
 		genderGroup.add(rbtnFemale);
-
-
-		panel.add(createField("Nombre:", txtNombre));
-		panel.add(createField("Email:", txtEmail));
-		panel.add(createField("Anio", txtAnioNacimiento));
-		panel.add(createField("Mes:", comboMeses));
-		panel.add(createField("Dia:", comboDias));
-		panel.add(createField("Region:", comboRegiones));
+		
+		panel.add(createField("Nombre:", txtNombre, lblErrorNombre));
+		panel.add(createField("Email:", txtEmail, lblErrorEmail));
+		panel.add(createField("Anio", comboAnios, lblErrorAnio));
+		panel.add(createField("Mes:", comboMeses, lblErrorMes));
+		panel.add(createField("Dia:", comboDias, lblErrorDia));
+		panel.add(createField("Region:", comboRegiones, lblErrorRegion));
 
 		JPanel genderPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		genderPanel.add(rbtnMale);
 		genderPanel.add(rbtnFemale);
 
-		panel.add(createField("Género:", genderPanel));
+		panel.add(createField("Género:", genderPanel, lblErrorGenero));
 
 
 		return scroll;
     }
     		
-    private JPanel createField(String labelText, Component field) {
+    private JPanel createField(String labelText, Component field, Component errorLabel) {
 
 		JPanel panel = new JPanel();
 		panel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
@@ -147,51 +169,46 @@ public class FormularioUsuarioDialog extends JDialog{
 		label.setMaximumSize(new Dimension(Integer.MAX_VALUE, label.getPreferredSize().height));
 		label.setHorizontalAlignment(SwingConstants.LEFT);
 		label.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		errorLabel.setForeground(Color.RED);
+		errorLabel.setMaximumSize(new Dimension(Integer.MAX_VALUE, errorLabel.getPreferredSize().height));
 
 		panel.add(label);
 		panel.add(field);
+		panel.add(errorLabel);
 
 		return panel;
 	}
-    private void loadData() {
-    	if(user != null) {
-    		txtNombre.setText(user.getNombre());
-            txtEmail.setText(user.getCorreo());
-            comboRegiones.setSelectedItem(user.getRegion());
+    
+    private JLabel createErrorLabel(String texto) {
+        JLabel label = new JLabel(texto);
+        label.setFont(AppFonts.small());
+        label.setForeground(Color.RED);
+        label.setHorizontalAlignment(SwingConstants.LEFT);
+        label.setMaximumSize(new Dimension(Integer.MAX_VALUE, label.getPreferredSize().height));
+        return label;
+    }
+    
+    public void mostrarDatos(Usuario usuarioSeleccionado) {
+    	if(usuarioSeleccionado != null) {
+    		txtNombre.setText(usuarioSeleccionado.getNombre());
+            txtEmail.setText(usuarioSeleccionado.getCorreo());
+            comboRegiones.setSelectedItem(usuarioSeleccionado.getRegion());
 
-            if (user.getGenero() == 'M') {
+            if (usuarioSeleccionado.getGenero() == 'M') {
                 rbtnMale.setSelected(true);
             } else {
                 rbtnFemale.setSelected(true);
             }
 
-            txtAnioNacimiento.setText(user.getAnio());
-            comboMeses.setSelectedItem(user.getMes());
-            comboDias.setSelectedItem(user.getDia());
+            comboAnios.setSelectedItem(usuarioSeleccionado.getAnio());
+            comboMeses.setSelectedItem(usuarioSeleccionado.getMes());
+            comboDias.setSelectedItem(usuarioSeleccionado.getDia());
             
     	}
     }
     
-    private void save() {
-    	String nombre = txtNombre.getText();
-    	String correo = txtEmail.getText();
-        String region = (String) comboRegiones.getSelectedItem();
-        String anio = txtAnioNacimiento.getText();
-        String mes = (String) comboMeses.getSelectedItem();
-        String dia = (String) comboDias.getSelectedItem();
-        
-        char genero = rbtnMale.isSelected() ? 'M' : 'F';
-
-        
-        if(user == null) {
-        	this.user = new Usuario(nombre, correo, region, genero, anio, mes, dia);
-        }else {
-        	this.user.setNombre(nombre);
-        	this.user.setCorreo(correo);
-        	this.user.setRegion(region);
-            this.user.setGenero(genero);
-        }
-        
+    public void confirmarGuardado() {
         saved = true;
         dispose();
         
@@ -204,5 +221,43 @@ public class FormularioUsuarioDialog extends JDialog{
     public Usuario getUsuario() {
     	return user;
     }
+    
+    
+    
+ // --- GETTERS PARA EL CONTROLADOR ---
+    public JTextField getTxtNombre() { return txtNombre; }
+    public JTextField getTxtEmail() { return txtEmail; }
+    public JComboBox<String> getComboAnios()	{return comboAnios; }
+    public JComboBox<String> getComboMeses() { return comboMeses; }
+    public JComboBox<String> getComboDias() { return comboDias; }
+    public JComboBox<String> getComboRegiones() { return comboRegiones; }
+    public JRadioButton getRbMujer() { return rbtnFemale; }
+    public JRadioButton getRbHombre() { return rbtnMale; }
+    public JButton getBotonGuardar() { return btnSave; }
+    public JButton getBotonCancelar() { return btnCancel; }
+    
+    public JLabel getLblErrorNombre() { return lblErrorNombre; }
+    public JLabel getLblErrorEmail() { return lblErrorEmail; }
+    public JLabel getLblErrorGenero() { return lblErrorGenero; }
+    public JLabel getLblErrorDia() { return lblErrorDia; }
+    public JLabel getLblErrorMes() { return lblErrorMes; }
+    public JLabel getLblErrorAnio() { return lblErrorAnio; }
+    public JLabel getLblErrorRegion() { return lblErrorRegion; }
+    
+    public String getEmailUsuario() { return txtEmail.getText();}
+    public String getRegion() { return String.valueOf(comboRegiones.getSelectedItem());}
+    public String getAnio() { return String.valueOf(comboAnios.getSelectedItem());}
+    public String getMes() { return String.valueOf(comboMeses.getSelectedItem());}
+    public String getDia() { return String.valueOf(comboDias.getSelectedItem()); }
+    public char getGenero() { 
+    	if(rbtnMale.isSelected()) {
+    		return 'H';
+    	}
+    	if(rbtnFemale.isSelected()) {
+    		return 'M';
+    	}
+    	return 'n'; 
+    }
+
 
 }

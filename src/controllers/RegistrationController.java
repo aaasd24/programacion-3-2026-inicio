@@ -1,7 +1,8 @@
 package controllers;
 
 import views.FormularioRegistro;
- import views.MainWindow; 
+import views.LoginWindow;
+import views.MainWindow; 
 
 import java.awt.Color;
 import java.awt.event.FocusAdapter;
@@ -10,7 +11,13 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.UUID;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -18,6 +25,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
 
 import models.Usuario;
 import repositorio.RepositorioUsuarios;
@@ -42,10 +50,12 @@ public class RegistrationController {
     //asi evitas que el controlador que se creaba varias veces por error y hacia que el registro se duplicara, se acumulara, osea ahora ya no xd
     public void initListeners() {
         // --- 1. LIMPIAR Y ASIGNAR BOTÓN PRINCIPAL ---
-        for (ActionListener al : view.getBoton().getActionListeners()) {
-            view.getBoton().removeActionListener(al);
-        }
-        view.getBoton().addActionListener(e -> validateForm());
+        view.getBotonCrear().addActionListener(e -> validateForm());
+        view.getBotonCancelar().addActionListener(e -> {
+        	new LoginWindow();
+        	view.dispose();
+        	
+        });
 
         // --- 2. LIMPIAR Y ASIGNAR COMBOBOXES ---
         // ------Regiones---------
@@ -60,6 +70,11 @@ public class RegistrationController {
         view.getRbHombre().addActionListener(e -> validateGender());
         view.getRbMujer().addActionListener(e -> validateGender());
 
+        //----- Anios -------
+        for (ActionListener al : view.getComboAnios().getActionListeners()) {
+            view.getComboAnios().removeActionListener(al);
+        }
+        view.getComboAnios().addActionListener(e -> validateAnio());
         //----- Meses-------
         for (ActionListener al : view.getComboMeses().getActionListeners()) {
             view.getComboMeses().removeActionListener(al);
@@ -81,8 +96,10 @@ public class RegistrationController {
         // --------VALIDACIONES EN TIEMPO REAL (TEXTFIELDS) --------
         checarSiCompletoCampo(view.getTxtNombre(), view.getLblErrorNombre());
         checarSiCompletoCampo(view.getTxtEmail(), view.getLblErrorEmail());
-        checarSiCompletoCampo(view.getTxtAnioNacimiento(), view.getLblErrorAnio());
         checarSiCompletoCampo(view.getTxtContra(), view.getLblErrorContrasenia());
+        
+        view.getBotonSeleccionarImagen().addActionListener(e -> view.elegirImagen());
+        
 
         // -------LIMPIAR Y ASIGNAR EVENTOS DE VENTANA -------
         for (WindowListener wl : view.getWindowListeners()) {
@@ -126,7 +143,7 @@ public class RegistrationController {
     }
     
     private void validateForm() {
-    	view.getBoton().setEnabled(false); // Deshabilitar temporalmente(prueba para ver si con esto se dejan de duplicar los usuarios)(no era esto)
+    	view.getBotonCrear().setEnabled(false); // Deshabilitar temporalmente(prueba para ver si con esto se dejan de duplicar los usuarios)(no era esto)
         boolean valid = true;
 
         
@@ -139,17 +156,19 @@ public class RegistrationController {
         if (!validateGender()) valid = false;
         if (!validateTerms()) valid = false;
         if (!validateContrasenia()) valid = false;
+        if (!validateImage()) valid = false;
 
         if (valid) {
             pasarAMenu();
+            
         } else {
-            view.getBoton().setEnabled(true); 
+            view.getBotonCrear().setEnabled(true); 
         }
     }
 
     private void pasarAMenu() {
-    	view.getBoton().setEnabled(false);
-    	
+    	view.getBotonCrear().setEnabled(false);
+    	String imagePathString = salvarImagen();
     	Usuario usuarioNuevo = new Usuario(
     			view.getNombreUsuario(), 
     			view.getEmailUsuario(),
@@ -158,7 +177,8 @@ public class RegistrationController {
     			view.getGenero(),
     			view.getAnio(),
     			view.getMes(),
-    			view.getDia()
+    			view.getDia(),
+    			imagePathString
     	);
     	
     	guardarNuevoUsuario(usuarioNuevo);
@@ -216,8 +236,8 @@ public class RegistrationController {
     }
     
     private boolean validateAnio() {
-        if (view.getTxtAnioNacimiento().getText().trim().isEmpty()) {
-            view.getLblErrorAnio().setText("El año es obligatorio");
+    	if (view.getComboAnios().getSelectedIndex() == 0) {
+            view.getLblErrorAnio().setText("Seleccione un año");
             return false;
         }
         view.getLblErrorAnio().setText(" ");
@@ -287,5 +307,47 @@ public class RegistrationController {
         }
         view.getLblErrorTerminos().setText(" ");
         return true;
+    }
+    private boolean validateImage(){
+	    if(view.getSelectedImagePath() == null){
+	        view.getLblErrorImagen().setText("Selecciona una imagen");
+	        return false;
+	    }
+
+	    view.getLblErrorImagen().setText(" ");
+	    return true;
+	}
+    
+    private String salvarImagen() {
+    	try {
+    		String original = view.getSelectedImagePath();
+    		
+    		if(original == null)
+    			return null;
+    		
+    		File source = new File(original);
+    		
+    		String extension = original.substring(original.lastIndexOf("."));
+    		
+    		String newName = UUID.randomUUID() + extension;
+    		
+    		String folder = "." + File.separator + "images";
+    		
+    		File directory = new File(folder);
+    		
+    		if(!directory.exists()) {
+    			directory.mkdir();
+    		}
+    		
+    		Path destination = Paths.get(folder, newName);
+    		
+    		Files.copy(source.toPath(), destination, StandardCopyOption.REPLACE_EXISTING);
+    		
+    		return destination.toString();
+    		
+    	}catch(Exception ex) {
+    		ex.printStackTrace();
+    		return null;
+    	}
     }
 }

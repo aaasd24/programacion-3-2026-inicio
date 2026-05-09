@@ -21,6 +21,7 @@ import javax.swing.table.JTableHeader;
 import assets.AppFonts;
 import assets.Colores;
 import tablamodelos.Tablamodelousuario;
+import utils.Config;
 
 
 @SuppressWarnings("serial")
@@ -132,7 +133,8 @@ public class UsuarioView extends JPanel{
 	
 	public File seleccionarPdfFile() {
 		
-		String path = System.getProperty("user.home");
+		//String path = System.getProperty("user.home");
+		String path = Config.get("users.export.pdf", System.getProperty("user.home"));
 		JFileChooser chooser = new JFileChooser(path);
 		
 		chooser.setSelectedFile(new File("reporte-usuarios.pdf"));
@@ -151,7 +153,7 @@ public class UsuarioView extends JPanel{
 		}
 		
 		File file = chooser.getSelectedFile();
-		
+		Config.set("users.export.pdf", file.getParent());
 		if(!file.getName().toLowerCase().endsWith(".pdf")) {
 			file = new File(file.getAbsolutePath() + ".pdf");
 		}

@@ -83,11 +83,12 @@ public class UserController {
     	
         // null para el parent, user para saber si es edición o nuevo
     	System.out.println("Creando nuevo usuario");
-        FormularioUsuarioDialog dialog = new FormularioUsuarioDialog(null, user);
+        FormularioUsuarioDialog dialog = new FormularioUsuarioDialog(null);
+        FormularioUsuarioDialogController dialogControlador = new FormularioUsuarioDialogController(dialog, user);
         dialog.setVisible(true);
-
+        dialogControlador.inicializarListeners();
         if (dialog.isSaved()) {
-            Usuario savedUser = dialog.getUsuario(); 
+            Usuario savedUser = dialogControlador.getUsuario(); 
 
             try {
                 if (user == null) { //usuario nuevo
