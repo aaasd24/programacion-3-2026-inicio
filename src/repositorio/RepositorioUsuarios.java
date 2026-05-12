@@ -5,6 +5,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
 import models.Usuario;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -64,5 +67,10 @@ public class RepositorioUsuarios {
 		List<Usuario> usuarios = obtenerUsuarios();
 		usuarios.set(index, updatedUser);
 		updateAll(usuarios);
+	}
+
+	public Usuario login(JTextField campoEmail, JPasswordField campoContrasenia) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

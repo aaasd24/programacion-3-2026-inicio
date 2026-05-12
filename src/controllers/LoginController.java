@@ -38,7 +38,7 @@ public class LoginController {
 	}
 	
 	/**
-	 * fncuion para agregar las listener a todos los campos y botones
+	 * funcion para agregar las listener a todos los campos y botones
 	 * Y asigna la funcion que realizaran
 	 */
 	private void registrerListener() {
