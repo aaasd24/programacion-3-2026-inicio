@@ -405,9 +405,10 @@ public class LoginView extends JPanel{
 
 
 	/**
+	 * @param string 
 	 * @return the labelErrorContrasenia
 	 */
-	public JLabel getLabelErrorContrasenia() {
+	public JLabel getLabelErrorContrasenia(String string) {
 		return labelErrorContrasenia;
 	}
 
@@ -424,5 +425,8 @@ public class LoginView extends JPanel{
 	public JButton getBotonLogin() {
 		return botonLogin;
 	}
+
+
+	
 
 }

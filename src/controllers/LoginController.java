@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import exception.InvalidPasswordException;
 import exception.InvalidUserException;
 import models.Usuario;
+import repositorio.LoginRepository;
 import views.FormularioRegistro;
 //import exceptions.InvalidPasswordException;
 //import exceptions.InvalidUserException;
@@ -22,12 +23,16 @@ import views.MainWindow;
 public class LoginController {
 	
 	//Atributos
+	private LoginRepository repositorio;
+	
+	
 	private LoginView view;
 	/**
 	 * Constructor de View
 	 * @param view
 	 */
 	public LoginController(LoginView view) {
+		repositorio = new LoginRepository();
 		this.view = view;
 		registrerListener();
 	}
@@ -126,24 +131,25 @@ public class LoginController {
 	 * Si es asi pasa a la ventana principal
 	 * Sino Lanza un erro de excepcion 
 	 */
-	private void pasarLogin() {
-		Usuario usuarioPresente = new Usuario("Juan", "tu@gmail.com", "Contra123");	
-		try {
-			if(validarLogin(usuarioPresente)) {
-				JOptionPane.showMessageDialog(
-					view.getVentana(),
-					"Se inició la sesión",
-					"Sesion iniciada",
-					JOptionPane.INFORMATION_MESSAGE
-				);
-				new MainWindow();
-				view.getVentana().dispose();
-			}
-		} catch (InvalidUserException | InvalidPasswordException e) {
-			mostrarErrorEmail("Credenciales incorrectas");
-			mostrarErrorContrasenia("Credenciales incorrectas");
+	private void pasarLogin() {	
+		
+		if(!validarLogin(new Usuario(view.getCampoEmail(), view.getCampoContrasenia()))){
+			return;
 		}
+	
+	 Usuario usuarios = repositorio.login(view.getCampoEmail(), view.getCampoContrasenia());
+	 if(usuarios == null) {
+			view.showPasswordError("Credenciales incorrectas");
+			return;
+		}
+		
+		JOptionPane.showMessageDialog(view.getVentana(),  "Se inició la sesión", "Sesión iniciada", JOptionPane.INFORMATION_MESSAGE);
+		new HomeController(new MainWindow());
+		
+		view.getVentana().dispose();
+		
 	}
+	 
 	
 	/**
 	 * Metodo para confirmar cerrar ventana, Si presiona la opcion si, se cierra
@@ -217,7 +223,7 @@ public class LoginController {
 	 * @throws InvalidUserException
 	 * @throws InvalidPasswordException
 	 */
-	private boolean validarLogin(Usuario usuario) throws InvalidUserException, InvalidPasswordException{
+	private boolean validarLogin(Usuario usuario){
 		boolean validado = false;
 		resetearMensajesError();
 		if(!validarLLenadoEmail()) {
@@ -225,12 +231,6 @@ public class LoginController {
 		}
 		if(!validarLLenadoContrasenia()) {	
 			validado = false;
-		}
-		if(!view.getCampoEmail().getText().equals(usuario.getCorreo()) && validarLLenadoEmail()) {
-			throw new InvalidUserException("Correo de usuario incompleto");
-		}
-		if(!String.valueOf(view.getCampoContrasenia().getPassword()).trim().equals(usuario.getContrasenia()) && validarLLenadoContrasenia()) {
-			throw new InvalidPasswordException("Contrasenia erronea");
 		}
 			
 		if(validarLLenadoContrasenia() && validarLLenadoEmail()){

@@ -1,7 +1,11 @@
 package models;
 
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
 public class Usuario {
 
+	private int id;
 	private String nombre;
 	private String correo;
 	private String contrasenia;
@@ -14,6 +18,11 @@ public class Usuario {
 	
 	public Usuario() {
 		
+	}
+	public Usuario(int id, String correo, String contrasenia) {
+		this.id = id;
+		this.correo = correo;
+		this.contrasenia = contrasenia;
 	}
 	
 	public Usuario(String nombre, String correo, String contrasenia) {
@@ -35,6 +44,31 @@ public class Usuario {
 		this.dia = dia;
 		this.ImagenPath = ImagenPath;
 	}
+	public Usuario(JTextField campoEmail, JPasswordField campoContrasenia) {
+		
+	}
+	
+	public Usuario(int id, String nombre, String correo, String contrasenia, String region, char genero, String anio, String mes, String dia, String ImagenPath) {
+		this.id = id;
+		this.nombre = nombre;
+		this.correo = correo;
+		this.contrasenia = contrasenia;
+		this.region = region;
+		this.genero = genero;
+		this.anio = anio;
+		this.mes = mes;
+		this.dia = dia;
+		this.ImagenPath = ImagenPath;
+	}
+	
+	public int getId() {
+		return id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	/**
 	 * @return el nombre
 	 */

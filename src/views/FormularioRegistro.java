@@ -31,8 +31,8 @@ import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import assets.GestorCursor;
+import config.Config;
 import controllers.RegistrationController;
-import utils.Config;
 import assets.AppFonts;
 
 

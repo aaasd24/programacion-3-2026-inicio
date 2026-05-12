@@ -20,8 +20,8 @@ import javax.swing.table.JTableHeader;
 
 import assets.AppFonts;
 import assets.Colores;
+import config.Config;
 import tablamodelos.Tablamodelousuario;
-import utils.Config;
 
 
 @SuppressWarnings("serial")

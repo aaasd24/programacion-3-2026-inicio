@@ -8,7 +8,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
-import utils.Config;
+import config.Config;
 import views.MainWindow;
 
 public class MainController {

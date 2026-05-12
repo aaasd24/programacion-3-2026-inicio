@@ -8,14 +8,4 @@
   "mes" : "Abril",
   "dia" : "23",
   "imagenPath" : "./images/1c89e35d-dc6a-4735-891b-674c3444106c.png"
-}, {
-  "nombre" : "asdf",
-  "correo" : "asdf@gasd",
-  "contrasenia" : "ñoshadjafjhkd",
-  "region" : "NIGERIA",
-  "genero" : "H",
-  "anio" : "2000",
-  "mes" : "Octubre",
-  "dia" : "8",
-  "imagenPath" : "./images/7756cf46-ee3e-48a8-b8a2-b2897b4964ef.png"
 } ]
