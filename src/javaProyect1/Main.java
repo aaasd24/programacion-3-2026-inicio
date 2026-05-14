@@ -13,8 +13,8 @@ import utils.ThemeManager;
 public class Main {
     public static void main(String[] args) {
     	ThemeManager.applySavedTheme();
-    	//abrirLogin();
-    	abrirMain();
+    	abrirLogin();
+    	//abrirMain();
     	//abrirFormulario();
     	System.out.println("jalando");
     	
