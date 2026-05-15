@@ -122,6 +122,7 @@ public class LoginView extends JPanel{
 		 * Se declara Panel donde se agrega todos los componentes
 		 */
 		JPanel panel = new JPanel();
+		panel.setOpaque(false);
 		
 		/*
 		 * Se declara:
@@ -167,6 +168,7 @@ public class LoginView extends JPanel{
 		panel.add(label);
 		panel.add(componenteDelLabel);
 		panel.add(labelTextoDelError);
+		panel.setOpaque(false);
 		
 		//Devuelve el panel
 		return panel;
@@ -213,6 +215,7 @@ public class LoginView extends JPanel{
 		 * Se Crea un panel
 		 */
 		JPanel panel = new JPanel();
+		botonLogin.setOpaque(false);		
 		/**
 		 * Se declara la Alineacion en x de manera central
 		 * Se declara el tamaño macimo de 350 de ancho y 60 de alto
@@ -224,11 +227,12 @@ public class LoginView extends JPanel{
 		/**
 		 *Se declara el boton 
 		 */
-		botonLogin.setText(texto1);
+		//botonLogin.setText(texto1);
 		
-		//TODO esto si cambia de color?????????
-		cambiarFondo(botonLogin,Colores.colorear(1));
-		
+		botonLogin.setBorderPainted(false);
+	    botonLogin.setContentAreaFilled(false);
+	    botonLogin.setFocusPainted(false);
+	    botonLogin.setPreferredSize(new Dimension(200, 50));
 		
 		
 		/**
@@ -252,7 +256,7 @@ public class LoginView extends JPanel{
 		 * Utiliza trycatch, intenta conseguir la imagen del directorio y lo agrga al panel
 		 * Sino arroja una excepcion e imprime que no existe imagen
 		 */
-		try {
+		/*try {
 	        Image img = ImageIO.read(getClass().getResource("../assets/SteakGames.png"));
 	        Image imgEscalada = img.getScaledInstance(250, 250, Image.SCALE_SMOOTH);
 	        JLabel labelLogo = new JLabel(new ImageIcon(imgEscalada)); 
@@ -260,7 +264,7 @@ public class LoginView extends JPanel{
 	        
 	    } catch (Exception ex) {
 	        System.out.println("No se encuentra la imagen");
-	    }
+	    }*/
 		return panel;
 	}
 	
@@ -274,6 +278,7 @@ public class LoginView extends JPanel{
 		 * Crea Panel
 		 */
 		JPanel panel = new JPanel();
+		panel.setOpaque(false);
 		
 		/*
 		 * Asigna al panel:
@@ -295,6 +300,7 @@ public class LoginView extends JPanel{
 		 */
 		panel.add(crearField("Usuario", campoEmail, labelErrorNombreEmail));
 		panel.add(crearField("Constraseña", campoContrasenia, labelErrorContrasenia));
+		botonLogin.setPreferredSize(new Dimension(200, 50));
 		panel.add(crearPanelBoton("Iniciar Sesión"));
 		panel.add(crearRegistro());
 		
@@ -311,8 +317,9 @@ public class LoginView extends JPanel{
 		 * Se crea un panel
 		 */
 		JPanel panel = new JPanel();
+		panel.setOpaque(false);
 		//Define el color del fondeo del label
-		panel.setBackground(Colores.colorear(1));
+		//panel.setBackground(Colores.colorear(1));
 		/*
 		 * Establece al label la capacidad de cambiar el cursor(por el tenerdor con carnte) y que tenga un listener para cambiar de color
 		 */
@@ -349,8 +356,8 @@ public class LoginView extends JPanel{
 	 *Funciona para cambiar el color de componente 
 	 */
 	private void cambiarFondo(JComponent c, Color color) {
-		setBackground(color);
-		setForeground(color);
+		c.setBackground(color);
+		c.setForeground(color);
 		
 	}
 	//---------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -426,7 +433,26 @@ public class LoginView extends JPanel{
 		return botonLogin;
 	}
 
-
+	@Override
+	protected void paintComponent(java.awt.Graphics g) {
+	    super.paintComponent(g); 
+	    
+	    try {
+	    
+	        Image fondo = ImageIO.read(getClass().getResource("../assets/photoshop_del_login.jpg"));
+	        
+	        
+	        g.drawImage(fondo, 0, 0, getWidth(), getHeight(), this);
+	        
+	        
+	        g.setColor(new Color(0, 0, 0, 100)); 
+	        g.fillRect(0, 0, getWidth(), getHeight());
+	        
+	    } catch (Exception e) {
+	       
+	        System.out.println("no se encuentra la imagen");
+	    }
+	}
 	
 
 }
