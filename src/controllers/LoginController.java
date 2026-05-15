@@ -137,14 +137,15 @@ public class LoginController {
 			return;
 		}
 	
-	 Usuario usuarios = repositorio.login(view.getCampoEmail(), view.getCampoContrasenia());
+	 Usuario usuarios = repositorio.login(view.getCampoEmail().getText(), String.valueOf(view.getCampoContrasenia().getPassword()));
 	 if(usuarios == null) {
-			view.showPasswordError("Credenciales incorrectas");
+			mostrarErrorEmail("Credenciales invalidas");
+			mostrarErrorContrasenia("Credenciales invalidas");
 			return;
 		}
 		
 		JOptionPane.showMessageDialog(view.getVentana(),  "Se inició la sesión", "Sesión iniciada", JOptionPane.INFORMATION_MESSAGE);
-		new HomeController(new MainWindow());
+		new MainController(new MainWindow());
 		
 		view.getVentana().dispose();
 		
