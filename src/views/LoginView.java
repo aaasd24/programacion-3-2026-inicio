@@ -425,6 +425,10 @@ public class LoginView extends JPanel{
 	public JButton getBotonLogin() {
 		return botonLogin;
 	}
+	
+	public String getContrasenia() {
+		return String.valueOf(getCampoContrasenia().getPassword());
+	}
 
 
 	

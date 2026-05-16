@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.sql.SQLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
@@ -144,10 +145,10 @@ public class RegistrationController {
         
     }
 
-    private void guardarNuevoUsuario(Usuario usuarioNuevo) {
+    private void guardarNuevoUsuario(Usuario usuarioNuevo) throws SQLException {
     	try {
     		repositorio.guardarUsuario(usuarioNuevo);
-    	}catch(IOException ex) {
+    	}catch(SQLException ex) {
     		JOptionPane.showMessageDialog(view,"Error al guardar: " + ex.getMessage());
     	}
     }
@@ -182,23 +183,30 @@ public class RegistrationController {
     	Usuario usuarioNuevo = new Usuario(
     			view.getNombreUsuario(), 
     			view.getEmailUsuario(),
-    			view.getPasswordusuario(), 
-    			view.getRegion(), 
+    			view.getRegionID(), 
     			view.getGenero(),
     			view.getAnio(),
     			view.getMes(),
     			view.getDia(),
-    			imagePathString
+    			imagePathString,
+    			view.getRol()
     	);
     	
-    	guardarNuevoUsuario(usuarioNuevo);
-        JOptionPane.showMessageDialog(
-            view,
-            "Se inició la sesión",
-            "Sesion iniciada",
-            JOptionPane.INFORMATION_MESSAGE
-        );
-        new MainWindow(); 
+    	try {
+			guardarNuevoUsuario(usuarioNuevo);
+			
+		        
+		        
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	JOptionPane.showMessageDialog(
+	            view,
+	            "Se inició la sesión",
+	            "Sesion iniciada",
+	            JOptionPane.INFORMATION_MESSAGE
+	        );
+    	new MainWindow(); 
         view.dispose();
     }
 

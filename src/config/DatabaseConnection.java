@@ -27,10 +27,13 @@ public class DatabaseConnection {
 				Class.forName(driver);
 				
 				connection = DriverManager.getConnection(url, usuario, contraseña);
+				System.out.println("Conexion completada");
 			}
 			
 		} catch(Exception e) {
+			System.out.println("Erro en la conexion con la base de datos");
 			e.printStackTrace();
+			
 		}
 		
 		return connection;

@@ -13,6 +13,7 @@ import exception.InvalidPasswordException;
 import exception.InvalidUserException;
 import models.Usuario;
 import repositorio.LoginRepository;
+import utils.Session;
 import views.FormularioRegistro;
 //import exceptions.InvalidPasswordException;
 //import exceptions.InvalidUserException;
@@ -133,21 +134,27 @@ public class LoginController {
 	 */
 	private void pasarLogin() {	
 		
-		if(!validarLogin(new Usuario(view.getCampoEmail(), view.getCampoContrasenia()))){
+		if(!validarLogin(new Usuario(view.getCampoEmail().getText(), view.getContrasenia()))){
 			return;
 		}
 	
-	 Usuario usuarios = repositorio.login(view.getCampoEmail().getText(), String.valueOf(view.getCampoContrasenia().getPassword()));
-	 if(usuarios == null) {
+	 Usuario usuario = repositorio.login(view.getCampoEmail().getText(), view.getContrasenia());
+	 if(usuario == null) {
 			mostrarErrorEmail("Credenciales invalidas");
 			mostrarErrorContrasenia("Credenciales invalidas");
 			return;
 		}
+	 
+	 Session.login(usuario);
+	 JOptionPane.showMessageDialog(view.getVentana(),  "Se inició la sesión", "Sesión iniciada", JOptionPane.INFORMATION_MESSAGE);
+	 if(Session.getRolUsuario().equals("ADMIN")) {
+		 new MainController(new MainWindow()); 
+	 }else {
+		 JOptionPane.showMessageDialog(view.getVentana(), "No tienes permisos");
+	 }
+	 
 		
-		JOptionPane.showMessageDialog(view.getVentana(),  "Se inició la sesión", "Sesión iniciada", JOptionPane.INFORMATION_MESSAGE);
-		new MainController(new MainWindow());
-		
-		view.getVentana().dispose();
+	 view.getVentana().dispose();
 		
 	}
 	 

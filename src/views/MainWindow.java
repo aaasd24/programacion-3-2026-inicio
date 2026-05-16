@@ -52,15 +52,11 @@ public class MainWindow extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setMenu();
 		JPanel panel = new JPanel();
-		JPanel panelBoton = new JPanel();
 		panel.setLayout(new BorderLayout());
 		add(panel);
 		
 		crearBarraNav();
 		crearVistas();
-		//botonVerUsuario = new JButton("Ver usuarios");
-		//panelBoton.add(botonVerUsuario, BorderLayout.CENTER);
-		//panel.add(panelBoton);
 		
 		MainController mainControl = new MainController(this);
 		mainControl.registerListeners();
