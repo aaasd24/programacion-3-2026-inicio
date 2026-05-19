@@ -13,7 +13,6 @@ import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -43,10 +42,11 @@ public class FormularioRegistro extends JFrame {
     JPanel panelComponentes = new JPanel(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
     
+    private static String USER = "USUARIO"; 
     private JTextField txtNombre = new JTextField(20);
     private JTextField txtEmail = new JTextField(20);
     private JPasswordField txtContra = new JPasswordField(20);
-    private JLabel lblTituloFecha;
+    //private String rol;
     
     private JComboBox<String> comboAnios;
     private JComboBox<String> comboMeses;
@@ -55,7 +55,6 @@ public class FormularioRegistro extends JFrame {
     private JPanel panelRadio; 
     private JRadioButton rbMujer;
     private JRadioButton rbHombre;
-    private ButtonGroup bgSexo;
     
     private JComboBox<String> comboRegiones; 
     
@@ -69,7 +68,7 @@ public class FormularioRegistro extends JFrame {
     private JButton botonCrear;
     private JButton botonCancelar;
     
-    private JScrollPane scroll;
+    //private JScrollPane scroll;
     
     private JLabel lblErrorNombre;
     private JLabel lblErrorEmail;
@@ -310,6 +309,7 @@ public class FormularioRegistro extends JFrame {
     public String getEmailUsuario() { return txtEmail.getText();}
     public String getPasswordusuario() { return  String.valueOf(txtContra.getPassword()); }
     public String getRegion() { return String.valueOf(comboRegiones.getSelectedItem());}
+    public int getRegionID() { return  comboRegiones.getSelectedIndex(); }
     public String getAnio() { return String.valueOf(comboAnios.getSelectedItem());}
     public String getMes() { return String.valueOf(comboMeses.getSelectedItem());}
     public String getDia() { return String.valueOf(comboDias.getSelectedItem()); }
@@ -323,5 +323,7 @@ public class FormularioRegistro extends JFrame {
     	return 'n';
     }
     public String getSelectedImagePath() { return selectedImagePath;    }
+
+	public String getRol() {return USER;}
     
 }

@@ -1,7 +1,5 @@
 package models;
 
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
 
 public class Usuario {
 
@@ -9,12 +7,13 @@ public class Usuario {
 	private String nombre;
 	private String correo;
 	private String contrasenia;
-	private String region;
+	private int idregion;
 	private char genero;
 	private String anio;
 	private String mes;
 	private String dia;
 	private String ImagenPath;
+	private String rol;
 	
 	public Usuario() {
 		
@@ -24,41 +23,37 @@ public class Usuario {
 		this.correo = correo;
 		this.contrasenia = contrasenia;
 	}
-	
-	public Usuario(String nombre, String correo, String contrasenia) {
-		this.nombre = nombre;
+	public Usuario(String correo, String contrasenia) {
 		this.correo = correo;
 		this.contrasenia = contrasenia;
-		
 	}
+
 	
 	
-	public Usuario(String nombre, String correo, String contrasenia, String region, char genero, String anio, String mes, String dia, String ImagenPath) {
+	public Usuario(String nombre, String correo, int idregion, char genero, String anio, String mes, String dia, String ImagenPath, String rol) {
 		this.nombre = nombre;
 		this.correo = correo;
-		this.contrasenia = contrasenia;
-		this.region = region;
+		this.idregion = idregion;
 		this.genero = genero;
 		this.anio = anio;
 		this.mes = mes;
 		this.dia = dia;
 		this.ImagenPath = ImagenPath;
-	}
-	public Usuario(JTextField campoEmail, JPasswordField campoContrasenia) {
-		
+		this.rol = rol;
 	}
 	
-	public Usuario(int id, String nombre, String correo, String contrasenia, String region, char genero, String anio, String mes, String dia, String ImagenPath) {
+	
+	public Usuario(int id, String nombre, String correo, int idregion, char genero, String anio, String mes, String dia, String ImagenPath, String rol) {
 		this.id = id;
 		this.nombre = nombre;
 		this.correo = correo;
-		this.contrasenia = contrasenia;
-		this.region = region;
+		this.idregion = idregion;
 		this.genero = genero;
 		this.anio = anio;
 		this.mes = mes;
 		this.dia = dia;
 		this.ImagenPath = ImagenPath;
+		this.rol = rol;
 	}
 	
 	public int getId() {
@@ -90,8 +85,38 @@ public class Usuario {
 	/**
 	 * @return el pais
 	 */
-	public String getRegion() {
-		return region;
+	public int getRegionID() {
+		return idregion;
+	}
+	public String getRegionString() {
+		switch(idregion) {
+		case 1:
+			return "MEXICO";
+		case 2:
+			return "PERO";
+		case 3:
+			return "MAIMI";
+		case 4:
+			return "LOSANGELES";
+		case 5:
+			return "OCEANIA";
+		case 6:
+			return "JAPON";
+		case 7:
+			return "CHINA";
+		case 8:
+			return "INDIA";
+		case 9:
+			return "ALASKA";
+		case 10:
+			return "POLO SUR";
+		case 11:
+			return "LONDRES";
+		case 12:
+			return "NIGERIA";
+		}
+		return null;
+				
 	}
 	public char getGenero() {
 		return genero;
@@ -109,7 +134,9 @@ public class Usuario {
 	public String getDia() {
 		return dia;
 	}
-	
+	public String getRol() {
+		return rol;
+	}
 	
 	
 	
@@ -121,30 +148,15 @@ public class Usuario {
 	}
 
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-	public void setCorreo(String correo) {
-		this.correo = correo;
-	}
-	public void setContrasenia(String contrasenia) {
-		this.contrasenia = contrasenia;
-	}
-	public void setGenero(char genero) {
-		this.genero = genero;
-	}
-	public void setRegion(String region) {
-		this.region = region;
-	}
-	public void setAnio(String anio) {
-		this.anio = anio;
-	}
-	public void setMes(String mes) {
-		this.mes = mes;
-	}
-	public void setDia(String dia) {
-		this.dia = dia;
-	}
+	public void setNombre(String nombre) {this.nombre = nombre;}
+	public void setCorreo(String correo) {this.correo = correo;}
+	public void setContrasenia(String contrasenia) {this.contrasenia = contrasenia;}
+	public void setGenero(char genero) {this.genero = genero;}
+	public void setRegionID(int region) {this.idregion = region;}
+	public void setAnio(String anio) {this.anio = anio;}
+	public void setMes(String mes) {this.mes = mes;}
+	public void setDia(String dia) {this.dia = dia;}
+	public void setRol(String rol) {this.rol = rol;}
 
 	/**
 	 * @param imagenPath the imagenPath to set
@@ -153,7 +165,7 @@ public class Usuario {
 		ImagenPath = imagenPath;
 	}
 	public String toCsv() {
-		return nombre + "," + correo + "," + region + "," + genero +  "," + anio + "," + mes + "," + dia;
+		return nombre + "," + correo + "," + idregion + "," + genero +  "," + anio + "," + mes + "," + dia;
 	}
 
 	

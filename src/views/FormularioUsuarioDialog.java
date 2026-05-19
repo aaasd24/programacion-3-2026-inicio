@@ -31,7 +31,7 @@ public class FormularioUsuarioDialog extends JDialog{
 
 	private JTextField txtNombre;
     private JTextField txtEmail;
-    private JTextField txtAnioNacimiento = new JTextField(20);
+    private static String ADMIN = "ADMIN";
     private JComboBox<String> comboAnios;
     private JComboBox<String> comboMeses;
     private JComboBox<String> comboDias;
@@ -52,7 +52,7 @@ public class FormularioUsuarioDialog extends JDialog{
     private JButton btnSave;
     private JButton btnCancel;
 
-    private FormularioUsuarioDialogController controlador;
+    //private FormularioUsuarioDialogController controlador;
     private Usuario user;
     private boolean saved = false;
     		
@@ -193,7 +193,7 @@ public class FormularioUsuarioDialog extends JDialog{
     	if(usuarioSeleccionado != null) {
     		txtNombre.setText(usuarioSeleccionado.getNombre());
             txtEmail.setText(usuarioSeleccionado.getCorreo());
-            comboRegiones.setSelectedItem(usuarioSeleccionado.getRegion());
+            comboRegiones.setSelectedItem(usuarioSeleccionado.getRegionString());
 
             if (usuarioSeleccionado.getGenero() == 'M') {
                 rbtnMale.setSelected(true);
@@ -247,6 +247,7 @@ public class FormularioUsuarioDialog extends JDialog{
     public String getEmailUsuario() { return txtEmail.getText();}
     public String getRegion() { return String.valueOf(comboRegiones.getSelectedItem());}
     public String getAnio() { return String.valueOf(comboAnios.getSelectedItem());}
+    public int getRegionID() { return comboRegiones.getSelectedIndex(); }
     public String getMes() { return String.valueOf(comboMeses.getSelectedItem());}
     public String getDia() { return String.valueOf(comboDias.getSelectedItem()); }
     public char getGenero() { 
@@ -258,6 +259,7 @@ public class FormularioUsuarioDialog extends JDialog{
     	}
     	return 'n'; 
     }
+	public String getRol() {return ADMIN;}
 
 
 }

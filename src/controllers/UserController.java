@@ -7,6 +7,7 @@ import tablamodelos.Tablamodelousuario;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -44,16 +45,10 @@ public class UserController {
         
         // BOTÓN ELIMINAR
         view.getBtnDelete().addActionListener(e -> {
-            int row = view.getSelectedRow();
-            if (row != -1) {
-                try {
-                    repo.delete(row); // Borra del CSV
-                    System.out.println("Se borro  un usuario");
-                    loadUsers();      // Recarga la tabla
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(view, "Error al eliminar: " + ex.getMessage());
-                }
-            }
+			boolean eliminar = repo.delete(model.getUserAt(view.getSelectedRow()).getId());
+			if(eliminar) {
+				model.removeRow(view.getSelectedRow());
+			}
            
         });
         view.getBtnExportarPDF().addActionListener(e -> generarPdf());
@@ -93,13 +88,17 @@ public class UserController {
             try {
                 if (user == null) { //usuario nuevo
                 	System.out.println("Se crea nuevo usuario");
-                    repo.guardarUsuario(savedUser); 
+                    repo.guardarUsuario(savedUser);
+                    model.addRow(savedUser);
                     
                 } else {//actualizar usuario
                 	System.out.println("Se edito un usuario");
                     int row = view.getSelectedRow();
-                    repo.update(row, savedUser);
-                    
+                    //repo.update(row, savedUser);
+                    boolean actualizar = repo.update(row, savedUser);
+                    if(actualizar) {
+                    	model.updateRow(row, savedUser);
+                    }
                 }
                 this.loadUsers();
                 

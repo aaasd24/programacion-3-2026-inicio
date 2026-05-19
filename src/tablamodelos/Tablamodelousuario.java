@@ -46,7 +46,7 @@ public class Tablamodelousuario extends AbstractTableModel{
 		case 1:
 			return usuarioActual.getCorreo();
 		case 2:
-			return usuarioActual.getRegion();
+			return usuarioActual.getRegionString();
 
 		}
 		
@@ -60,6 +60,21 @@ public class Tablamodelousuario extends AbstractTableModel{
 		this.listaUsuarios = usuarios;
 		fireTableDataChanged();
 	}
-	
+	public void removeRow(int row) {
+		listaUsuarios.remove(row);
+		fireTableRowsDeleted(row, row);
+	}
+
+
+	public void addRow(Usuario usuario) {
+		int row = listaUsuarios.size();
+		listaUsuarios.add(usuario);
+		fireTableRowsInserted(row, row);
+	}
+
+	public void updateRow(int row, Usuario usuario) {
+		listaUsuarios.set(row, usuario);
+		fireTableRowsUpdated(row, row);
+	}
 
 }

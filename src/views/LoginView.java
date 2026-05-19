@@ -14,6 +14,7 @@ import java.awt.event.MouseEvent;
 import javax.imageio.ImageIO;
 import assets.Colores;
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -85,13 +86,18 @@ public class LoginView extends JPanel{
 		/*
 		 * Se establese el color del fondo
 		 */
-		setBackground(Colores.colorear(3));
+		setBackground(Colores.colorear(1));
+		
 		
 		/*
 		 * Se declara el tamaño maximo de los campos Email y Contraseñia, el ancho el maximo posible y el alto en el tamaño presente
 		 */
 		campoEmail.setMaximumSize(new Dimension(Integer.MAX_VALUE, campoEmail.getPreferredSize().height));
+		campoEmail.setBackground(new Color(255, 255, 255, 200)); // El 200 le da un toque de transparencia
+		campoEmail.setBorder(BorderFactory.createLineBorder(new Color(255,255,255,50)));
 		campoContrasenia.setMaximumSize(new Dimension(Integer.MAX_VALUE, campoContrasenia.getPreferredSize().height));
+		campoContrasenia.setBackground(new Color(255, 255, 255, 200)); // El 200 le da un toque de transparencia
+		campoContrasenia.setBorder(BorderFactory.createLineBorder(new Color(255,255,255,50)));
 		
 		
 		
@@ -132,7 +138,7 @@ public class LoginView extends JPanel{
 		 * ALineamiento centrado
 		 * Tamaño maximo de 350 de ancho y 70 de alto
 		 */
-		panel.setBackground(Colores.colorear(1));
+		//panel.setBackground(Colores.colorear(1));
 		panel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -152,6 +158,8 @@ public class LoginView extends JPanel{
 		 * Alineamiento en X en el centro
 		 */
 		label.setMaximumSize(new Dimension(Integer.MAX_VALUE, label.getPreferredSize().height));
+		label.setForeground(Color.WHITE);
+		label.setFont(AppFonts.normal());
 		label.setHorizontalAlignment(SwingConstants.LEFT);
 		label.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -215,24 +223,33 @@ public class LoginView extends JPanel{
 		 * Se Crea un panel
 		 */
 		JPanel panel = new JPanel();
-		botonLogin.setOpaque(false);		
+		panel.setOpaque(false);
 		/**
 		 * Se declara la Alineacion en x de manera central
 		 * Se declara el tamaño macimo de 350 de ancho y 60 de alto
 		 */
-		panel.setBackground(Colores.colorear(1));
+		//panel.setBackground(Colores.colorear(1));
 		panel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		panel.setMaximumSize(new Dimension(350, 60));
 		
 		/**
 		 *Se declara el boton 
 		 */
-		//botonLogin.setText(texto1);
+	    botonLogin.setText(texto1);
+	    botonLogin.setFont(AppFonts.normal()); 
+	    botonLogin.setBackground(new Color(45, 45, 45)); // Gris oscuro
+	    botonLogin.setForeground(Color.WHITE);
+	    botonLogin.setOpaque(false);		
+	    botonLogin.setContentAreaFilled(true);
+	    
+	    // Esto es para que se vea el color pero respete la forma redondeada de FlatLaf
+	    botonLogin.putClientProperty("JButton.buttonType", "roundRect");
 		
 		botonLogin.setBorderPainted(false);
-	    botonLogin.setContentAreaFilled(false);
+	   // botonLogin.setContentAreaFilled(false);
 	    botonLogin.setFocusPainted(false);
 	    botonLogin.setPreferredSize(new Dimension(200, 50));
+	    botonLogin.setMaximumSize(new Dimension(200, 50));
 		
 		
 		/**
@@ -287,8 +304,9 @@ public class LoginView extends JPanel{
 		 * El color cafe
 		 */
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.add(Box.createVerticalStrut(180));
 		panel.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
-		panel.setBackground(Colores.colorear(1));
+		//panel.setBackground(Colores.colorear(1));
 		/*
 		 * Se crean correctamente todos los label de Error
 		 */
@@ -298,10 +316,13 @@ public class LoginView extends JPanel{
 		/*
 		 * Se agrega todos los elementos por paneles separados, Uno para Usuario, otro para Contraseña, otro para el boton de registro y otro para un label de registro a nuevo usuario
 		 */
+		panel.add(Box.createVerticalGlue());
 		panel.add(crearField("Usuario", campoEmail, labelErrorNombreEmail));
 		panel.add(crearField("Constraseña", campoContrasenia, labelErrorContrasenia));
 		botonLogin.setPreferredSize(new Dimension(200, 50));
+		panel.add(Box.createVerticalStrut(20));
 		panel.add(crearPanelBoton("Iniciar Sesión"));
+		panel.add(Box.createVerticalGlue());
 		panel.add(crearRegistro());
 		
 		return panel;
@@ -323,6 +344,7 @@ public class LoginView extends JPanel{
 		/*
 		 * Establece al label la capacidad de cambiar el cursor(por el tenerdor con carnte) y que tenga un listener para cambiar de color
 		 */
+		lblRegister.setForeground(Colores.colorear(4));
 		lblRegister.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		lblRegister.addMouseListener(new MouseAdapter() {
 			/**
@@ -344,6 +366,7 @@ public class LoginView extends JPanel{
 		/*
 		 * Agregar el label al panel
 		 */
+		panel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		panel.add(lblRegister);
 		return panel;
 		}
@@ -431,6 +454,10 @@ public class LoginView extends JPanel{
 	 */
 	public JButton getBotonLogin() {
 		return botonLogin;
+	}
+	
+	public String getContrasenia() {
+		return String.valueOf(getCampoContrasenia().getPassword());
 	}
 
 	@Override

@@ -9,7 +9,6 @@ import javax.swing.event.DocumentListener;
 
 import models.Usuario;
 import repositorio.RepositorioUsuarios;
-import views.FormularioRegistro;
 import views.FormularioUsuarioDialog;
 
 public class FormularioUsuarioDialogController {
@@ -49,7 +48,6 @@ public class FormularioUsuarioDialogController {
         view.getBotonCancelar().addActionListener(e -> view.dispose());
 	}
     
-	//TODO temporalmente sera un metodo public
 	public boolean validarFormulario() {
         boolean valid = true;
 
@@ -177,24 +175,27 @@ public class FormularioUsuarioDialogController {
     	
     	String nombre = view.getTxtNombre().getText();
     	String correo = view.getEmailUsuario();
-        String region = (String) view.getRegion();
+        int region = (int) view.getRegionID();
         String anio = view.getAnio();
         String mes =  view.getMes();
         String dia = view.getDia();
+        String rol = "ADMIN";
         
         
         char genero = view.getGenero(); 
         
-        if(usuario == null) {
-        	this.usuario = new Usuario(nombre, correo, dia, region, genero, anio, mes, dia, null);
+        if(usuario == null) { //															NO tiene imagen
+        	this.usuario = new Usuario(nombre, correo, region, genero, anio, mes, dia, null, rol);
         }else {
         	this.usuario.setNombre(nombre);
         	this.usuario.setCorreo(correo);
-        	this.usuario.setRegion(region);
+        	this.usuario.setRegionID(region);
             this.usuario.setGenero(genero);
             this.usuario.setAnio(anio);
             this.usuario.setMes(mes);
             this.usuario.setDia(dia);
+            this.usuario.setRol(rol);
+            
         }
         
         view.confirmarGuardado();

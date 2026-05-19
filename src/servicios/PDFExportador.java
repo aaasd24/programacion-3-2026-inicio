@@ -92,7 +92,7 @@ public class PDFExportador {
 
                 tabla.addCell(new Cell().setTextAlignment(TextAlignment.LEFT).add(new Paragraph(u.getCorreo())));
 
-                tabla.addCell(new Cell().setTextAlignment(TextAlignment.CENTER).add(new Paragraph(u.getRegion())));
+                tabla.addCell(new Cell().setTextAlignment(TextAlignment.CENTER).add(new Paragraph(u.getRegionString())));
 
                 tabla.addCell(new Cell().setTextAlignment(TextAlignment.CENTER).add(new Paragraph(u.getAnio())));
 

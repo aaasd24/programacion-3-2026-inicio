@@ -1,76 +1,130 @@
 package repositorio;
 
 import java.io.IOException;
-import java.io.File;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-
 import models.Usuario;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import utils.ContraseniaUtils;
+import config.DatabaseConnection;
 // 28/04/26: voy a implementar el ejemplo de la maestra aunque al parecer necesitamos descargar algo aparte para poder usar estas librerias, asi que por ahora como no esta nada actualizado en la guia para instalar, lo voy a dejar implementado pero como tal "no funcionando"(mañana vemos que pedo)//
 public class RepositorioUsuarios {
+	
+	
+	public void guardarUsuario(Usuario usuarioNuevo) throws SQLException{	
+		String sql = "INSERT INTO usuario (nombre, correo, contrasenia, genero, anio, mes, dia, rol, imagePath, region_idregion)"
+				+ "VALUE (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		
+		
+		try(Connection conexion = DatabaseConnection.getConnection();
+				PreparedStatement pst = conexion.prepareStatement(sql);	){
+			
+			pst.setString(1, usuarioNuevo.getNombre());
+			pst.setString(2, usuarioNuevo.getCorreo());
+			pst.setString(3, ContraseniaUtils.hashContrasenia(usuarioNuevo.getContrasenia()));
+			pst.setString(4, (usuarioNuevo.getGenero()+" "));
+			pst.setString(5, usuarioNuevo.getAnio());
+			pst.setString(6, usuarioNuevo.getMes());
+			pst.setString(7, usuarioNuevo.getDia());
+			pst.setString(8, usuarioNuevo.getRol());
+			pst.setString(9, usuarioNuevo.getImagenPath());
+			pst.setInt(10, usuarioNuevo.getRegionID());
+			pst.executeUpdate();
+			System.out.println("Se guardo nuevo usuario");
+		}catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		
 
-	
-	private final String FILE = "."
-			+ File.separator 
-			+ "data"
-			+ File.separator
-			+ "users.json";
-	
-	
-	private final ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
-	
-	
-	public void guardarUsuario(Usuario usuarioNuevo) throws IOException{
-		
-		List<Usuario> usuariosLista = obtenerUsuarios();
-		usuariosLista.add(usuarioNuevo); //eclipse me pidio cambiar de add() to addAll()//
-		updateAll(usuariosLista);
-		
-		
 	}
 
 	public List<Usuario> obtenerUsuarios() throws IOException{
 		
-		//List<Usuario> usuarios = new ArrayList<Usuario>();
-		File file = new File(FILE);
-		file.getParentFile().mkdirs();
-		if(!file.exists() || file.length() == 0) {
-			return new ArrayList<>();
+		List<Usuario> usuarios = new ArrayList<Usuario>();
+		try(
+				//Ontenta conectarse a la base de datos, crea un estado y ejecuta un comando
+				Connection conexion = DatabaseConnection.getConnection();
+				Statement stm = conexion.createStatement();
+				ResultSet rs = stm.executeQuery("SELECT * FROM usuario");
+				)
+		{
+			while(rs.next()) {
+				Usuario usuarioImportado = new Usuario(
+						rs.getInt("idusuario"),
+						rs.getString("nombre"), 
+						rs.getString("correo"), 
+						rs.getInt("region_idregion"), 
+						rs.getString("genero").charAt(0), 
+						rs.getString("anio"), 
+						rs.getString("mes"), 
+						rs.getString("dia"), 
+						null, 
+						rs.getString("rol"));
+				usuarios.add(usuarioImportado);
+			}
 			
+			
+		}catch(SQLException ex){
+			ex.printStackTrace();
 		}
+		
+		return usuarios;
+	}
 	
-
-		return mapper.readValue(file,new TypeReference<List<Usuario>>() {});
+	public boolean delete(int id){
+		
+		String sql = "DELETE FROM usuario WHERE idusuario = ?";
+		try(Connection conexion = DatabaseConnection.getConnection();
+			PreparedStatement pst = conexion.prepareStatement(sql)) {
+			
+			pst.setInt(1, id);
+			int affectedRows = pst.executeUpdate();
+			if(affectedRows > 0) {
+				System.out.println("Se elimino");
+				return true;
+			}
+			
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}
+		return false;
 		
 	}
-	public void updateAll(List<Usuario> listaUsuarios) throws IOException {
-		File file = new File(FILE);
-		file.getParentFile().mkdir();
+	
+	public boolean update(int index, Usuario updatedUser) throws IOException {
+		String sql = "UPDATE usuario SET nombre = ?, correo = ?, region_idregion = ?, " +
+					" genero = ?, anio = ?, mes = ?, dia = ?, rol = ? WHERE idusuario = ?";
+		//List<Usuario> usuarios = obtenerUsuarios();
+		//usuarios.set(index, updatedUser);
 		
-	    mapper.writeValue(file, listaUsuarios);
-		// mapper.writeValue(new File(FILE), listaUsuarios);
-	}
-	
-	public void delete(int indice) throws IOException {
-		List<Usuario> lista = obtenerUsuarios();
-		lista.remove(indice);
-		updateAll(lista);
-	}
-	
-	public void update(int index, Usuario updatedUser) throws IOException {
-		List<Usuario> usuarios = obtenerUsuarios();
-		usuarios.set(index, updatedUser);
-		updateAll(usuarios);
-	}
-
-	public Usuario login(JTextField campoEmail, JPasswordField campoContrasenia) {
-		// TODO Auto-generated method stub
-		return null;
+		try(Connection conexion = DatabaseConnection.getConnection();
+				PreparedStatement pst = conexion.prepareStatement(sql)) {
+			pst.setString(1, updatedUser.getNombre());
+			pst.setString(2, updatedUser.getCorreo());
+			pst.setInt(3, updatedUser.getRegionID());
+			pst.setString(4, String.valueOf(updatedUser.getGenero()));
+			pst.setString(5, updatedUser.getAnio());
+			pst.setString(6, updatedUser.getMes());
+			pst.setString(7, updatedUser.getDia());
+			pst.setString(8, updatedUser.getRol());
+			pst.setInt(9, updatedUser.getId());
+			
+			int affectedRows = pst.executeUpdate();
+			
+			if(affectedRows > 0) {
+				System.out.println("Cambios guardados");
+				return true;
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+		
 	}
 }
