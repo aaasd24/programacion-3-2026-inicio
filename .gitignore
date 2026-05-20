@@ -1,2 +1,4 @@
 /bin/
 *.class
+/app.properties
+src/config/database.properties
