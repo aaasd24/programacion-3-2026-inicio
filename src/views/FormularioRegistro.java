@@ -5,12 +5,14 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.File;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -33,6 +35,7 @@ import assets.GestorCursor;
 import config.Config;
 import controllers.RegistrationController;
 import assets.AppFonts;
+import assets.Colores;
 
 
 
@@ -105,13 +108,31 @@ public class FormularioRegistro extends JFrame {
     }
 	
     public JScrollPane crearPanelFormulario() {
-    	JPanel panel = new JPanel();
+    	JPanel panel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                try {
+                    // Dibujamos la parrillada de fondo
+                    Image fondo = ImageIO.read(getClass().getResource("../assets/fondo.jpg"));
+                    g.drawImage(fondo, 0, 0, getWidth(), getHeight(), this);
+                    
+                    // Capa oscura transparente para el contraste
+                    g.setColor(new Color(0, 0, 0, 150)); 
+                    g.fillRect(0, 0, getWidth(), getHeight());
+                } catch (Exception e) {
+                    System.out.println("Error al cargar el fondo del registro: " + e.getMessage());
+                }
+            }
+        };
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
         
 		JScrollPane scroll = new JScrollPane(panel);
-		scroll.setBorder(null);
+		scroll.setOpaque(false);
+		scroll.getViewport().setOpaque(false);
 		scroll.setHorizontalScrollBar(null);
+		scroll.setBorder(null);
 		scroll.getVerticalScrollBar().setUnitIncrement(14);
 		
 		
@@ -138,13 +159,20 @@ public class FormularioRegistro extends JFrame {
         panel.add(crearCampo("Nombre de usuario", txtNombre, lblErrorNombre));
         panel.add(crearCampo("Email", txtEmail, lblErrorEmail));
         panel.add(crearCampo("Contraseña", txtContra, lblErrorContrasenia));
-        panel.add(crearCampo("Anio", comboAnios, lblErrorAnio));
+        panel.add(crearCampo("Año", comboAnios, lblErrorAnio));
         panel.add(crearCampo("Mes", comboMeses, lblErrorMes));
         panel.add(crearCampo("Dia", comboDias, lblErrorDia));
 
         panelRadio = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        panelRadio.setOpaque(false);
         rbMujer = new JRadioButton("Mujer");
+        rbMujer.setFont(AppFonts.small());
+        rbMujer.setForeground(Colores.colorear(5));
         rbHombre = new JRadioButton("Hombre");
+        rbHombre.setFont(AppFonts.small());
+        rbHombre.setForeground(Colores.colorear(5));
+        rbMujer.setOpaque(false);
+        rbHombre.setOpaque(false);
         panelRadio.add(rbMujer); panelRadio.add(rbHombre);
         panel.add(crearCampo("Genero", panelRadio, lblErrorGenero));
         panel.add(crearCampo("Region", comboRegiones, lblErrorRegion));
@@ -153,12 +181,14 @@ public class FormularioRegistro extends JFrame {
         botonSeleccionarImagen = new JButton("Seleccionar imagen");
 
 		lblImagenNombre = new JLabel("Ninguna imagen seleccionada");
+		lblImagenNombre.setForeground(Colores.colorear(5));
 
 		lblImagenPrevia = new JLabel();
 		lblImagenPrevia.setPreferredSize(new Dimension(120,120));
 		lblImagenPrevia.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 		
 		JPanel imagePanel = new JPanel();
+		imagePanel.setOpaque(false);
 		imagePanel.setLayout(new BoxLayout(imagePanel, BoxLayout.Y_AXIS));
 		botonSeleccionarImagen.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblImagenPrevia.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -173,7 +203,10 @@ public class FormularioRegistro extends JFrame {
 		//TODO Panel de los botones, Cehcar los tamaños de los botones
 		
 		JPanel termsPanel = new JPanel();
+		termsPanel.setOpaque(false);
 		chkAceptoCondiciones = new JCheckBox("He leído los terminos y condiciones");
+		chkAceptoCondiciones.setForeground(Colores.colorear(5));
+		chkAceptoCondiciones.setOpaque(false);
 		termsPanel.add(chkAceptoCondiciones);
         panel.add(crearCampo("", termsPanel, lblErrorTerminos));
         
@@ -185,9 +218,11 @@ public class FormularioRegistro extends JFrame {
     }
     private JPanel crearTituloPanel() {
 		JPanel panel = new JPanel();
+		panel.setBackground(new Color(45, 45, 45));
 
 		JLabel titulo = new JLabel("Nueva cuenta");
 		titulo.setFont(AppFonts.title());
+		titulo.setForeground(Color.WHITE);
 
 		panel.add(titulo);
 
@@ -195,12 +230,14 @@ public class FormularioRegistro extends JFrame {
 	}
     private JPanel crearCampo(String nombre, Component campo, JLabel error) {
     	JPanel panelCampo = new JPanel();
+    	panelCampo.setOpaque(false);
     	panelCampo.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
 		panelCampo.setLayout(new BoxLayout(panelCampo, BoxLayout.Y_AXIS));
 		panelCampo.setAlignmentX(Component.CENTER_ALIGNMENT);
     	
     	
     	JLabel labelNombre = new JLabel(nombre);
+    	labelNombre.setForeground(Color.WHITE);
     	labelNombre.setMaximumSize(new Dimension(Integer.MAX_VALUE, labelNombre.getPreferredSize().height));
 		labelNombre.setHorizontalAlignment(SwingConstants.LEFT);
 		labelNombre.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -325,5 +362,6 @@ public class FormularioRegistro extends JFrame {
     public String getSelectedImagePath() { return selectedImagePath;    }
 
 	public String getRol() {return USER;}
+	
     
 }

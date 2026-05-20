@@ -2,9 +2,13 @@ package views;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
 
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -51,7 +55,23 @@ public class MainWindow extends JFrame {
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setMenu();
-		JPanel panel = new JPanel();
+		JPanel panel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                try {
+                    // Dibujamos la parrillada de fondo
+                    Image fondo = ImageIO.read(getClass().getResource("../assets/photoshop_de_la_biblioteca.jpg"));
+                    g.drawImage(fondo, 0, 0, getWidth(), getHeight(), this);
+                    
+                    // Capa oscura transparente para el contraste
+                    g.setColor(new Color(0, 0, 0, 150)); 
+                    g.fillRect(0, 0, getWidth(), getHeight());
+                } catch (Exception e) {
+                    System.out.println("Error al cargar el fondo del registro: " + e.getMessage());
+                }
+            }
+        };
 		panel.setLayout(new BorderLayout());
 		add(panel);
 		
@@ -240,5 +260,6 @@ public class MainWindow extends JFrame {
 	public void setWindowLocation(int x, int y) {
 		setLocation(x, y);
 	}
+	
 }
 
