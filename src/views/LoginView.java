@@ -466,7 +466,7 @@ public class LoginView extends JPanel{
 	    
 	    try {
 	    
-	        Image fondo = ImageIO.read(getClass().getResource("../assets/photoshop_del_login.jpg"));
+	        Image fondo = ImageIO.read(getClass().getResource("../assets/photoshop_del_login-version_alt.jpg"));
 	        
 	        
 	        g.drawImage(fondo, 0, 0, getWidth(), getHeight(), this);

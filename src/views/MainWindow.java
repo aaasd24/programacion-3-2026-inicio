@@ -3,12 +3,16 @@ package views;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,6 +21,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 
 import utils.ThemeManager;
 
@@ -55,23 +61,8 @@ public class MainWindow extends JFrame {
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setMenu();
-		JPanel panel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                try {
-                    // Dibujamos la parrillada de fondo
-                    Image fondo = ImageIO.read(getClass().getResource("../assets/photoshop_de_la_biblioteca.jpg"));
-                    g.drawImage(fondo, 0, 0, getWidth(), getHeight(), this);
-                    
-                    // Capa oscura transparente para el contraste
-                    g.setColor(new Color(0, 0, 0, 150)); 
-                    g.fillRect(0, 0, getWidth(), getHeight());
-                } catch (Exception e) {
-                    System.out.println("Error al cargar el fondo del registro: " + e.getMessage());
-                }
-            }
-        };
+		JPanel panel = new JPanel();
+            
 		panel.setLayout(new BorderLayout());
 		add(panel);
 		
@@ -240,10 +231,39 @@ public class MainWindow extends JFrame {
 	public void crearVistas() {
 		cardLayout = new CardLayout();
 		contenedor = new JPanel(cardLayout);
+		contenedor.setOpaque(false);
 		
-		JPanel panelHome = new JPanel();
-		panelHome.add(new JLabel("BIenvenido al sistema"));
+		JPanel panelHome = new JPanel() {
+			@Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                try {
+                    // Dibujamos la parrillada de fondo
+                    Image fondo = ImageIO.read(getClass().getResource("../assets/photoshop_de_la_biblioteca.jpg"));
+                    g.drawImage(fondo, 0, 0, getWidth(), getHeight(), this);
+                    
+                    // Capa oscura transparente para el contraste
+                    g.setColor(new Color(0, 0, 0, 150)); 
+                    g.fillRect(0, 0, getWidth(), getHeight());
+                } catch (Exception e) {
+                    System.out.println("Error al cargar el fondo del registro: " + e.getMessage());
+                }
+            }
+        };
+        
+        panelHome.setLayout(new BorderLayout());
+        JLabel labelBienvenida = new JLabel("Bienvenido al sistema", SwingConstants.CENTER);
+        labelBienvenida.setForeground(Color.WHITE);
+        labelBienvenida.setFont(assets.AppFonts.title());
+        labelBienvenida.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 0, 20, 0));
+        panelHome.add(labelBienvenida, BorderLayout.NORTH);
+        
+     // --- ESPACIO PARA FUTUROS COMPONENTES ---
+        // JPanel panelJuegos = crearPanelCatalogoJuegos();
+        // panelHome.add(panelJuegos, BorderLayout.CENTER);
+        
 		panelUsuario = new UsuarioView();
+		panelUsuario.setOpaque(false);
 		
 		contenedor.add(panelHome, HOME);
 		contenedor.add(panelUsuario, USERS);
@@ -260,6 +280,7 @@ public class MainWindow extends JFrame {
 	public void setWindowLocation(int x, int y) {
 		setLocation(x, y);
 	}
+	
 	
 }
 

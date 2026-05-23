@@ -185,7 +185,9 @@ public class FormularioRegistro extends JFrame {
 
 		lblImagenPrevia = new JLabel();
 		lblImagenPrevia.setPreferredSize(new Dimension(120,120));
+		lblImagenPrevia.setBorder(null);
 		lblImagenPrevia.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+		lblImagenPrevia.setVisible(false);
 		
 		JPanel imagePanel = new JPanel();
 		imagePanel.setOpaque(false);
@@ -309,6 +311,15 @@ public class FormularioRegistro extends JFrame {
 			
 			ImageIcon icon = new ImageIcon(selectedImagePath);
 			Image img = icon.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
+			
+			lblImagenPrevia.setIcon(new ImageIcon(img));
+	        lblImagenPrevia.setBorder(BorderFactory.createLineBorder(Color.GRAY)); // Volvemos a poner el borde estético
+	        lblImagenPrevia.setVisible(true);
+	        
+	        lblImagenPrevia.revalidate();
+	        lblImagenPrevia.repaint();
+	        this.getContentPane().revalidate();
+	        this.getContentPane().repaint();
 			
 			lblImagenPrevia.setIcon(new ImageIcon(img));
 		}
