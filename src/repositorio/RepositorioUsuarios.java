@@ -13,10 +13,9 @@ import java.util.List;
 import models.Usuario;
 import utils.ContraseniaUtils;
 import config.DatabaseConnection;
-// 28/04/26: voy a implementar el ejemplo de la maestra aunque al parecer necesitamos descargar algo aparte para poder usar estas librerias, asi que por ahora como no esta nada actualizado en la guia para instalar, lo voy a dejar implementado pero como tal "no funcionando"(mañana vemos que pedo)//
+
 public class RepositorioUsuarios {
-	
-	
+		
 	public void guardarUsuario(Usuario usuarioNuevo) throws SQLException{	
 		String sql = "INSERT INTO usuario (nombre, correo, contrasenia, genero, anio, mes, dia, rol, imagePath, region_idregion)"
 				+ "VALUE (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -40,7 +39,6 @@ public class RepositorioUsuarios {
 		}catch (SQLException ex) {
 			ex.printStackTrace();
 		}
-		
 
 	}
 
@@ -48,7 +46,7 @@ public class RepositorioUsuarios {
 		
 		List<Usuario> usuarios = new ArrayList<Usuario>();
 		try(
-				//Ontenta conectarse a la base de datos, crea un estado y ejecuta un comando
+				//Intenta conectarse a la base de datos, crea un estado y ejecuta un comando
 				Connection conexion = DatabaseConnection.getConnection();
 				Statement stm = conexion.createStatement();
 				ResultSet rs = stm.executeQuery("SELECT * FROM usuario");
@@ -59,7 +57,7 @@ public class RepositorioUsuarios {
 						rs.getInt("idusuario"),
 						rs.getString("nombre"), 
 						rs.getString("correo"), 
-						rs.getInt("region_idregion"), 
+						rs.getInt("region_idregion"), //TODO Checar la lista de regiones
 						rs.getString("genero").charAt(0), 
 						rs.getString("anio"), 
 						rs.getString("mes"), 
@@ -100,8 +98,6 @@ public class RepositorioUsuarios {
 	public boolean update(int index, Usuario updatedUser) throws IOException {
 		String sql = "UPDATE usuario SET nombre = ?, correo = ?, region_idregion = ?, " +
 					" genero = ?, anio = ?, mes = ?, dia = ?, rol = ? WHERE idusuario = ?";
-		//List<Usuario> usuarios = obtenerUsuarios();
-		//usuarios.set(index, updatedUser);
 		
 		try(Connection conexion = DatabaseConnection.getConnection();
 				PreparedStatement pst = conexion.prepareStatement(sql)) {
