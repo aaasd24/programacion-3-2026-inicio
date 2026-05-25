@@ -83,7 +83,7 @@ public class RepositorioVideojuegos {
 			
 			int filaAfectada = pst.executeUpdate();
 			if(filaAfectada > 0) {
-				System.out.println("Camhios guardados");
+				System.out.println("Cambios guardados");
 				return true;
 			}
 			
