@@ -45,6 +45,7 @@ public class MainWindow extends JFrame {
 	
 	public JButton botonVerUsuario;
 	public JButton botonHome;
+	public JButton botonVerJuego;
 	
 	public final static String HOME = "HOME";
 	public final static String USERS = "USERS";
@@ -191,7 +192,7 @@ public class MainWindow extends JFrame {
 	    
 	    
 	    mb.add(theme);
-		otraOpcion= new JMenu("Otra opción");
+		/*otraOpcion= new JMenu("Otra opción");
 		otraOpcion.setMnemonic(KeyEvent.VK_O);
 		mb.add(otraOpcion);
 		
@@ -203,7 +204,7 @@ public class MainWindow extends JFrame {
 		
 		opcion2 = new JMenuItem("Opción 2");
 		otraOpcion.add(opcion2);
-		
+		*/
 		
 	}
 
@@ -220,10 +221,11 @@ public class MainWindow extends JFrame {
 		JPanel barraNav = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		botonHome = new JButton("Inicio");
 		botonVerUsuario = new JButton("Usuarios");
+		botonVerJuego = new JButton("adminPrueba");
 		
 		barraNav.add(botonHome);
 		barraNav.add(botonVerUsuario);
-		
+		barraNav.add(botonVerJuego);		
 		add(barraNav, BorderLayout.NORTH);		
 		
 	}
