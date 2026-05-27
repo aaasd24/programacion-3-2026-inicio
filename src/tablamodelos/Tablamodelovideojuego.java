@@ -38,10 +38,10 @@ public class Tablamodelovideojuego extends AbstractTableModel{
 		Videojuego videojuegoActuak = listaVideojuego.get(rowIndex);
 		switch(columnIndex) {
 		case 0:
-			return videojuegoActuak.getNombre();
+			return videojuegoActuak.getTitulo();
 		case 1:
 			//TODO aqui afecta
-			return videojuegoActuak.getGenerosid();
+			//return videojuegoActuak.getGenerosid();
 		case 2:
 			return videojuegoActuak.getPrecio();
 		}

@@ -10,17 +10,19 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import models.Biblioteca;
 import models.Usuario;
 import utils.ContraseniaUtils;
 import config.DatabaseConnection;
 
 public class RepositorioUsuarios {
-		
+	private Biblioteca bl;
 	public void guardarUsuario(Usuario usuarioNuevo) throws SQLException{	
 		String sql = "INSERT INTO usuario (nombre, correo, contrasenia, genero, anio, mes, dia, rol, imagePath, region_idregion)"
 				+ "VALUE (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		
 		
+		System.out.println("Se guardo");
 		try(Connection conexion = DatabaseConnection.getConnection();
 				PreparedStatement pst = conexion.prepareStatement(sql);	){
 			
@@ -34,6 +36,7 @@ public class RepositorioUsuarios {
 			pst.setString(8, usuarioNuevo.getRol());
 			pst.setString(9, usuarioNuevo.getImagenPath());
 			pst.setInt(10, usuarioNuevo.getRegionID());
+			//pst.setInt(11, (bl = new Biblioteca(usuarioNuevo.getId())).getIdbiblioteca());
 			pst.executeUpdate();
 			System.out.println("Se guardo nuevo usuario");
 		}catch (SQLException ex) {

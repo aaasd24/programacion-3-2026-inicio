@@ -190,6 +190,7 @@ public class RegistrationController {
     			view.getDia(),
     			imagePathString,
     			view.getRol()
+    			
     	);
     	
     	try {

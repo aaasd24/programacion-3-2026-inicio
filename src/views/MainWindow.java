@@ -250,7 +250,7 @@ public class MainWindow extends JFrame {
                 super.paintComponent(g);
                 try {
                     // Dibujamos la parrillada de fondo
-                    Image fondo = ImageIO.read(getClass().getResource("../assets/photoshop_de_la_biblioteca.jpg"));
+                    Image fondo = ImageIO.read(getClass().getResource("../assets/main-1080p.jpg"));
                     g.drawImage(fondo, 0, 0, getWidth(), getHeight(), this);
                     
                     // Capa oscura transparente para el contraste

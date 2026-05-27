@@ -88,6 +88,7 @@ public class UserController {
             try {
                 if (user == null) { //usuario nuevo
                 	System.out.println("Se crea nuevo usuario");
+                	
                     repo.guardarUsuario(savedUser);
                     model.addRow(savedUser);
                     

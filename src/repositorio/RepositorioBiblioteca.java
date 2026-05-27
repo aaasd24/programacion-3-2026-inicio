@@ -9,39 +9,39 @@ import java.util.ArrayList;
 import java.util.List;
 
 import config.DatabaseConnection;
-import models.Videojuego;
+import models.Biblioteca;
 
-public class RepositorioVideojuegos {
-
-	public void subirVideojuego(Videojuego videojuegoNuego) throws SQLException {
-		String sql = "INSERT INTO videojuego(idvideojuego, nombre, precio, direccionArchivo)" + 
-					"VALUE (?, ?, ?, ?)";
+public class RepositorioBiblioteca {
+	
+	public void subirBiblioteca(Biblioteca bibl) throws SQLException {
+		String sql = "INSERT INTO biblioteca(idbiblioteca)" + 
+					"VALUE (?)";
 		try(Connection conexion = DatabaseConnection.getConnection();
 				PreparedStatement pst = conexion.prepareStatement(sql);){
 			
-			pst.setInt(0, videojuegoNuego.getId());
-			pst.setString(1, videojuegoNuego.getTitulo());
-			pst.setFloat(2, videojuegoNuego.getPrecio());
-			pst.setString(3, videojuegoNuego.getDireccionURL());
+			pst.setInt(0, bibl.getIdbiblioteca());
 			pst.executeUpdate();
-			System.err.println("Se subio nuevo juego");
+			System.err.println("Se creo nueva biblioteca para usuario");
 		}catch(SQLException ex) {
 			System.out.println("Error en conexion");
 			ex.printStackTrace();
 		}
 	}
 	
-	public List<Videojuego> obtenerListaVideojuegos() throws SQLException{
+	public List<Biblioteca> obtenerListaBiblitecas() throws SQLException{
 		
-		List<Videojuego> juegos = new ArrayList<Videojuego>();
+		List<Biblioteca> bibl = new ArrayList<Biblioteca>();
 		try (
 			Connection conexion = DatabaseConnection.getConnection();
 			Statement stm = conexion.createStatement();
-			ResultSet rs = stm.executeQuery("SELECT * FROM videojuego");
+			ResultSet rs = stm.executeQuery("SELECT * FROM biblioteca");
 				//ResultSet rs2 = stm.executeQuery("");
 				)
 			
 		{
+			Biblioteca bibl1 = new Biblioteca(rs.getInt("idbiblioteca"));
+			bibl.add(bibl1);
+			/*
 			while(rs.next()) {
 				Videojuego videojuegoImportado = new Videojuego(
 						rs.getInt("idvideojuego"), 
@@ -52,11 +52,11 @@ public class RepositorioVideojuegos {
 						rs.getString("imagePath")
 						);
 				juegos.add(videojuegoImportado);
-			}
+			}*/
 		}catch(SQLException ex) {
 			ex.printStackTrace();
 		}
-		return juegos;
+		return bibl;
 	}
 	
 	public boolean eliminar(int id){
@@ -75,7 +75,7 @@ public class RepositorioVideojuegos {
 		}
 		return false;
 	}
-	
+	/*
 	public boolean actualizar(int indice, Videojuego videojuegoActualizado) throws SQLException{
 		String sql = "UPDATE videojuego SET nombre = ?, precio = ?, direccionArchivo = ?"
 					+ "WHERW idvideojuego = ?";
@@ -95,29 +95,5 @@ public class RepositorioVideojuegos {
 		}
 		return false;
 		
-	}
-	/**
-	 * 
-	 * @param idVideojuego
-	 * @return lista de enteros de los idgenero del videojuego
-	 * @throws SQLException
-	 */
-	public int[] obtenerGenerosid() throws SQLException {
-		String sql = "SELECT generoVideojuego_idgeneroVideojuego FROM videojuego_has_generoVideojuego WHERE videojuego_idvideojuego = ?";
-		try(Connection conexion = DatabaseConnection.getConnection();
-			Statement stm = conexion.createStatement();
-			ResultSet rs = stm.executeQuery(sql)){
-			int[] idgenerosTemporal = null;
-			int i = 0;
-			while(rs.next()) {
-				 idgenerosTemporal[i] = rs.getInt("generoVideojuego_idgeneroVideojuego");
-				 i++;
-			}
-			return idgenerosTemporal;
-		}catch(SQLException ex) {
-			ex.printStackTrace();
-		}
-		
-		return null;
-	}
+	}*/
 }
