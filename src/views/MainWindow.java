@@ -49,8 +49,10 @@ public class MainWindow extends JFrame {
 	
 	public final static String HOME = "HOME";
 	public final static String USERS = "USERS";
+	public final static String GAMES = "GAMES";
 	
 	public UsuarioView panelUsuario;
+	public VideojuegoView panelVideojuego;
 	
 	private CardLayout cardLayout;
 	private JPanel contenedor;
@@ -157,10 +159,17 @@ public class MainWindow extends JFrame {
 	
 	/**
 	 * 
-	 * @return
+	 * @return boton home
 	 */
 	public JButton getBotonHome() {
 		return botonHome;
+	}
+	/**
+	 * 
+	 * @return boton juegos
+	 */
+	public JButton getBotonVideojuego() {
+		return botonVerJuego;
 	}
 	
 	public void setMenu() {
@@ -264,11 +273,17 @@ public class MainWindow extends JFrame {
         // JPanel panelJuegos = crearPanelCatalogoJuegos();
         // panelHome.add(panelJuegos, BorderLayout.CENTER);
         
+        //Panel de CRUD  usuarios
 		panelUsuario = new UsuarioView();
 		panelUsuario.setOpaque(false);
 		
+		//Panel de CRUD videojuegos
+		panelVideojuego = new VideojuegoView();
+		panelVideojuego.setOpaque(false);
+		
 		contenedor.add(panelHome, HOME);
 		contenedor.add(panelUsuario, USERS);
+		contenedor.add(panelVideojuego, GAMES);
 		
 		add(contenedor, BorderLayout.CENTER);
 	}

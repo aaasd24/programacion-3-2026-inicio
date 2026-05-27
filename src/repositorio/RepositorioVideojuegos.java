@@ -19,7 +19,7 @@ public class RepositorioVideojuegos {
 		try(Connection conexion = DatabaseConnection.getConnection();
 				PreparedStatement pst = conexion.prepareStatement(sql);){
 			
-			pst.setString(0, videojuegoNuego.getId());
+			pst.setInt(0, videojuegoNuego.getId());
 			pst.setString(1, videojuegoNuego.getNombre());
 			pst.setFloat(2, videojuegoNuego.getPrecio());
 			pst.setString(3, videojuegoNuego.getDireccionURL());
@@ -37,13 +37,16 @@ public class RepositorioVideojuegos {
 		try (
 			Connection conexion = DatabaseConnection.getConnection();
 			Statement stm = conexion.createStatement();
-			ResultSet rs = stm.executeQuery("SELECT * FROM videojuego");)
+			ResultSet rs = stm.executeQuery("SELECT * FROM videojuego");
+				//ResultSet rs2 = stm.executeQuery("");
+				)
+			
 		{
 			while(rs.next()) {
 				Videojuego videojuegoImportado = new Videojuego(
-						rs.getString("idvideojuego"), 
+						rs.getInt("idvideojuego"), 
 						rs.getString("nombre"), 
-						null,  //TODO Checar bien como obtener la lista de generos
+						obtenerGenerosid(),  //TODO Checar bien como obtener la lista de generos
 						rs.getFloat("precio"), 
 						rs.getString("direccionArchivo"));
 				juegos.add(videojuegoImportado);
@@ -54,7 +57,7 @@ public class RepositorioVideojuegos {
 		return juegos;
 	}
 	
-	public boolean eliminar(int id) throws SQLException{
+	public boolean eliminar(int id){
 		String sql = "DELETE FROM videojuego WHERE idvideojuego = ?";
 		try(Connection conexion = DatabaseConnection.getConnection();
 				PreparedStatement pst = conexion.prepareStatement(sql);
@@ -91,5 +94,28 @@ public class RepositorioVideojuegos {
 		return false;
 		
 	}
-	
+	/**
+	 * 
+	 * @param idVideojuego
+	 * @return lista de enteros de los idgenero del videojuego
+	 * @throws SQLException
+	 */
+	public int[] obtenerGenerosid() throws SQLException {
+		String sql = "SELECT generoVideojuego_idgeneroVideojuego FROM videojuego_has_generoVideojuego WHERE videojuego_idvideojuego = ?";
+		try(Connection conexion = DatabaseConnection.getConnection();
+			Statement stm = conexion.createStatement();
+			ResultSet rs = stm.executeQuery(sql)){
+			int[] idgenerosTemporal = null;
+			int i = 0;
+			while(rs.next()) {
+				 idgenerosTemporal[i] = rs.getInt("generoVideojuego_idgeneroVideojuego");
+				 i++;
+			}
+			return idgenerosTemporal;
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}
+		
+		return null;
+	}
 }

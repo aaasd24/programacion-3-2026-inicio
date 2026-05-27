@@ -2,19 +2,20 @@ package models;
 
 public class Videojuego {
 	
-	private String id;
+	private int id;
 	private String nombre;
-	private String[] generosId;
+	private int[] generosId;
 	private	String direccionURL;
 	private	float precio;
 	
-	public Videojuego(String id, String nombre, String[] generos, float precio, String direccion) {
+	public Videojuego(int id, String nombre, int[] generos, float precio, String direccion) {
 		this.nombre = nombre;
 		this.generosId = generos;
 		this.precio = precio;
 		this.direccionURL = direccion;
 	}
 
+	
 	//Setters
 	/**
 	 * 
@@ -25,7 +26,7 @@ public class Videojuego {
 	/**
 	 * @param id the id to set
 	 */
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -37,7 +38,7 @@ public class Videojuego {
 	/**
 	 * @param generos the generos to set
 	 */
-	public void setGeneros(String[] generos) {this.generosId = generos; }
+	public void setGeneros(int[] generos) {this.generosId = generos; }
 	/**
 	 * 
 	 * @param direccionURL
@@ -53,7 +54,7 @@ public class Videojuego {
 	/**
 	 * @return the generos
 	 */
-	public String[] getGeneros() { return generosId;}
+	public int[] getGenerosid() { return generosId;}
 
 	
 	/**
@@ -70,7 +71,7 @@ public class Videojuego {
 	/**
 	 * @return the id
 	 */
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 	

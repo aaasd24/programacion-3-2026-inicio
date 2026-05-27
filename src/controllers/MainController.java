@@ -16,6 +16,7 @@ public class MainController {
 	private MainWindow view;
 	public JButton BotonVerUsuarios;
 	private UserController usuarioController;
+	private VideojuegoController videojuegoController;
 	
 	public MainController(MainWindow view) {	
 		this.view = view;
@@ -37,8 +38,8 @@ public class MainController {
 		view.getBotonHome().addActionListener(e -> {
 			view.mostrarVista(MainWindow.HOME);
 			updateMenuState(MainWindow.HOME);
-		}
-				);
+		});
+		view.getBotonVideojuego().addActionListener(e -> mostrarVideojuegos());
 		
 	}
 	private void handleClose() {
@@ -56,6 +57,16 @@ public class MainController {
 		usuarioController.loadUsers();
 		view.mostrarVista(MainWindow.USERS);
 		updateMenuState(MainWindow.USERS);
+		
+	}
+	
+	private void mostrarVideojuegos() {
+		if(videojuegoController == null) {
+			videojuegoController = new VideojuegoController(view.panelVideojuego);
+		}
+		videojuegoController.cargarJuegos();
+		view.mostrarVista(MainWindow.GAMES);
+		updateMenuState(MainWindow.GAMES);
 		
 	}
 	

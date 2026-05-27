@@ -22,6 +22,7 @@ import assets.AppFonts;
 import assets.Colores;
 import config.Config;
 import tablamodelos.Tablamodelousuario;
+import tablamodelos.Tablamodelovideojuego;
 
 
 @SuppressWarnings("serial")
@@ -163,7 +164,7 @@ public class VideojuegoView extends JPanel{
 	}
 
 
-	public void setModeloTable(Tablamodelousuario modelo) {
+	public void setModeloTable(Tablamodelovideojuego modelo) {
 		this.tabla.setModel(modelo);
 		//establace los tamaños de cada columna, Solo usamos 3 filas 
 	    if(tabla.getColumnCount() >= 1) {
