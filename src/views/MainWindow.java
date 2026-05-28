@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -22,6 +23,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import utils.ThemeManager;
@@ -227,16 +229,60 @@ public class MainWindow extends JFrame {
 	}
 	
 	public void crearBarraNav() {
-		JPanel barraNav = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		botonHome = new JButton("Inicio");
-		botonVerUsuario = new JButton("Usuarios");
-		botonVerJuego = new JButton("adminPrueba");
-		
-		barraNav.add(botonHome);
-		barraNav.add(botonVerUsuario);
-		barraNav.add(botonVerJuego);		
-		add(barraNav, BorderLayout.NORTH);		
-		
+	    JPanel barraNav = new JPanel(new BorderLayout());
+	    barraNav.setOpaque(false); 
+	    barraNav.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15)); 
+
+	    JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+	    panelBotones.setOpaque(false);
+	    //botones
+	    botonHome = new JButton("Inicio");
+	    botonVerUsuario = new JButton("Usuarios");
+	    botonVerJuego = new JButton("adminPrueba"); 
+	   
+	    //botones estilo
+	    botonHome.setBackground(new Color(60, 60, 60, 200));
+	    botonHome.setForeground(Color.WHITE);
+	    botonHome.putClientProperty("JButton.buttonType", "roundRect");
+	    botonHome.setBorderPainted(false);
+	    botonHome.setFocusPainted(false);
+	    
+	    botonVerUsuario.setBackground(new Color(60, 60, 60, 200));
+	    botonVerUsuario.setForeground(Color.WHITE);
+	    botonVerUsuario.putClientProperty("JButton.buttonType", "roundRect");
+	    botonVerUsuario.setBorderPainted(false);
+	    botonVerUsuario.setFocusPainted(false);
+	    
+	    botonVerJuego.setBackground(new Color(60, 60, 60, 200));
+	    botonVerJuego.setForeground(Color.WHITE);
+	    botonVerJuego.putClientProperty("JButton.buttonType", "roundRect");
+	    botonVerJuego.setBorderPainted(false);
+	    botonVerJuego.setFocusPainted(false);
+	    
+	    //botones en el panel izquierdo
+	    panelBotones.add(botonHome);
+	    panelBotones.add(botonVerUsuario);
+	    panelBotones.add(botonVerJuego);
+
+	    // para la barra de búsqueda maqueta
+	    JPanel panelBusqueda = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+	    panelBusqueda.setOpaque(false);
+
+	    JTextField txtBuscar = new JTextField();
+	    txtBuscar.setPreferredSize(new Dimension(220, 32));
+	    txtBuscar.setBackground(new Color(45, 45, 45));     
+	    txtBuscar.setForeground(Color.WHITE);              
+
+	    txtBuscar.putClientProperty("JComponent.roundRect", true); // Bordes circulares tipo cápsula
+	    txtBuscar.putClientProperty("JTextField.placeholderText", "Buscar juego..."); // Texto de fondo
+	    txtBuscar.putClientProperty("JTextField.showClearButton", true); // boton para limpiar
+
+	    panelBusqueda.add(txtBuscar);
+
+	    barraNav.add(panelBotones, BorderLayout.WEST);
+	    barraNav.add(panelBusqueda, BorderLayout.EAST);
+	    
+	    add(barraNav, BorderLayout.NORTH);		
 	}
 	
 	public void crearVistas() {
