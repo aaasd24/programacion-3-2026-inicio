@@ -14,12 +14,11 @@ import models.Biblioteca;
 public class RepositorioBiblioteca {
 	
 	public void subirBiblioteca(Biblioteca bibl) throws SQLException {
-		String sql = "INSERT INTO biblioteca(idbiblioteca)" + 
-					"VALUE (?)";
+		String sql = "INSERT INTO biblioteca(nombre) VALUE (?)";
 		try(Connection conexion = DatabaseConnection.getConnection();
-				PreparedStatement pst = conexion.prepareStatement(sql);){
-			
-			pst.setInt(0, bibl.getIdbiblioteca());
+			PreparedStatement pst = conexion.prepareStatement(sql);)
+		{
+			pst.setString(1, bibl.getNombreBiblioteca());
 			pst.executeUpdate();
 			System.err.println("Se creo nueva biblioteca para usuario");
 		}catch(SQLException ex) {
@@ -35,11 +34,10 @@ public class RepositorioBiblioteca {
 			Connection conexion = DatabaseConnection.getConnection();
 			Statement stm = conexion.createStatement();
 			ResultSet rs = stm.executeQuery("SELECT * FROM biblioteca");
-				//ResultSet rs2 = stm.executeQuery("");
 				)
 			
 		{
-			Biblioteca bibl1 = new Biblioteca(rs.getInt("idbiblioteca"));
+			Biblioteca bibl1 = new Biblioteca("Repo");
 			bibl.add(bibl1);
 			/*
 			while(rs.next()) {
@@ -64,7 +62,7 @@ public class RepositorioBiblioteca {
 		try(Connection conexion = DatabaseConnection.getConnection();
 				PreparedStatement pst = conexion.prepareStatement(sql);
 				){
-			pst.setInt(0, id);
+			pst.setInt(1, id);
 			int filaAfectada = pst.executeUpdate();
 			if(filaAfectada > 0) {
 				System.out.println("Se elimino");
@@ -96,4 +94,20 @@ public class RepositorioBiblioteca {
 		return false;
 		
 	}*/
+	
+	public Biblioteca obtenerBibliotecaAsignada(Biblioteca bibli) throws SQLException{
+		Biblioteca bib = new Biblioteca("temporal");
+		try(Connection conexion = DatabaseConnection.getConnection();
+				Statement stm = conexion.createStatement();
+				ResultSet rs = stm.executeQuery("SELECT * FROM biblioteca WHERE nombre = " + bibli.getNombreBiblioteca());)
+		{
+			bib.setIdbiblioteca(rs.getInt("idbiblioteca"));
+			bib.setNombreBiblioteca(rs.getString("nombre"));
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}
+		
+		
+		return bib;
+	}
 }

@@ -1,14 +1,15 @@
 package controllers;
 
-import java.awt.event.ActionListener;
+
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import models.Biblioteca;
 import models.Usuario;
-import repositorio.RepositorioUsuarios;
+import utils.Genero;
 import views.FormularioUsuarioDialog;
 
 public class FormularioUsuarioDialogController {
@@ -182,10 +183,12 @@ public class FormularioUsuarioDialogController {
         String rol = "ADMIN";
         
         
-        char genero = view.getGenero(); 
+        Genero genero = view.getGenero(); 
         
         if(usuario == null) { //															NO tiene imagen
         	this.usuario = new Usuario(nombre, correo, region, genero, anio, mes, dia, null, rol);
+        	Biblioteca temporal = new Biblioteca(nombre + " ADMIN");
+        	
         }else {
         	this.usuario.setNombre(nombre);
         	this.usuario.setCorreo(correo);
@@ -203,7 +206,5 @@ public class FormularioUsuarioDialogController {
 	public Usuario getUsuario() {
 		return usuario;
 	}
-    
-    
     
 }

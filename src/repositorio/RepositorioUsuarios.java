@@ -10,13 +10,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import models.Biblioteca;
 import models.Usuario;
 import utils.ContraseniaUtils;
 import config.DatabaseConnection;
 
 public class RepositorioUsuarios {
-	private Biblioteca bl;
 	public void guardarUsuario(Usuario usuarioNuevo) throws SQLException{	
 		String sql = "INSERT INTO usuario (nombre, correo, contrasenia, genero, anio, mes, dia, rol, imagePath, region_idregion)"
 				+ "VALUE (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -61,7 +59,7 @@ public class RepositorioUsuarios {
 						rs.getString("nombre"), 
 						rs.getString("correo"), 
 						rs.getInt("region_idregion"), //TODO Checar la lista de regiones
-						rs.getString("genero").charAt(0), 
+						null, //rs.get("genero"), 
 						rs.getString("anio"), 
 						rs.getString("mes"), 
 						rs.getString("dia"), 
@@ -103,7 +101,8 @@ public class RepositorioUsuarios {
 					" genero = ?, anio = ?, mes = ?, dia = ?, rol = ? WHERE idusuario = ?";
 		
 		try(Connection conexion = DatabaseConnection.getConnection();
-				PreparedStatement pst = conexion.prepareStatement(sql)) {
+			PreparedStatement pst = conexion.prepareStatement(sql)) 
+		{
 			pst.setString(1, updatedUser.getNombre());
 			pst.setString(2, updatedUser.getCorreo());
 			pst.setInt(3, updatedUser.getRegionID());
@@ -126,4 +125,34 @@ public class RepositorioUsuarios {
 		return false;
 		
 	}
+	public void conectarBiblioteca(Usuario usuario) throws SQLException{
+		String sql = "UPDATE usuario SET biblioteca_idbiblioteca = ? WHERE nombre = ?";
+		int id = obtenerIDBiblioteca(usuario);
+		try(Connection conexion = DatabaseConnection.getConnection();
+				PreparedStatement pst = conexion.prepareStatement(sql);)
+		{
+			pst.setInt(1, id);
+			pst.setString(2, usuario.getNombre());
+			pst.executeUpdate();
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public int obtenerIDBiblioteca(Usuario usuario) throws SQLException{
+		int id = 0;
+		try(Connection conexion = DatabaseConnection.getConnection();
+				Statement stm = conexion.createStatement();
+				ResultSet rs = stm.executeQuery("SELECT * FROM biblioteca WHERE nombre = 'Biblioteca de " + usuario.getNombre() + "'");)
+		{
+			rs.next();
+			id = rs.getInt("idbiblioteca");
+			
+			System.out.println("comando id completo");
+		}
+		return id;
+	}
+	
+	
 }

@@ -1,7 +1,6 @@
 package controllers;
 
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -9,7 +8,6 @@ import javax.swing.JOptionPane;
 
 import models.Videojuego;
 import repositorio.RepositorioVideojuegos;
-import servicios.PDFExportador;
 import tablamodelos.Tablamodelovideojuego;
 import views.VideojuegoView;
 

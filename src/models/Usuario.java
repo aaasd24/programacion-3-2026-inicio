@@ -1,5 +1,6 @@
 package models;
 
+import utils.Genero;
 
 public class Usuario {
 
@@ -8,12 +9,14 @@ public class Usuario {
 	private String correo;
 	private String contrasenia;
 	private int idregion;
-	private char genero;
+	//private EnumGenero genero = EnumGenero;
+	Genero genero;
 	private String anio;
 	private String mes;
 	private String dia;
 	private String ImagenPath;
 	private String rol;
+	private int idBiblioteca;
 	
 	public Usuario() {
 		
@@ -30,7 +33,7 @@ public class Usuario {
 
 	
 	
-	public Usuario(String nombre, String correo, int idregion, char genero, String anio, String mes, String dia, String ImagenPath, String rol) {
+	public Usuario(String nombre, String correo, int idregion, Genero genero, String anio, String mes, String dia, String ImagenPath, String rol) {
 		this.nombre = nombre;
 		this.correo = correo;
 		this.idregion = idregion;
@@ -43,7 +46,7 @@ public class Usuario {
 	}
 	
 	
-	public Usuario(int id, String nombre, String correo, int idregion, char genero, String anio, String mes, String dia, String ImagenPath, String rol) {
+	public Usuario(int id, String nombre, String correo, int idregion, Genero genero, String anio, String mes, String dia, String ImagenPath, String rol) {
 		this.id = id;
 		this.nombre = nombre;
 		this.correo = correo;
@@ -118,7 +121,7 @@ public class Usuario {
 		return null;
 				
 	}
-	public char getGenero() {
+	public Genero getGenero() {
 		return genero;
 	}
 	/*
@@ -138,7 +141,12 @@ public class Usuario {
 		return rol;
 	}
 	
-	
+	/**
+	 * @return the idBiblioteca ???????????????????? 
+	 */
+	public int getIdBiblioteca() {
+		return idBiblioteca;
+	}
 	
 	/**
 	 * @return the imagenPath
@@ -151,19 +159,17 @@ public class Usuario {
 	public void setNombre(String nombre) {this.nombre = nombre;}
 	public void setCorreo(String correo) {this.correo = correo;}
 	public void setContrasenia(String contrasenia) {this.contrasenia = contrasenia;}
-	public void setGenero(char genero) {this.genero = genero;}
+	public void setGenero(Genero genero) {this.genero = genero;}
 	public void setRegionID(int region) {this.idregion = region;}
 	public void setAnio(String anio) {this.anio = anio;}
 	public void setMes(String mes) {this.mes = mes;}
 	public void setDia(String dia) {this.dia = dia;}
 	public void setRol(String rol) {this.rol = rol;}
-
-	/**
-	 * @param imagenPath the imagenPath to set
-	 */
-	public void setImagenPath(String imagenPath) {
-		ImagenPath = imagenPath;
-	}
+	public void setImagenPath(String imagenPath) {ImagenPath = imagenPath;}
+	public void setIdBiblioteca(int idBiblioteca) {	this.idBiblioteca = idBiblioteca;}
+	
+	
+	
 	public String toCsv() {
 		return nombre + "," + correo + "," + idregion + "," + genero +  "," + anio + "," + mes + "," + dia;
 	}

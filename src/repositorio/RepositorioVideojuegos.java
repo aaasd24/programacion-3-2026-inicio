@@ -22,7 +22,7 @@ public class RepositorioVideojuegos {
 			pst.setInt(0, videojuegoNuego.getId());
 			pst.setString(1, videojuegoNuego.getTitulo());
 			pst.setFloat(2, videojuegoNuego.getPrecio());
-			pst.setString(3, videojuegoNuego.getDireccionURL());
+			pst.setString(3, videojuegoNuego.getDireccionArchivo());
 			pst.executeUpdate();
 			System.err.println("Se subio nuevo juego");
 		}catch(SQLException ex) {
@@ -46,7 +46,7 @@ public class RepositorioVideojuegos {
 				Videojuego videojuegoImportado = new Videojuego(
 						rs.getInt("idvideojuego"), 
 						rs.getString("titulo"), 
-						obtenerGenerosid(),  //TODO Checar bien como obtener la lista de generos
+						null,  //TODO Checar bien como obtener la lista de generos
 						rs.getString("descripcion"),
 						rs.getString("direccionArchivo"), 
 						rs.getString("imagePath")
@@ -84,7 +84,7 @@ public class RepositorioVideojuegos {
 				PreparedStatement pst = conexion.prepareStatement(sql);){
 			pst.setString(0, videojuegoActualizado.getTitulo());
 			pst.setFloat(1, videojuegoActualizado.getPrecio());
-			pst.setString(2, videojuegoActualizado.getDireccionURL());
+			pst.setString(2, videojuegoActualizado.getDireccionArchivo());
 			
 			int filaAfectada = pst.executeUpdate();
 			if(filaAfectada > 0) {

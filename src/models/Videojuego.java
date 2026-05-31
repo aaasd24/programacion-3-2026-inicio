@@ -4,36 +4,36 @@ public class Videojuego {
 	
 	private int id;
 	private String titulo;
-	private int[] generosId;
+	private String[] generosId;
 	private String descripcion;
 	private String portadaPath;
-	private boolean plataforma;
+	private boolean disponibilidadEnEstaplataforma;
 	private boolean crossplay;
 	private String multijugador;
-	private	String direccionURL;
+	private	String direccionArchivo;
 	private	float precio;
 	
 	
 	//Constructor base
-	public Videojuego(int id, String nombre, int[] generos,String descripcion, String direccion, String imgaePath) {
+	public Videojuego(int id, String nombre, String[] generos,String descripcion, String direccion, String imgaePath) {
 		this.id = id;
 		this.titulo = nombre;
 		this.generosId = generos;
 		this.descripcion = descripcion;
-		this.direccionURL = direccion;
+		this.direccionArchivo = direccion;
 		this.portadaPath = imgaePath;
 	}
 	
 	//Constructor completo 
-	public Videojuego(int id, String nombre, int[] generos, float precio,String descripcion, String direccion, String imgaePath, boolean plataforma, boolean crossplay, String multijugador) {
+	public Videojuego(int id, String nombre, String[] generos, float precio,String descripcion, String direccion, String imgaePath, boolean plataforma, boolean crossplay, String multijugador) {
 		this.id = id;
 		this.titulo = nombre;
 		this.generosId = generos;
 		this.precio = precio;
 		this.descripcion = descripcion;
-		this.direccionURL = direccion;
+		this.direccionArchivo = direccion;
 		this.portadaPath = imgaePath;
-		this.plataforma = plataforma;
+		this.disponibilidadEnEstaplataforma = plataforma;
 		this.crossplay = crossplay;
 		this.multijugador = multijugador;
 	}
@@ -54,11 +54,11 @@ public class Videojuego {
 		this.titulo = titulo;
 	}
 
-	public int[] getGenerosId() {
+	public String[] getGeneros() {
 		return generosId;
 	}
 
-	public void setGenerosId(int[] generosId) {
+	public void setGeneros(String[] generosId) {
 		this.generosId = generosId;
 	}
 
@@ -78,12 +78,12 @@ public class Videojuego {
 		this.portadaPath = portadaPath;
 	}
 
-	public boolean isPlataforma() {
-		return plataforma;
+	public boolean isPlataformadisponible() {
+		return disponibilidadEnEstaplataforma;
 	}
 
 	public void setPlataforma(boolean plataforma) {
-		this.plataforma = plataforma;
+		this.disponibilidadEnEstaplataforma = plataforma;
 	}
 
 	public boolean isCrossplay() {
@@ -102,12 +102,12 @@ public class Videojuego {
 		this.multijugador = multijugador;
 	}
 
-	public String getDireccionURL() {
-		return direccionURL;
+	public String getDireccionArchivo() {
+		return direccionArchivo;
 	}
 
-	public void setDireccionURL(String direccionURL) {
-		this.direccionURL = direccionURL;
+	public void setDireccionArchivo(String direccionURL) {
+		this.direccionArchivo = direccionURL;
 	}
 
 	public float getPrecio() {
