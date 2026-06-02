@@ -26,7 +26,7 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import models.Biblioteca;
+import models.BibliotecaPersonal;
 import models.Usuario;
 import repositorio.RepositorioBiblioteca;
 import repositorio.RepositorioUsuarios;
@@ -146,7 +146,7 @@ public class RegistrationController {
         
     }
 
-    private void guardarNuevoUsuario(Usuario usuarioNuevo, Biblioteca bibliotecanueva) throws SQLException {
+    private void guardarNuevoUsuario(Usuario usuarioNuevo, BibliotecaPersonal bibliotecanueva) throws SQLException {
     	try {
     		repositorio.guardarUsuario(usuarioNuevo);
     		repobibli.subirBiblioteca(bibliotecanueva);
@@ -195,7 +195,7 @@ public class RegistrationController {
     			view.getRol()
     			
     	);
-    	Biblioteca bibliotecaNueva = new Biblioteca(view.getNombreUsuario());
+    	BibliotecaPersonal bibliotecaNueva = new BibliotecaPersonal(view.getNombreUsuario());
     	
     	try {
 			guardarNuevoUsuario(usuarioNuevo, bibliotecaNueva);

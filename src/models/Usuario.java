@@ -1,5 +1,7 @@
 package models;
 
+import java.sql.Date;
+
 import utils.Genero;
 
 public class Usuario {
@@ -9,8 +11,8 @@ public class Usuario {
 	private String correo;
 	private String contrasenia;
 	private int idregion;
-	//private EnumGenero genero = EnumGenero;
 	Genero genero;
+	private Date fechaN;
 	private String anio;
 	private String mes;
 	private String dia;
@@ -41,6 +43,15 @@ public class Usuario {
 		this.anio = anio;
 		this.mes = mes;
 		this.dia = dia;
+		this.ImagenPath = ImagenPath;
+		this.rol = rol;
+	}
+	public Usuario(String nombre, String correo, int idregion, Genero genero, Date fechaN, String ImagenPath, String rol) {
+		this.nombre = nombre;
+		this.correo = correo;
+		this.fechaN = fechaN;
+		this.idregion = idregion;
+		this.genero = genero;
 		this.ImagenPath = ImagenPath;
 		this.rol = rol;
 	}
@@ -124,6 +135,9 @@ public class Usuario {
 	public Genero getGenero() {
 		return genero;
 	}
+	public Date getFechaN() {
+		return fechaN;
+	}
 	/*
 	public String getFechaString() {
 		return "Y: " + anio + " M: " + meses + " D: " + dia;
@@ -160,6 +174,7 @@ public class Usuario {
 	public void setCorreo(String correo) {this.correo = correo;}
 	public void setContrasenia(String contrasenia) {this.contrasenia = contrasenia;}
 	public void setGenero(Genero genero) {this.genero = genero;}
+	public void setDateN(Date fecha) {this.fechaN = fecha;}
 	public void setRegionID(int region) {this.idregion = region;}
 	public void setAnio(String anio) {this.anio = anio;}
 	public void setMes(String mes) {this.mes = mes;}
@@ -167,12 +182,11 @@ public class Usuario {
 	public void setRol(String rol) {this.rol = rol;}
 	public void setImagenPath(String imagenPath) {ImagenPath = imagenPath;}
 	public void setIdBiblioteca(int idBiblioteca) {	this.idBiblioteca = idBiblioteca;}
-	
-	
-	
-	public String toCsv() {
-		return nombre + "," + correo + "," + idregion + "," + genero +  "," + anio + "," + mes + "," + dia;
-	}
+	/*
+	public String obtenerAnioDate(Date fecha) {
+		String anio = fecha.toString();
+		return "j";
+	}*/
 
 	
 }

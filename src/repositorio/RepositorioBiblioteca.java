@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import config.DatabaseConnection;
-import models.Biblioteca;
+import models.BibliotecaPersonal;
 
 public class RepositorioBiblioteca {
 	
-	public void subirBiblioteca(Biblioteca bibl) throws SQLException {
+	public void subirBiblioteca(BibliotecaPersonal bibl) throws SQLException {
 		String sql = "INSERT INTO biblioteca(nombre) VALUE (?)";
 		try(Connection conexion = DatabaseConnection.getConnection();
 			PreparedStatement pst = conexion.prepareStatement(sql);)
@@ -27,30 +27,18 @@ public class RepositorioBiblioteca {
 		}
 	}
 	
-	public List<Biblioteca> obtenerListaBiblitecas() throws SQLException{
-		
-		List<Biblioteca> bibl = new ArrayList<Biblioteca>();
+	//Se supone que las bibliotecas no se deberan mostrar bajo circunstancias normales
+	public List<BibliotecaPersonal> obtenerListaBiblitecas() throws SQLException{
+		List<BibliotecaPersonal> bibl = new ArrayList<BibliotecaPersonal>();
 		try (
 			Connection conexion = DatabaseConnection.getConnection();
 			Statement stm = conexion.createStatement();
-			ResultSet rs = stm.executeQuery("SELECT * FROM biblioteca");
-				)
-			
+			ResultSet rs = stm.executeQuery("SELECT * FROM biblioteca");)
 		{
-			Biblioteca bibl1 = new Biblioteca("Repo");
-			bibl.add(bibl1);
-			/*
 			while(rs.next()) {
-				Videojuego videojuegoImportado = new Videojuego(
-						rs.getInt("idvideojuego"), 
-						rs.getString("titulo"), 
-						obtenerGenerosid(),  //TODO Checar bien como obtener la lista de generos
-						rs.getString("descripcion"),
-						rs.getString("direccionArchivo"), 
-						rs.getString("imagePath")
-						);
-				juegos.add(videojuegoImportado);
-			}*/
+				BibliotecaPersonal bibl1 = new BibliotecaPersonal(rs.getString("nombre"));
+				bibl.add(bibl1);
+			}
 		}catch(SQLException ex) {
 			ex.printStackTrace();
 		}
@@ -58,10 +46,10 @@ public class RepositorioBiblioteca {
 	}
 	
 	public boolean eliminar(int id){
-		String sql = "DELETE FROM videojuego WHERE idvideojuego = ?";
+		String sql = "DELETE FROM biblioteca WHERE idbiblioteca = ?";
 		try(Connection conexion = DatabaseConnection.getConnection();
-				PreparedStatement pst = conexion.prepareStatement(sql);
-				){
+				PreparedStatement pst = conexion.prepareStatement(sql);)
+		{
 			pst.setInt(1, id);
 			int filaAfectada = pst.executeUpdate();
 			if(filaAfectada > 0) {
@@ -73,16 +61,18 @@ public class RepositorioBiblioteca {
 		}
 		return false;
 	}
-	/*
-	public boolean actualizar(int indice, Videojuego videojuegoActualizado) throws SQLException{
-		String sql = "UPDATE videojuego SET nombre = ?, precio = ?, direccionArchivo = ?"
-					+ "WHERW idvideojuego = ?";
+	
+	//TODO ver como se actualiza la biblitoeca personal de cada usuario
+	//Se actualiza nombre si se cambio y los nuevos juegos que se agreguen
+	public boolean actualizar(int indice, BibliotecaPersonal bibliotecaActualizada) throws SQLException{
+		//TODO Index para que chuchas se usa????
+		String sql = "UPDATE biblioteca_has_videojuego SET  WHERE biblioteca_idbiblioteca = ?";
 		
 		try(Connection conexion = DatabaseConnection.getConnection();
-				PreparedStatement pst = conexion.prepareStatement(sql);){
-			pst.setString(0, videojuegoActualizado.getTitulo());
-			pst.setFloat(1, videojuegoActualizado.getPrecio());
-			pst.setString(2, videojuegoActualizado.getDireccionURL());
+			PreparedStatement pst = conexion.prepareStatement(sql);)
+		{
+			pst.setString(1, bibliotecaActualizada.getNombreBiblioteca());
+			pst.setInt(2, bibliotecaActualizada.getIdbiblioteca());
 			
 			int filaAfectada = pst.executeUpdate();
 			if(filaAfectada > 0) {
@@ -91,23 +81,6 @@ public class RepositorioBiblioteca {
 			}
 			
 		}
-		return false;
-		
-	}*/
-	
-	public Biblioteca obtenerBibliotecaAsignada(Biblioteca bibli) throws SQLException{
-		Biblioteca bib = new Biblioteca("temporal");
-		try(Connection conexion = DatabaseConnection.getConnection();
-				Statement stm = conexion.createStatement();
-				ResultSet rs = stm.executeQuery("SELECT * FROM biblioteca WHERE nombre = " + bibli.getNombreBiblioteca());)
-		{
-			bib.setIdbiblioteca(rs.getInt("idbiblioteca"));
-			bib.setNombreBiblioteca(rs.getString("nombre"));
-		}catch(SQLException ex) {
-			ex.printStackTrace();
-		}
-		
-		
-		return bib;
+		return false;	
 	}
 }

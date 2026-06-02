@@ -7,7 +7,6 @@ import tablamodelos.Tablamodelousuario;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -76,7 +75,7 @@ public class UserController {
 
     private void openForm(Usuario user) {
     	
-        // null para el parent, user para saber si es edición o nuevo
+        // null para crear un nuevo usuario, user para actualizar un usuario existente
     	System.out.println("Creando nuevo usuario");
         FormularioUsuarioDialog dialog = new FormularioUsuarioDialog(null);
         FormularioUsuarioDialogController dialogControlador = new FormularioUsuarioDialogController(dialog, user);
@@ -84,18 +83,15 @@ public class UserController {
         dialogControlador.inicializarListeners();
         if (dialog.isSaved()) {
             Usuario savedUser = dialogControlador.getUsuario(); 
-
             try {
                 if (user == null) { //usuario nuevo
                 	System.out.println("Se crea nuevo usuario");
-                	
                     repo.guardarUsuario(savedUser);
                     model.addRow(savedUser);
                     
                 } else {//actualizar usuario
                 	System.out.println("Se edito un usuario");
                     int row = view.getSelectedRow();
-                    //repo.update(row, savedUser);
                     boolean actualizar = repo.update(row, savedUser);
                     if(actualizar) {
                     	model.updateRow(row, savedUser);
@@ -112,13 +108,10 @@ public class UserController {
     }
     
     public void generarPdf() {
-		
 		File file = view.seleccionarPdfFile();
-		
 		if(file == null) {
 			return;
 		}
-		
 		try {
 			expPDF.exportarUsuarios(repo.obtenerUsuarios(), file); 
 			if(Desktop.isDesktopSupported()) {

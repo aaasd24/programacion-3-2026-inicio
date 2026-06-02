@@ -35,15 +35,14 @@ public class Tablamodelovideojuego extends AbstractTableModel{
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Videojuego videojuegoActuak = listaVideojuego.get(rowIndex);
+		Videojuego videojuegoActual = listaVideojuego.get(rowIndex);
 		switch(columnIndex) {
 		case 0:
-			return videojuegoActuak.getTitulo();
+			return videojuegoActual.getTitulo();
 		case 1:
-			//TODO aqui afecta
-			//return videojuegoActuak.getGenerosid();
+			return videojuegoActual.getGeneros();
 		case 2:
-			return videojuegoActuak.getPrecio();
+			return videojuegoActual.getPrecio();
 		}
 		return null;
 	}

@@ -2,13 +2,13 @@ package models;
 
 import java.util.List;
 
-public class Biblioteca {
+public class BibliotecaPersonal {
 
 	private List<Videojuego> biblioteca;
 	private int idbiblioteca = 0;
 	private String nombreBiblioteca;
 	
-	public Biblioteca(String nombreUsuario) {
+	public BibliotecaPersonal(String nombreUsuario) {
 		this.nombreBiblioteca = "Biblioteca de " +  nombreUsuario;
 	}
 	

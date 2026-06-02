@@ -1,10 +1,12 @@
 package models;
 
+import java.util.List;
+
 public class Videojuego {
 	
 	private int id;
 	private String titulo;
-	private String[] generosId;
+	private List<String> generosId;
 	private String descripcion;
 	private String portadaPath;
 	private boolean disponibilidadEnEstaplataforma;
@@ -15,7 +17,7 @@ public class Videojuego {
 	
 	
 	//Constructor base
-	public Videojuego(int id, String nombre, String[] generos,String descripcion, String direccion, String imgaePath) {
+	public Videojuego(int id, String nombre, List<String> generos,String descripcion, String direccion, String imgaePath) {
 		this.id = id;
 		this.titulo = nombre;
 		this.generosId = generos;
@@ -25,7 +27,7 @@ public class Videojuego {
 	}
 	
 	//Constructor completo 
-	public Videojuego(int id, String nombre, String[] generos, float precio,String descripcion, String direccion, String imgaePath, boolean plataforma, boolean crossplay, String multijugador) {
+	public Videojuego(int id, String nombre, List<String> generos, float precio,String descripcion, String direccion, String imgaePath, boolean plataforma, boolean crossplay, String multijugador) {
 		this.id = id;
 		this.titulo = nombre;
 		this.generosId = generos;
@@ -54,11 +56,11 @@ public class Videojuego {
 		this.titulo = titulo;
 	}
 
-	public String[] getGeneros() {
+	public List<String> getGeneros() {
 		return generosId;
 	}
 
-	public void setGeneros(String[] generosId) {
+	public void setGeneros(List<String> generosId) {
 		this.generosId = generosId;
 	}
 
@@ -118,7 +120,18 @@ public class Videojuego {
 		this.precio = precio;
 	}
 
-	
-	
+	public boolean getDisponibilidad() {
+		return disponibilidadEnEstaplataforma;
+	}
+
+	public void setDisponibilidad(boolean disponible) {
+		this.disponibilidadEnEstaplataforma = disponible;
+	}
+	public boolean getCrossplay() {
+		return crossplay;
+	}
+	public void setCrossplat(boolean crossplay) {
+		this.crossplay = crossplay;
+	}
 	
 }
