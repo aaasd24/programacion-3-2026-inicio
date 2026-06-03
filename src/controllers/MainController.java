@@ -61,10 +61,10 @@ public class MainController {
 	}
 	
 	private void mostrarVideojuegos() {
-		if(videojuegoController == null) {
+		/*if(videojuegoController == null) {
 			videojuegoController = new VideojuegoController(view.panelVideojuego);
-		}
-		videojuegoController.cargarJuegos();
+		}*/
+		//videojuegoController.cargarJuegos();
 		view.mostrarVista(MainWindow.GAMES);
 		updateMenuState(MainWindow.GAMES);
 		

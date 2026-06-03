@@ -61,8 +61,7 @@ public class RepositorioVideojuegos {
 						obtenerGenerosDdBD(rs.getInt("idvideojuego")),
 						rs.getString("descripcion"),
 						rs.getString("direccionArchivo"), 
-						rs.getString("imagePath")
-						);
+						rs.getString("imagePath"));
 				juegos.add(videojuegoImportado);
 			}
 		}catch(SQLException ex) {
@@ -156,15 +155,22 @@ public class RepositorioVideojuegos {
 	
 	
 	public List<String> obtenerGenerosDdBD(int idVideojuego) throws SQLException{
-		List<String> generos = null;
+		List<String> generos = new ArrayList<String>();
 		try (
 				Connection conexion = DatabaseConnection.getConnection();
 				Statement stm = conexion.createStatement();
-				ResultSet rs = stm.executeQuery("SELECT * FROM videojuego_has_generoVideojuego WHERE videojuego_idvideojuego = " + idVideojuego);)
-			{
-				while(rs.next()) {
-					generos.add(rs.getString("nombre"));
-				}
+				ResultSet rs = stm.executeQuery("SELECT nombre, idgeneroVideojuego FROM generoVideojuego gv "
+						+ "INNER JOIN videojuego_has_generoVideojuego vhg ON gv.idgeneroVideojuego = vhg.generoVideojuego_idgeneroVideojuego "
+						+ "INNER JOIN videojuego v ON vhg.videojuego_idvideojuego = v.idvideojuego WHERE v.idvideojuego = " 
+						+ idVideojuego);)
+			{	
+			while(rs.next()) {
+				String temporal = rs.getString("nombre");
+				System.out.println(temporal);
+				generos.add(temporal);
+			}
+			}catch(SQLException ex) {
+				ex.printStackTrace();
 			}
 		
 		return generos;
