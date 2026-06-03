@@ -34,6 +34,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import assets.GestorCursor;
 import config.Config;
 import controllers.RegistrationController;
+import utils.Genero;
 import assets.AppFonts;
 import assets.Colores;
 
@@ -361,14 +362,14 @@ public class FormularioRegistro extends JFrame {
     public String getAnio() { return String.valueOf(comboAnios.getSelectedItem());}
     public String getMes() { return String.valueOf(comboMeses.getSelectedItem());}
     public String getDia() { return String.valueOf(comboDias.getSelectedItem()); }
-    public char getGenero() { 
+    public Genero getGenero() { 
     	if(rbHombre.isSelected()) {
-    		return 'H';
+    		return Genero.HOMBRE;
     	}
     	if(rbMujer.isSelected()) {
-    		return 'M';
+    		return Genero.MUJER;
     	}
-    	return 'n';
+    	return Genero.HOMBRE;
     }
     public String getSelectedImagePath() { return selectedImagePath;    }
 

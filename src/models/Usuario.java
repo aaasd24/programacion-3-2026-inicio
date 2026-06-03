@@ -1,5 +1,8 @@
 package models;
 
+import java.sql.Date;
+
+import utils.Genero;
 
 public class Usuario {
 
@@ -8,12 +11,14 @@ public class Usuario {
 	private String correo;
 	private String contrasenia;
 	private int idregion;
-	private char genero;
+	Genero genero;
+	private Date fechaN;
 	private String anio;
 	private String mes;
 	private String dia;
 	private String ImagenPath;
 	private String rol;
+	private int idBiblioteca;
 	
 	public Usuario() {
 		
@@ -30,7 +35,7 @@ public class Usuario {
 
 	
 	
-	public Usuario(String nombre, String correo, int idregion, char genero, String anio, String mes, String dia, String ImagenPath, String rol) {
+	public Usuario(String nombre, String correo, int idregion, Genero genero, String anio, String mes, String dia, String ImagenPath, String rol) {
 		this.nombre = nombre;
 		this.correo = correo;
 		this.idregion = idregion;
@@ -41,9 +46,18 @@ public class Usuario {
 		this.ImagenPath = ImagenPath;
 		this.rol = rol;
 	}
+	public Usuario(String nombre, String correo, int idregion, Genero genero, Date fechaN, String ImagenPath, String rol) {
+		this.nombre = nombre;
+		this.correo = correo;
+		this.fechaN = fechaN;
+		this.idregion = idregion;
+		this.genero = genero;
+		this.ImagenPath = ImagenPath;
+		this.rol = rol;
+	}
 	
 	
-	public Usuario(int id, String nombre, String correo, int idregion, char genero, String anio, String mes, String dia, String ImagenPath, String rol) {
+	public Usuario(int id, String nombre, String correo, int idregion, Genero genero, String anio, String mes, String dia, String ImagenPath, String rol) {
 		this.id = id;
 		this.nombre = nombre;
 		this.correo = correo;
@@ -118,8 +132,11 @@ public class Usuario {
 		return null;
 				
 	}
-	public char getGenero() {
+	public Genero getGenero() {
 		return genero;
+	}
+	public Date getFechaN() {
+		return fechaN;
 	}
 	/*
 	public String getFechaString() {
@@ -138,7 +155,12 @@ public class Usuario {
 		return rol;
 	}
 	
-	
+	/**
+	 * @return the idBiblioteca ???????????????????? 
+	 */
+	public int getIdBiblioteca() {
+		return idBiblioteca;
+	}
 	
 	/**
 	 * @return the imagenPath
@@ -151,22 +173,20 @@ public class Usuario {
 	public void setNombre(String nombre) {this.nombre = nombre;}
 	public void setCorreo(String correo) {this.correo = correo;}
 	public void setContrasenia(String contrasenia) {this.contrasenia = contrasenia;}
-	public void setGenero(char genero) {this.genero = genero;}
+	public void setGenero(Genero genero) {this.genero = genero;}
+	public void setDateN(Date fecha) {this.fechaN = fecha;}
 	public void setRegionID(int region) {this.idregion = region;}
 	public void setAnio(String anio) {this.anio = anio;}
 	public void setMes(String mes) {this.mes = mes;}
 	public void setDia(String dia) {this.dia = dia;}
 	public void setRol(String rol) {this.rol = rol;}
-
-	/**
-	 * @param imagenPath the imagenPath to set
-	 */
-	public void setImagenPath(String imagenPath) {
-		ImagenPath = imagenPath;
-	}
-	public String toCsv() {
-		return nombre + "," + correo + "," + idregion + "," + genero +  "," + anio + "," + mes + "," + dia;
-	}
+	public void setImagenPath(String imagenPath) {ImagenPath = imagenPath;}
+	public void setIdBiblioteca(int idBiblioteca) {	this.idBiblioteca = idBiblioteca;}
+	/*
+	public String obtenerAnioDate(Date fecha) {
+		String anio = fecha.toString();
+		return "j";
+	}*/
 
 	
 }

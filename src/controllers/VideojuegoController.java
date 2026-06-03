@@ -1,16 +1,16 @@
 package controllers;
 
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import models.Usuario;
 import models.Videojuego;
 import repositorio.RepositorioVideojuegos;
-import servicios.PDFExportador;
 import tablamodelos.Tablamodelovideojuego;
+import views.FormularioUsuarioDialog;
 import views.VideojuegoView;
 
 public class VideojuegoController{
@@ -51,7 +51,7 @@ public class VideojuegoController{
 		//view.getBtnExportarVideojuego().addActionListener(e -> generrarPDF());
 	}
 	public void cargarJuegos() {
-		System.out.println("Se muestrn juegos");
+		System.out.println("Se muestran juegos");
 		try {
 			List<Videojuego> lista = repo.obtenerListaVideojuegos();
 			if(tabla == null) {
@@ -66,5 +66,38 @@ public class VideojuegoController{
 			ex.printStackTrace();
 		}
 	}
+	 private void abrirFormulario(Videojuego videojuego) {
+	    	/*
+	        // null para crear un nuevo usuario, user para actualizar un usuario existente
+	        //FormularioUsuarioDialog dialog = new FormularioUsuarioDialog(null);
+	        FormularioVideojuegoDialogController dialogControlador = new FormularioUsuarioDialogController(dialog, videojuego);
+	        dialog.setVisible(true);
+	        dialogControlador.inicializarListeners();
+	        if (dialog.isSaved()) {
+	            Videojuego videojuego = dialogControlador.getUsuario(); 
+	            try {
+	                if (user == null) { //usuario nuevo
+	                	System.out.println("Se crea nuevo usuario");
+	                    repo.guardarUsuario(savedUser);
+	                    model.addRow(savedUser);
+	                    
+	                } else {//actualizar usuario
+	                	System.out.println("Se edito un usuario");
+	                    int row = view.getSelectedRow();
+	                    boolean actualizar = repo.update(row, savedUser);
+	                    if(actualizar) {
+	                    	model.updateRow(row, savedUser);
+	                    }
+	                }
+	                this.loadUsers();
+	                
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	                JOptionPane.showMessageDialog(view, "Error al guardar: " + e.getMessage());
+	            }
+
+	        }*/
+	    }
+	
 	
 }

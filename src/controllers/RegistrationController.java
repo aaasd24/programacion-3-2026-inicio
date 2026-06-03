@@ -12,7 +12,6 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
@@ -27,21 +26,23 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-
+import models.BibliotecaPersonal;
 import models.Usuario;
+import repositorio.RepositorioBiblioteca;
 import repositorio.RepositorioUsuarios;
 
 public class RegistrationController {
 
     private FormularioRegistro view;
     private RepositorioUsuarios repositorio;
-   
+    private RepositorioBiblioteca repobibli;
    
     
     //el controlador recibe la vista para poder leer y modificar sus componentes
     public RegistrationController(FormularioRegistro view) {
         this.view = view;
         this.repositorio = new RepositorioUsuarios();
+        this.repobibli = new RepositorioBiblioteca();
         initListeners();
         
     }
@@ -145,11 +146,13 @@ public class RegistrationController {
         
     }
 
-    private void guardarNuevoUsuario(Usuario usuarioNuevo) throws SQLException {
+    private void guardarNuevoUsuario(Usuario usuarioNuevo, BibliotecaPersonal bibliotecanueva) throws SQLException {
     	try {
     		repositorio.guardarUsuario(usuarioNuevo);
+    		repobibli.subirBiblioteca(bibliotecanueva);
+    		repositorio.conectarBiblioteca(usuarioNuevo);
     	}catch(SQLException ex) {
-    		JOptionPane.showMessageDialog(view,"Error al guardar: " + ex.getMessage());
+    		JOptionPane.showMessageDialog(view,"Error al guardar usuario " + ex.getMessage());
     	}
     }
     
@@ -192,9 +195,10 @@ public class RegistrationController {
     			view.getRol()
     			
     	);
+    	BibliotecaPersonal bibliotecaNueva = new BibliotecaPersonal(view.getNombreUsuario());
     	
     	try {
-			guardarNuevoUsuario(usuarioNuevo);
+			guardarNuevoUsuario(usuarioNuevo, bibliotecaNueva);
 			
 		        
 		        

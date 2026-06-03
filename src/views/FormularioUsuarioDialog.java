@@ -10,7 +10,6 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -23,8 +22,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import assets.AppFonts;
-import controllers.FormularioUsuarioDialogController;
 import models.Usuario;
+import utils.Genero;
 
 @SuppressWarnings("serial")
 public class FormularioUsuarioDialog extends JDialog{
@@ -195,7 +194,7 @@ public class FormularioUsuarioDialog extends JDialog{
             txtEmail.setText(usuarioSeleccionado.getCorreo());
             comboRegiones.setSelectedItem(usuarioSeleccionado.getRegionString());
 
-            if (usuarioSeleccionado.getGenero() == 'M') {
+            if (usuarioSeleccionado.getGenero() == Genero.HOMBRE) {
                 rbtnMale.setSelected(true);
             } else {
                 rbtnFemale.setSelected(true);
@@ -250,14 +249,14 @@ public class FormularioUsuarioDialog extends JDialog{
     public int getRegionID() { return comboRegiones.getSelectedIndex(); }
     public String getMes() { return String.valueOf(comboMeses.getSelectedItem());}
     public String getDia() { return String.valueOf(comboDias.getSelectedItem()); }
-    public char getGenero() { 
+    public Genero getGenero() { 
     	if(rbtnMale.isSelected()) {
-    		return 'H';
+    		return Genero.HOMBRE;
     	}
     	if(rbtnFemale.isSelected()) {
-    		return 'M';
+    		return Genero.MUJER;
     	}
-    	return 'n'; 
+    	return Genero.HOMBRE; 
     }
 	public String getRol() {return ADMIN;}
 

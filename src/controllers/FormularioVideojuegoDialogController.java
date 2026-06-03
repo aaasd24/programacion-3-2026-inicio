@@ -7,24 +7,27 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-//import models.BibliotecaPersonal;
+import models.BibliotecaPersonal;
 import models.Usuario;
+import models.Videojuego;
 import utils.Genero;
 import views.FormularioUsuarioDialog;
 
-public class FormularioUsuarioDialogController {
+public class FormularioVideojuegoDialogController {
 
-	private FormularioUsuarioDialog view;
-	private Usuario usuario;
+	private FormularioVideojuegoDialogController view;
+	private Videojuego videojuego;
 	
-	public FormularioUsuarioDialogController(FormularioUsuarioDialog view, Usuario usuarioSeleccionado) {
+	public FormularioVideojuegoDialogController(FormularioVideojuegoDialogController view, Videojuego videojuegoSeleccionado) {
 
         this.view = view;
-        this.usuario = usuarioSeleccionado;
+        this.videojuego = videojuegoSeleccionado;
         inicializarListeners();
-        cargarDatos();
+        //cargarDatos();
 	}
 	public void inicializarListeners() {
+		
+		/*
         view.getBotonGuardar().addActionListener(e -> validarFormulario());
 
         view.getComboRegiones().addActionListener(e -> validateComboRegion());
@@ -38,7 +41,7 @@ public class FormularioUsuarioDialogController {
         view.getComboAnios().addActionListener(e -> validateAnio());
         view.getComboMeses().addActionListener(e -> validateComboMes());
         view.getComboDias().addActionListener(e -> validateComboDia());
-
+		 
         
 
         // --------VALIDACIONES EN TIEMPO REAL (TEXTFIELDS) --------
@@ -47,12 +50,13 @@ public class FormularioUsuarioDialogController {
         
         view.getBotonGuardar().addActionListener(e -> save());
         view.getBotonCancelar().addActionListener(e -> view.dispose());
+        */
 	}
-    
+    /*
 	public boolean validarFormulario() {
         boolean valid = true;
 
-        
+        //TODO editar validaciones
         if (!validateName()) valid = false;
         if (!validateEmail()) valid = false;
         if (!validateComboRegion()) valid = false;
@@ -66,6 +70,8 @@ public class FormularioUsuarioDialogController {
         }
         return false;
     }
+	
+	//TODO cambiar validaciones 
 	 private boolean validarJTextField(JTextField campoChecar, JLabel labelError) {
         if (campoChecar.getText().trim().isEmpty()) {
             labelError.setText("Es obligatorio llenar este campo");
@@ -166,7 +172,7 @@ public class FormularioUsuarioDialogController {
     }
 	    
     private void cargarDatos() {
-    	view.mostrarDatos(usuario);
+    	view.mostrarDatos(videojuego);
     }
     private void save() {
     	
@@ -187,7 +193,7 @@ public class FormularioUsuarioDialogController {
         
         if(usuario == null) { //															NO tiene imagen
         	this.usuario = new Usuario(nombre, correo, region, genero, anio, mes, dia, null, rol);
-        	//BibliotecaPersonal temporal = new BibliotecaPersonal(nombre + " ADMIN");
+        	BibliotecaPersonal temporal = new BibliotecaPersonal(nombre + " ADMIN");
         	
         }else {
         	this.usuario.setNombre(nombre);
@@ -206,5 +212,5 @@ public class FormularioUsuarioDialogController {
 	public Usuario getUsuario() {
 		return usuario;
 	}
-    
+    */
 }
