@@ -209,8 +209,7 @@ public class FormularioUsuarioDialog extends JDialog{
     
     public void confirmarGuardado() {
         saved = true;
-        dispose();
-        
+        dispose();  
     }
 
     public boolean isSaved() {

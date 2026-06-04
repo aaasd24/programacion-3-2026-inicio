@@ -10,6 +10,7 @@ import models.Usuario;
 import models.Videojuego;
 import repositorio.RepositorioVideojuegos;
 import tablamodelos.Tablamodelovideojuego;
+import views.FormularioJuego;
 import views.FormularioUsuarioDialog;
 import views.VideojuegoView;
 
@@ -27,7 +28,7 @@ public class VideojuegoController{
 		//this.expPDF
 		
 		//Listener boton [  AGRREGAR JUEGO  ]
-		//view.getBtnAdd().addActionListener(e -> cargarJuegoNuevo(null));
+		view.getBtnAdd().addActionListener(e -> abrirFormulario(null));
 		
 		//LIstener boton [  EDITAR Juego ]
 		view.getBtnEdit().addActionListener(e -> {
@@ -67,36 +68,36 @@ public class VideojuegoController{
 		}
 	}
 	 private void abrirFormulario(Videojuego videojuego) {
-	    	/*
+	    	
 	        // null para crear un nuevo usuario, user para actualizar un usuario existente
-	        //FormularioUsuarioDialog dialog = new FormularioUsuarioDialog(null);
-	        FormularioVideojuegoDialogController dialogControlador = new FormularioUsuarioDialogController(dialog, videojuego);
+	        FormularioJuego dialog = new FormularioJuego();
+	        FormularioVideojuegoDialogController dialogControlador = new FormularioVideojuegoDialogController(dialog, videojuego);
 	        dialog.setVisible(true);
 	        dialogControlador.inicializarListeners();
-	        if (dialog.isSaved()) {
-	            Videojuego videojuego = dialogControlador.getUsuario(); 
+	        if (dialog.estaGuardado()) {
+	            Videojuego videojuegoActual = dialogControlador.getVideojuego(); 
 	            try {
-	                if (user == null) { //usuario nuevo
+	                if (videojuegoActual == null) { //usuario nuevo
 	                	System.out.println("Se crea nuevo usuario");
-	                    repo.guardarUsuario(savedUser);
-	                    model.addRow(savedUser);
+	                    repo.subirVideojuego(videojuegoActual);
+	                    //model.addRow(savedUser);
 	                    
 	                } else {//actualizar usuario
 	                	System.out.println("Se edito un usuario");
 	                    int row = view.getSelectedRow();
-	                    boolean actualizar = repo.update(row, savedUser);
+	                    boolean actualizar = repo.actualizar(row, videojuegoActual);
 	                    if(actualizar) {
-	                    	model.updateRow(row, savedUser);
+	                    	//model.updateRow(row, savedUser);
 	                    }
 	                }
-	                this.loadUsers();
+	                this.cargarJuegos();
 	                
 	            } catch (Exception e) {
 	                e.printStackTrace();
 	                JOptionPane.showMessageDialog(view, "Error al guardar: " + e.getMessage());
 	            }
 
-	        }*/
+	        }
 	    }
 	
 	

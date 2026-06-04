@@ -25,6 +25,7 @@ public class FormularioUsuarioDialogController {
         cargarDatos();
 	}
 	public void inicializarListeners() {
+		//Boton guardar
         view.getBotonGuardar().addActionListener(e -> validarFormulario());
 
         view.getComboRegiones().addActionListener(e -> validateComboRegion());

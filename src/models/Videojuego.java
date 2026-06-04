@@ -27,8 +27,7 @@ public class Videojuego {
 	}
 	
 	//Constructor completo 
-	public Videojuego(int id, String nombre, List<String> generos, float precio,String descripcion, String direccion, String imgaePath, boolean plataforma, boolean crossplay, String multijugador) {
-		this.id = id;
+	public Videojuego(String nombre, List<String> generos, float precio,String descripcion, String direccion, String imgaePath, boolean plataforma, boolean crossplay, String multijugador) {
 		this.titulo = nombre;
 		this.generosId = generos;
 		this.precio = precio;

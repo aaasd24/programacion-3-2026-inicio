@@ -35,7 +35,6 @@ public class Main {
 
 //TODO idea para modificar boton: investigar como podemos modificar el boton para que se encienda en llamas cuando presionas o pasas el cursor por encima//
 //TODO CAMBIAR PALETA DE COLORES(URGE)//
-//TODO no logre entender porque no me dejo apuntar la libreria hash (ni la de sql) desde el proyecto asi que lo hice en mi pc, pero igualmente la agregue para el repositorio para que luego que tengas tiempo, waches si te pasa lo mismo
 
 
 
