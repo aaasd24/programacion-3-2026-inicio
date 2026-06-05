@@ -84,41 +84,31 @@ public class MainWindow extends JFrame {
 	/**
 	 * @return the salir
 	 */
-	public JMenuItem getSalir() {
-		return salir;
-	}
+	public JMenuItem getSalir() {return salir;}
 
 
 	/**
 	 * @return the mb
 	 */
-	public JMenuBar getMb() {
-		return mb;
-	}
+	public JMenuBar getMb() {return mb;	}
 
 
 	/**
 	 * @return the archivo
 	 */
-	public JMenu getArchivo() {
-		return archivo;
-	}
+	public JMenu getArchivo() {	return archivo;}
 
 
 	/**
 	 * @return the abrir
 	 */
-	public JMenuItem getAbrir() {
-		return abrir;
-	}
+	public JMenuItem getAbrir() {return abrir;}
 
 
 	/**
 	 * @return the guardar
 	 */
-	public JMenuItem getGuardar() {
-		return guardar;
-	}
+	public JMenuItem getGuardar() {	return guardar;}
 
 
 	/**

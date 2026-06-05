@@ -1,5 +1,6 @@
 package javaProyect1;
 
+import views.FormularioJuego;
 import views.FormularioRegistro;
 import views.LoginWindow;
 import views.MainWindow;
@@ -12,8 +13,9 @@ public class Main {
     public static void main(String[] args) {
     	ThemeManager.applySavedTheme();
     	//abrirLogin();
-    	abrirMain();
+    	//abrirMain();
     	//abrirFormulario();
+    	abrirFormularioVid();
     	System.out.println("jalando");
     	
     }
@@ -31,10 +33,11 @@ public class Main {
     	MainWindow mainWind = new MainWindow();
     	mainWind.setVisible(true);
     }
+    public static void abrirFormularioVid() {
+    	FormularioJuego formula = new FormularioJuego();
+    	formula.setVisible(true);
+    }
 }
-
-//TODO idea para modificar boton: investigar como podemos modificar el boton para que se encienda en llamas cuando presionas o pasas el cursor por encima//
-//TODO CAMBIAR PALETA DE COLORES(URGE)//
 
 
 

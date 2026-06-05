@@ -17,26 +17,24 @@ public class RepositorioVideojuegos {
 		//pasar todos los datos excepto los generos
 		String sql = "INSERT INTO videojuego(titulo, "
 				+ "portadaPath,"
-				+ "disponibilidad,"
 				+ "descripcion,"
 				+ "crossplay,"
 				+ "multijugador,"
 				+ "precio, "
 				+ "direccionArchivo"
 				+ ")" + 
-					"VALUE (?, ?, ?, ?, ?, ?, ?, ?)";
+					"VALUE (?, ?, ?, ?, ?, ?, ?)";
 		try(Connection conexion = DatabaseConnection.getConnection();
 			PreparedStatement pst = conexion.prepareStatement(sql);)
 		{
 			
 			pst.setString(1, videojuegoNuevo.getTitulo());
 			pst.setString(2, videojuegoNuevo.getPortadaPath());
-			pst.setBoolean(3, videojuegoNuevo.getDisponibilidad());
-			pst.setString(4, videojuegoNuevo.getDescripcion());
-			pst.setBoolean(5, videojuegoNuevo.getCrossplay());
-			pst.setString(6, videojuegoNuevo.getMultijugador());
-			pst.setFloat(7, videojuegoNuevo.getPrecio());
-			pst.setString(8, videojuegoNuevo.getDireccionArchivo());
+			pst.setString(3, videojuegoNuevo.getDescripcion());
+			pst.setBoolean(4, videojuegoNuevo.getCrossplay());
+			pst.setString(5, videojuegoNuevo.getMultijugador());
+			pst.setFloat(6, videojuegoNuevo.getPrecio());
+			pst.setString(7, videojuegoNuevo.getDireccionArchivo());
 			// El ID del juego se agrega automaticamente, los generos se agregar aparte
 			pst.executeUpdate();
 			System.err.println("Se subio nuevo juego");
@@ -86,7 +84,7 @@ public class RepositorioVideojuegos {
 		}
 		return false;
 	}
-	
+	// Ver que hacer con este comando 
 	public boolean actualizar(int indice, Videojuego videojuegoActualizado) throws SQLException{
 		String sql = "UPDATE videojuego SET nombre = ?, precio = ?, direccionArchivo = ?"
 					+ "WHERW idvideojuego = ?";
@@ -132,7 +130,7 @@ public class RepositorioVideojuegos {
 		{
 			for(int i = 0; i < videojuego.getGeneros().size(); i++) {
 				pst.setInt(1, obteneridVideojuegodeBD(videojuego));
-				pst.setInt(2, obtenerIDConStringGeneroideojuego(videojuego.getGeneros().get(i)));
+				pst.setInt(2, obtenerIDConStringGeneroVideojuego(videojuego.getGeneros().get(i)));
 				pst.executeUpdate();
 			}
 
@@ -141,7 +139,22 @@ public class RepositorioVideojuegos {
 			ex.printStackTrace();
 		}
 	}
-	public int obtenerIDConStringGeneroideojuego(String nombre) throws SQLException{
+	public void conectarVideojuegoPlataforma(Videojuego videojuego) throws SQLException{
+		String sql = "INSERT INTO videojuego_has_plataforma("
+				+ "videojuego_idvideojuego"
+				+ "plataforma_idplataforma) "
+				+ "VALUE (?, ?)";
+		try(Connection conexion = DatabaseConnection.getConnection();
+			PreparedStatement pst = conexion.prepareStatement(sql);)
+		{
+			for(int i = 0; i < videojuego.getGeneros().size(); i++) {
+				pst.setInt(1, obteneridVideojuegodeBD(videojuego));
+				pst.setInt(2, obtenerIDConStringPlataformaVideojuego(videojuego.getGeneros().get(i)));
+				pst.executeUpdate();
+			}
+		}
+	}
+	public int obtenerIDConStringGeneroVideojuego(String nombre) throws SQLException{
 		int id = 0;
 		try(Connection conexion = DatabaseConnection.getConnection();
 			Statement stm = conexion.createStatement();
@@ -153,6 +166,17 @@ public class RepositorioVideojuegos {
 		return id;
 	}
 	
+	public int obtenerIDConStringPlataformaVideojuego(String nombre) throws SQLException{
+		int id = 0;
+		try(Connection conexion = DatabaseConnection.getConnection();
+			Statement stm = conexion.createStatement();
+			ResultSet rs = stm.executeQuery("SELECT * FROM plataforma WHERE nombre = " + nombre);)
+		{
+			rs.next();
+			id = rs.getInt("idplataforma");
+		}
+		return id;
+	}
 	
 	public List<String> obtenerGenerosDdBD(int idVideojuego) throws SQLException{
 		List<String> generos = new ArrayList<String>();
@@ -174,5 +198,28 @@ public class RepositorioVideojuegos {
 			}
 		
 		return generos;
+	}
+	
+	public List<String> obtenerPlatafomaDeVideojuegodBD(int idVideojuego) throws SQLException{
+		List<String> plataforma = new ArrayList<String>();
+		try (
+				Connection conexion = DatabaseConnection.getConnection();
+				Statement stm = conexion.createStatement();
+				//cambiar comando 
+				ResultSet rs = stm.executeQuery("SELECT nombre, idplataforma FROM plataforma p "
+						+ "INNER JOIN videojuego_has_plataforma vhp ON p.idplataforma = vhp.plataforma_idplataforma "
+						+ "INNER JOIN videojuego v ON vhp.plataforma_idplataforma = v.idvideojuego WHERE v.idvideojuego = " 
+						+ idVideojuego);)
+			{	
+			while(rs.next()) {
+				String temporal = rs.getString("nombre");
+				System.out.println(temporal);
+				plataforma.add(temporal);
+			}
+			}catch(SQLException ex) {
+				ex.printStackTrace();
+			}
+		
+		return plataforma;
 	}
 }

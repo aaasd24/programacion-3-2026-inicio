@@ -9,7 +9,7 @@ public class Videojuego {
 	private List<String> generosId;
 	private String descripcion;
 	private String portadaPath;
-	private boolean disponibilidadEnEstaplataforma;
+	private List<String> plataformasDisponible;
 	private boolean crossplay;
 	private String multijugador;
 	private	String direccionArchivo;
@@ -27,14 +27,14 @@ public class Videojuego {
 	}
 	
 	//Constructor completo 
-	public Videojuego(String nombre, List<String> generos, float precio,String descripcion, String direccion, String imgaePath, boolean plataforma, boolean crossplay, String multijugador) {
+	public Videojuego(String nombre, List<String> generos, float precio,String descripcion, String direccion, String imgaePath, List<String> plataforma, boolean crossplay, String multijugador) {
 		this.titulo = nombre;
 		this.generosId = generos;
 		this.precio = precio;
 		this.descripcion = descripcion;
 		this.direccionArchivo = direccion;
 		this.portadaPath = imgaePath;
-		this.disponibilidadEnEstaplataforma = plataforma;
+		this.plataformasDisponible = plataforma;
 		this.crossplay = crossplay;
 		this.multijugador = multijugador;
 	}
@@ -79,12 +79,12 @@ public class Videojuego {
 		this.portadaPath = portadaPath;
 	}
 
-	public boolean isPlataformadisponible() {
-		return disponibilidadEnEstaplataforma;
+	public List<String> getPlataformasDisponibles() {
+		return plataformasDisponible;
 	}
 
-	public void setPlataforma(boolean plataforma) {
-		this.disponibilidadEnEstaplataforma = plataforma;
+	public void setPlataforma(List<String> plataforma) {
+		this.plataformasDisponible = plataforma;
 	}
 
 	public boolean isCrossplay() {
@@ -118,14 +118,7 @@ public class Videojuego {
 	public void setPrecio(float precio) {
 		this.precio = precio;
 	}
-
-	public boolean getDisponibilidad() {
-		return disponibilidadEnEstaplataforma;
-	}
-
-	public void setDisponibilidad(boolean disponible) {
-		this.disponibilidadEnEstaplataforma = disponible;
-	}
+	
 	public boolean getCrossplay() {
 		return crossplay;
 	}

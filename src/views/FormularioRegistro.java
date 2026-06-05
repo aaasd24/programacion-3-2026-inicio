@@ -15,6 +15,7 @@ import java.io.File;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -50,7 +51,6 @@ public class FormularioRegistro extends JFrame {
     private JTextField txtNombre = new JTextField(20);
     private JTextField txtEmail = new JTextField(20);
     private JPasswordField txtContra = new JPasswordField(20);
-    //private String rol;
     
     private JComboBox<String> comboAnios;
     private JComboBox<String> comboMeses;
@@ -59,6 +59,7 @@ public class FormularioRegistro extends JFrame {
     private JPanel panelRadio; 
     private JRadioButton rbMujer;
     private JRadioButton rbHombre;
+    private ButtonGroup grupoGenero;
     
     private JComboBox<String> comboRegiones; 
     
@@ -174,6 +175,11 @@ public class FormularioRegistro extends JFrame {
         rbHombre.setForeground(Colores.colorear(5));
         rbMujer.setOpaque(false);
         rbHombre.setOpaque(false);
+        
+        grupoGenero = new ButtonGroup();
+        grupoGenero.add(rbHombre);
+        grupoGenero.add(rbMujer);
+        
         panelRadio.add(rbMujer); panelRadio.add(rbHombre);
         panel.add(crearCampo("Genero", panelRadio, lblErrorGenero));
         panel.add(crearCampo("Region", comboRegiones, lblErrorRegion));
@@ -356,7 +362,7 @@ public class FormularioRegistro extends JFrame {
     public String getNombreUsuario() { return txtNombre.getText(); }
     
     public String getEmailUsuario() { return txtEmail.getText();}
-    public String getPasswordusuario() { return  String.valueOf(txtContra.getPassword()); }
+    public String getContraseniaUsuario() { return  String.valueOf(txtContra.getPassword()); }
     public String getRegion() { return String.valueOf(comboRegiones.getSelectedItem());}
     public int getRegionID() { return  comboRegiones.getSelectedIndex(); }
     public String getAnio() { return String.valueOf(comboAnios.getSelectedItem());}

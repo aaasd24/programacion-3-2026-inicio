@@ -12,7 +12,6 @@ public class Usuario {
 	private String contrasenia;
 	private int idregion;
 	Genero genero;
-	private Date fechaN;
 	private String anio;
 	private String mes;
 	private String dia;
@@ -28,6 +27,7 @@ public class Usuario {
 		this.correo = correo;
 		this.contrasenia = contrasenia;
 	}
+	//Constructor para pasar login
 	public Usuario(String correo, String contrasenia) {
 		this.correo = correo;
 		this.contrasenia = contrasenia;
@@ -46,10 +46,13 @@ public class Usuario {
 		this.ImagenPath = ImagenPath;
 		this.rol = rol;
 	}
-	public Usuario(String nombre, String correo, int idregion, Genero genero, Date fechaN, String ImagenPath, String rol) {
+	public Usuario(String nombre, String contrasenia, String correo, int idregion, Genero genero, String anio, String mes, String dia, String ImagenPath, String rol) {
 		this.nombre = nombre;
+		this.contrasenia = contrasenia;
 		this.correo = correo;
-		this.fechaN = fechaN;
+		this.anio = anio;
+		this.mes = mes;
+		this.dia = dia;
 		this.idregion = idregion;
 		this.genero = genero;
 		this.ImagenPath = ImagenPath;
@@ -135,9 +138,6 @@ public class Usuario {
 	public Genero getGenero() {
 		return genero;
 	}
-	public Date getFechaN() {
-		return fechaN;
-	}
 	/*
 	public String getFechaString() {
 		return "Y: " + anio + " M: " + meses + " D: " + dia;
@@ -174,7 +174,6 @@ public class Usuario {
 	public void setCorreo(String correo) {this.correo = correo;}
 	public void setContrasenia(String contrasenia) {this.contrasenia = contrasenia;}
 	public void setGenero(Genero genero) {this.genero = genero;}
-	public void setDateN(Date fecha) {this.fechaN = fecha;}
 	public void setRegionID(int region) {this.idregion = region;}
 	public void setAnio(String anio) {this.anio = anio;}
 	public void setMes(String mes) {this.mes = mes;}

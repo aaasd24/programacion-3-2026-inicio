@@ -184,7 +184,8 @@ public class RegistrationController {
     	view.getBotonCrear().setEnabled(false);
     	String imagePathString = salvarImagen();
     	Usuario usuarioNuevo = new Usuario(
-    			view.getNombreUsuario(), 
+    			view.getNombreUsuario(),
+    			view.getContraseniaUsuario(),
     			view.getEmailUsuario(),
     			view.getRegionID(), 
     			view.getGenero(),
@@ -211,7 +212,7 @@ public class RegistrationController {
 	            "Sesion iniciada",
 	            JOptionPane.INFORMATION_MESSAGE
 	        );
-    	new MainWindow(); 
+    	new LoginWindow(); 
         view.dispose();
     }
 

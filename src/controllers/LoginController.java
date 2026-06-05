@@ -228,8 +228,6 @@ public class LoginController {
 	 * Si cumple con lo anterior devuelve true
 	 * @param usuario
 	 * @return booleano
-	 * @throws InvalidUserException
-	 * @throws InvalidPasswordException
 	 */
 	private boolean validarLogin(Usuario usuario){
 		boolean validado = false;

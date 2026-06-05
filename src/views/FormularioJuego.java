@@ -7,12 +7,14 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.ScrollPane;
 import java.awt.Toolkit;
 import java.io.File;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -20,6 +22,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -47,15 +50,18 @@ public class FormularioJuego extends JFrame {
     
     private JTextArea txtDescripcion; 
     
+    private JList<String> listaGeneros;
     private JComboBox<String> comboGeneros;
     private JCheckBox chkMultiplataforma;
     
     // Crossplay 
+    private ButtonGroup crossGrupo;
     private JPanel panelCrossplay; 
     private JRadioButton rbCrossplaySi;
     private JRadioButton rbCrossplayNo;
     
     // Multijugador 
+    private ButtonGroup multiGrupo;
     private JPanel panelMultijugador;
     private JCheckBox chkOnline;
     private JCheckBox chkLocal;
@@ -108,27 +114,27 @@ public class FormularioJuego extends JFrame {
         setVisible(true);		
     }
 	
-    public JScrollPane crearPanelFormulario() {
-    	JPanel panel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                try {
-                   //fondo
-                    Image fondo = ImageIO.read(getClass().getResource("../assets/fondo.jpg"));
-                    g.drawImage(fondo, 0, 0, getWidth(), getHeight(), this);
-                    
-                    
-                    g.setColor(new Color(0, 0, 0, 160)); 
-                    g.fillRect(0, 0, getWidth(), getHeight());
-                } catch (Exception e) {
-                    System.out.println("Error al cargar el fondo: " + e.getMessage());
-                }
-            }
-        };
+	public JScrollPane crearPanelFormulario() {
+		JPanel panel = new JPanel() {
+			@Override
+			protected void paintComponent(Graphics g) {
+			    super.paintComponent(g);
+			    try {
+			       //fondo
+			        Image fondo = ImageIO.read(getClass().getResource("../assets/fondo.jpg"));
+			        g.drawImage(fondo, 0, 0, getWidth(), getHeight(), this);
+			        
+			        
+			        g.setColor(new Color(0, 0, 0, 160)); 
+			        g.fillRect(0, 0, getWidth(), getHeight());
+			    } catch (Exception e) {
+			        System.out.println("Error al cargar el fondo: " + e.getMessage());
+			    }
+			}
+		};
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
-        
+		
 		JScrollPane scroll = new JScrollPane(panel);
 		scroll.setOpaque(false);
 		scroll.getViewport().setOpaque(false);
@@ -137,72 +143,86 @@ public class FormularioJuego extends JFrame {
 		scroll.getVerticalScrollBar().setUnitIncrement(14); // Scroll suave
 		
 		// --- DATOS COMBOBOX ---
-		String generos[] = {"Seleccione", "Acción", "Aventura", "RPG", "Shooter", "Deportes", "Estrategia", "Terror", "Indie"};
-        comboGeneros = new JComboBox<>(generos);
-  
-        
-        // --- INICIALIZAR ERRORES ---
+		listaGeneros = new JList<String>(new String[] {"Acción", "Aventura", "RPG", "Shooter", "Deportes", "Estrategia", "Terror", "Indie"});
+		//String generos[] = {"Seleccione", "Acción", "Aventura", "RPG", "Shooter", "Deportes", "Estrategia", "Terror", "Indie"};
+		//comboGeneros = new JComboBox<>(generos);
+		  
+		        
+		// --- INICIALIZAR ERRORES ---
 		lblErrorTitulo = createErrorLabel(" ");
-        lblErrorPrecio = createErrorLabel(" ");
-        lblErrorDesc = createErrorLabel(" ");
-        lblErrorLink = createErrorLabel(" ");
-        lblErrorPortada = createErrorLabel(" ");
-        
-        // --- AÑADIR CAMPOS BÁSICOS ---
-        panel.add(crearCampo("Título del Juego", txtTitulo, lblErrorTitulo));
-        panel.add(crearCampo("Precio ($)", txtPrecio, lblErrorPrecio));
-        panel.add(crearCampo("Género Principal", comboGeneros, createErrorLabel(" ")));
-        panel.add(crearCampo("Enlace de Descarga", txtLinkDescarga, lblErrorLink));
-
-        // --- DESCRIPCIÓN (Area de texto más grande) ---
-        txtDescripcion = new JTextArea(4, 20); // 4 filas de alto
-        txtDescripcion.setLineWrap(true);
-        txtDescripcion.setWrapStyleWord(true);
-        JScrollPane scrollDesc = new JScrollPane(txtDescripcion); // Para que tenga scroll si escriben mucho
-        panel.add(crearCampo("Descripción", scrollDesc, lblErrorDesc));
-
-        // --- CROSSPLAY (Radio Buttons) ---
-        panelCrossplay = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        panelCrossplay.setOpaque(false);
-        rbCrossplaySi = new JRadioButton("Sí");
-        rbCrossplayNo = new JRadioButton("No");
-        configurarRadio(rbCrossplaySi);
-        configurarRadio(rbCrossplayNo);
-        // Seleccionamos "No" por defecto
-        rbCrossplayNo.setSelected(true); 
-        panelCrossplay.add(rbCrossplaySi); 
-        panelCrossplay.add(rbCrossplayNo);
-        panel.add(crearCampo("¿Tiene Crossplay?", panelCrossplay, createErrorLabel(" ")));
-        
-        // --- MULTIJUGADOR Y PLATAFORMA (Checkboxes) ---
-        panelMultijugador = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        panelMultijugador.setOpaque(false);
-        chkOnline = new JCheckBox("Online");
-        chkLocal = new JCheckBox("Local");
-        chkCoopLocal = new JCheckBox("Coop Local");
-        chkCoopOnline = new JCheckBox("Coop Online");
-        configurarCheck(chkOnline);
-        configurarCheck(chkLocal);
-        configurarCheck(chkCoopLocal);
-        configurarCheck(chkCoopOnline);
-        panelMultijugador.add(chkOnline);
-        panelMultijugador.add(chkLocal);
-        panelMultijugador.add(chkCoopLocal);
-        panelMultijugador.add(chkCoopOnline);
-        JPanel panelPlataforma = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        panelPlataforma.setOpaque(false);
-        chkMultiplataforma = new JCheckBox("Disponible en múltiples plataformas");
-        configurarCheck(chkMultiplataforma); 
-
-        panelPlataforma.add(chkMultiplataforma);
-        panel.add(crearCampo("Opciones Multijugador", panelMultijugador, createErrorLabel(" ")));
-        panel.add(crearCampo("Plataforma", panelPlataforma, createErrorLabel(" ")));
-        
-        // --- PORTADA DEL JUEGO (Imagen) ---
-        botonSeleccionarPortada = new JButton("Seleccionar Portada");
+		lblErrorPrecio = createErrorLabel(" ");
+		lblErrorDesc = createErrorLabel(" ");
+		lblErrorLink = createErrorLabel(" ");
+		lblErrorPortada = createErrorLabel(" ");
+		
+		// --- AÑADIR CAMPOS BÁSICOS ---
+		panel.add(crearCampo("Título del Juego", txtTitulo, lblErrorTitulo));
+		panel.add(crearCampo("Precio ($)", txtPrecio, lblErrorPrecio));
+		panel.add(crearCampo("Géneros", new JScrollPane(listaGeneros), createErrorLabel(" ")));
+		panel.add(crearCampo("Enlace de Descarga", txtLinkDescarga, lblErrorLink));
+		
+		// --- DESCRIPCIÓN (Area de texto más grande) ---
+		txtDescripcion = new JTextArea(4, 20); // 4 filas de alto
+		txtDescripcion.setLineWrap(true);
+		txtDescripcion.setWrapStyleWord(true);
+		JScrollPane scrollDesc = new JScrollPane(txtDescripcion); // Para que tenga scroll si escriben mucho
+		panel.add(crearCampo("Descripción", scrollDesc, lblErrorDesc));
+		
+		// --- CROSSPLAY (Radio Buttons) ---
+		crossGrupo = new ButtonGroup();
+		panelCrossplay = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		panelCrossplay.setOpaque(false);
+		rbCrossplaySi = new JRadioButton("Sí");
+		rbCrossplayNo = new JRadioButton("No");
+		configurarRadio(rbCrossplaySi);
+		configurarRadio(rbCrossplayNo);
+		// Seleccionamos "No" por defecto
+		rbCrossplayNo.setSelected(true);
+		crossGrupo.add(rbCrossplayNo);
+		crossGrupo.add(rbCrossplaySi);
+		panelCrossplay.add(rbCrossplaySi); 
+		panelCrossplay.add(rbCrossplayNo);
+		panel.add(crearCampo("¿Tiene Crossplay?", panelCrossplay, createErrorLabel(" ")));
+		
+		// --- MULTIJUGADOR Y PLATAFORMA (Checkboxes) ---
+		multiGrupo = new ButtonGroup();
+		panelMultijugador = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		panelMultijugador.setOpaque(false);
+		chkOnline = new JCheckBox("Online");
+		chkLocal = new JCheckBox("Local");
+		chkCoopLocal = new JCheckBox("Coop Local");
+		chkCoopOnline = new JCheckBox("Coop Online");
+		//Configurar los Check buttons
+		configurarCheck(chkOnline);
+		configurarCheck(chkLocal);
+		configurarCheck(chkCoopLocal);
+		configurarCheck(chkCoopOnline);
+		//Agregarlo al grupo y que solo se pueda seleccionar uno
+		multiGrupo.add(chkCoopLocal);
+		multiGrupo.add(chkCoopOnline);
+		multiGrupo.add(chkLocal);
+		multiGrupo.add(chkOnline);
+		//Agregarlo al panel principal
+		panelMultijugador.add(chkOnline);
+		panelMultijugador.add(chkLocal);
+		panelMultijugador.add(chkCoopLocal);
+		panelMultijugador.add(chkCoopOnline);
+		JPanel panelPlataforma = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		panelPlataforma.setOpaque(false);
+		
+		
+		chkMultiplataforma = new JCheckBox("Disponible en múltiples plataformas");
+		configurarCheck(chkMultiplataforma); 
+		
+		panelPlataforma.add(chkMultiplataforma);
+		panel.add(crearCampo("Opciones Multijugador", panelMultijugador, createErrorLabel(" ")));
+		panel.add(crearCampo("Plataforma", panelPlataforma, createErrorLabel(" ")));
+		
+		// --- PORTADA DEL JUEGO (Imagen) ---
+		botonSeleccionarPortada = new JButton("Seleccionar Portada");
 		lblPortadaNombre = new JLabel("Ninguna imagen seleccionada");
 		lblPortadaNombre.setForeground(Colores.colorear(5)); 
-
+		
 		lblPortadaPrevia = new JLabel();
 		lblPortadaPrevia.setPreferredSize(new Dimension(150, 200)); 
 		lblPortadaPrevia.setBorder(null);
@@ -214,15 +234,15 @@ public class FormularioJuego extends JFrame {
 		botonSeleccionarPortada.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblPortadaPrevia.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblPortadaNombre.setAlignmentX(Component.CENTER_ALIGNMENT);
-
+		
 		imagePanel.add(lblPortadaPrevia);
 		imagePanel.add(botonSeleccionarPortada);
 		imagePanel.add(lblPortadaNombre);
-
+		
 		panel.add(crearCampo("Imagen de Portada:", imagePanel, lblErrorPortada));
-        
-        GestorCursor.aplicarATodo(this);
-        return scroll;
+		
+		GestorCursor.aplicarATodo(this);
+		return scroll;
     }
     
     // Método auxiliar para estilar RadioButtons
