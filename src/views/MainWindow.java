@@ -289,13 +289,12 @@ public class MainWindow extends JFrame {
 		cardLayout = new CardLayout();
 		contenedor = new JPanel(cardLayout);
 		contenedor.setOpaque(false);
-		
 		JPanel panelHome = new JPanel() {
 			@Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 try {
-                    // Dibujamos la parrillada de fondo
+                    // Dibujamos el logo de fondo
                     Image fondo = ImageIO.read(getClass().getResource("../assets/main-1080p.jpg"));
                     g.drawImage(fondo, 0, 0, getWidth(), getHeight(), this);
                     
@@ -307,17 +306,32 @@ public class MainWindow extends JFrame {
                 }
             }
         };
-        
         panelHome.setLayout(new BorderLayout());
-        JLabel labelBienvenida = new JLabel("Bienvenido al sistema", SwingConstants.CENTER);
+        JPanel panelCabecera = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
+        panelCabecera.setOpaque(false); // Transparente
+        
+        JLabel labelBienvenida = new JLabel("Bienvenido a");
         labelBienvenida.setForeground(Color.WHITE);
         labelBienvenida.setFont(assets.AppFonts.title());
-        labelBienvenida.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 0, 20, 0));
-        panelHome.add(labelBienvenida, BorderLayout.NORTH);
         
-     // --- ESPACIO PARA FUTUROS COMPONENTES ---
-        // JPanel panelJuegos = crearPanelCatalogoJuegos();
-        // panelHome.add(panelJuegos, BorderLayout.CENTER);
+        JLabel labelLogo = new JLabel();
+        try {
+            // Cargamos el logo de la parrilla en pequeño
+            javax.swing.ImageIcon icon = new javax.swing.ImageIcon(getClass().getResource("../assets/SteakGames.png"));
+            Image img = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+            labelLogo.setIcon(new javax.swing.ImageIcon(img));
+        } catch (Exception e) {
+            labelLogo.setText("[LOGO]");
+            labelLogo.setForeground(Color.WHITE);
+        }
+        
+        panelCabecera.add(labelBienvenida);
+        panelCabecera.add(labelLogo);
+        
+        panelHome.add(panelCabecera, BorderLayout.NORTH);
+        
+        // --- CATÁLOGO DE JUEGOS ---
+        panelHome.add(crearPanelCatalogoJuegos(), BorderLayout.CENTER);
         
         //Panel de CRUD  usuarios
 		panelUsuario = new UsuarioView();
@@ -343,6 +357,99 @@ public class MainWindow extends JFrame {
 	public void setWindowLocation(int x, int y) {
 		setLocation(x, y);
 	}
+	
+
+	// --- MÉTODOS PARA MAQUETAR LA BIBLIOTECA ---
+
+    private JScrollPane crearPanelCatalogoJuegos() {
+        JPanel panelContenedor = new JPanel();
+        panelContenedor.setLayout(new javax.swing.BoxLayout(panelContenedor, javax.swing.BoxLayout.Y_AXIS));
+        panelContenedor.setOpaque(false);
+        panelContenedor.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 30, 20, 30)); // Márgenes laterales
+        
+     //categorias del figma
+        panelContenedor.add(crearCategoria("continuar jugando (9) ∨"));
+        panelContenedor.add(javax.swing.Box.createVerticalStrut(25)); // Espaciado entre listas
+        panelContenedor.add(crearCategoria("terror(15) ∨"));
+        
+       
+        JScrollPane scroll = new JScrollPane(panelContenedor);
+        scroll.setOpaque(false);
+        scroll.getViewport().setOpaque(false);
+        scroll.setBorder(null);
+        scroll.getVerticalScrollBar().setUnitIncrement(16); 
+        scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        
+        return scroll;
+    }
+
+    private JPanel crearCategoria(String titulo) {
+        JPanel panelCat = new JPanel(new BorderLayout());
+        panelCat.setOpaque(false);
+        
+        JLabel lblTitulo = new JLabel(titulo);
+        lblTitulo.setForeground(Color.WHITE);
+        lblTitulo.setFont(assets.AppFonts.negrita()); 
+        lblTitulo.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 10, 0)); // Margen abajo del título
+        
+        // Panel horizontal para las portadas
+        JPanel panelJuegos = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
+        panelJuegos.setOpaque(false);
+        
+        //tarjetas de prueba por categoria, todas con "Jugar"
+        for(int i = 0; i < 5; i++) {
+            panelJuegos.add(crearTarjetaJuego(null, "Jugar")); 
+            // Nota: Cambiar el 'null' por la ruta de la imagen cuando queramos agregarlas
+        }
+        
+        panelCat.add(lblTitulo, BorderLayout.NORTH);
+        panelCat.add(panelJuegos, BorderLayout.CENTER);
+        
+        return panelCat;
+    }
+
+    private JPanel crearTarjetaJuego(String rutaImagen, String textoInferior) {
+        JPanel tarjeta = new JPanel(new BorderLayout());
+        tarjeta.setPreferredSize(new Dimension(140, 200)); //tamaño de la imagen aprox
+        tarjeta.setOpaque(false);
+        
+        // 1. La Portada
+        JLabel lblPortada = new JLabel();
+        lblPortada.setOpaque(true);
+        lblPortada.setBackground(new Color(40, 40, 40, 200)); // Fondo gris de prueba por ahora
+        lblPortada.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        
+        if (rutaImagen != null) {
+            try {
+                javax.swing.ImageIcon icon = new javax.swing.ImageIcon(getClass().getResource(rutaImagen));
+                Image img = icon.getImage().getScaledInstance(140, 175, Image.SCALE_SMOOTH);
+                lblPortada.setIcon(new javax.swing.ImageIcon(img));
+            } catch (Exception e) {
+                lblPortada.setText("Imagen no encontrada");
+                lblPortada.setForeground(Color.WHITE);
+            }
+        } else {
+            // Placeholder de texto si mandamos null
+            lblPortada.setText("Portada"); 
+            lblPortada.setForeground(Color.LIGHT_GRAY);
+        }
+        
+        //borde para jugar
+        JLabel lblHoras = new JLabel(textoInferior, javax.swing.SwingConstants.CENTER);
+        lblHoras.setForeground(Color.WHITE);
+        lblHoras.setFont(assets.AppFonts.small());
+        lblHoras.setOpaque(true);
+        lblHoras.setBackground(new Color(20, 20, 20, 220)); // Franja casi negra transparente
+        lblHoras.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 0, 5, 0));
+        
+        // Para que las tarjetas tengan un borde redondeado o limpio usando FlatLaf
+        tarjeta.putClientProperty("FlatLaf.style", "arc: 10");
+        
+        tarjeta.add(lblPortada, BorderLayout.CENTER);
+        tarjeta.add(lblHoras, BorderLayout.SOUTH);
+        
+        return tarjeta;
+    }
 	
 	
 }

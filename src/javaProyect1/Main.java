@@ -12,8 +12,8 @@ public class Main {
     public static void main(String[] args) {
     	ThemeManager.applySavedTheme();
     	//abrirLogin();
-    	//abrirMain();
-    	abrirFormulario();
+    	abrirMain();
+    	//abrirFormulario();
     	System.out.println("jalando");
     	
     }

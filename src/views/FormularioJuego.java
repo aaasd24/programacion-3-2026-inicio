@@ -48,7 +48,7 @@ public class FormularioJuego extends JFrame {
     private JTextArea txtDescripcion; 
     
     private JComboBox<String> comboGeneros;
-    private JComboBox<String> comboPlataformas;
+    private JCheckBox chkMultiplataforma;
     
     // Crossplay 
     private JPanel panelCrossplay; 
@@ -139,9 +139,7 @@ public class FormularioJuego extends JFrame {
 		// --- DATOS COMBOBOX ---
 		String generos[] = {"Seleccione", "Acción", "Aventura", "RPG", "Shooter", "Deportes", "Estrategia", "Terror", "Indie"};
         comboGeneros = new JComboBox<>(generos);
-        
-        String plataformas[] = {"Seleccione", "PC", "PlayStation 5", "Xbox Series X", "Nintendo Switch", "Multiplataforma"};
-        comboPlataformas = new JComboBox<>(plataformas);
+  
         
         // --- INICIALIZAR ERRORES ---
 		lblErrorTitulo = createErrorLabel(" ");
@@ -154,7 +152,6 @@ public class FormularioJuego extends JFrame {
         panel.add(crearCampo("Título del Juego", txtTitulo, lblErrorTitulo));
         panel.add(crearCampo("Precio ($)", txtPrecio, lblErrorPrecio));
         panel.add(crearCampo("Género Principal", comboGeneros, createErrorLabel(" ")));
-        panel.add(crearCampo("Plataforma", comboPlataformas, createErrorLabel(" ")));
         panel.add(crearCampo("Enlace de Descarga", txtLinkDescarga, lblErrorLink));
 
         // --- DESCRIPCIÓN (Area de texto más grande) ---
@@ -177,7 +174,7 @@ public class FormularioJuego extends JFrame {
         panelCrossplay.add(rbCrossplayNo);
         panel.add(crearCampo("¿Tiene Crossplay?", panelCrossplay, createErrorLabel(" ")));
         
-        // --- MULTIJUGADOR (Checkboxes) ---
+        // --- MULTIJUGADOR Y PLATAFORMA (Checkboxes) ---
         panelMultijugador = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panelMultijugador.setOpaque(false);
         chkOnline = new JCheckBox("Online");
@@ -192,7 +189,14 @@ public class FormularioJuego extends JFrame {
         panelMultijugador.add(chkLocal);
         panelMultijugador.add(chkCoopLocal);
         panelMultijugador.add(chkCoopOnline);
+        JPanel panelPlataforma = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        panelPlataforma.setOpaque(false);
+        chkMultiplataforma = new JCheckBox("Disponible en múltiples plataformas");
+        configurarCheck(chkMultiplataforma); 
+
+        panelPlataforma.add(chkMultiplataforma);
         panel.add(crearCampo("Opciones Multijugador", panelMultijugador, createErrorLabel(" ")));
+        panel.add(crearCampo("Plataforma", panelPlataforma, createErrorLabel(" ")));
         
         // --- PORTADA DEL JUEGO (Imagen) ---
         botonSeleccionarPortada = new JButton("Seleccionar Portada");
@@ -357,7 +361,6 @@ public class FormularioJuego extends JFrame {
     public String getLinkDescarga() { return txtLinkDescarga.getText(); }
     public String getDescripcion() { return txtDescripcion.getText(); }
     public String getGenero() { return String.valueOf(comboGeneros.getSelectedItem()); }
-    public String getPlataforma() { return String.valueOf(comboPlataformas.getSelectedItem()); }
     
     public boolean tieneCrossplay() { return rbCrossplaySi.isSelected(); }
     
@@ -366,6 +369,7 @@ public class FormularioJuego extends JFrame {
     public boolean isLocal() { return chkLocal.isSelected(); }
     public boolean isCoopLocal() { return chkCoopLocal.isSelected(); }
     public boolean isCoopOnline() { return chkCoopOnline.isSelected(); }
+    public boolean isMultiplataforma() { return chkMultiplataforma.isSelected(); }
     
     public String getSelectedImagePath() { return selectedImagePath; }
     
@@ -400,12 +404,6 @@ public class FormularioJuego extends JFrame {
 	public void setTxtPrecio(JTextField txtPrecio) {this.txtPrecio = txtPrecio;}
 	public void setTxtLinkDescarga(JTextField txtLinkDescarga) {this.txtLinkDescarga = txtLinkDescarga;}
 
-	public JComboBox<String> getComboPlataformas() {
-		return comboPlataformas;
-	}
-	public void setComboPlataformas(JComboBox<String> comboPlataformas) {
-		this.comboPlataformas = comboPlataformas;
-	}
 	public JPanel getPanelCrossplay() {
 		return panelCrossplay;
 	}
