@@ -38,11 +38,12 @@ public class RepositorioVideojuegos {
 			// El ID del juego se agrega automaticamente, los generos se agregar aparte
 			pst.executeUpdate();
 			System.err.println("Se subio nuevo juego");
+			
 		}catch(SQLException ex) {
 			System.out.println("Error en conexion");
 			ex.printStackTrace();
 		}
-		conectarVideojuegosGeneros(videojuegoNuevo);
+		
 	}
 	
 	public List<Videojuego> obtenerListaVideojuegos() throws SQLException{
@@ -57,16 +58,19 @@ public class RepositorioVideojuegos {
 				Videojuego videojuegoImportado = new Videojuego(
 						rs.getInt("idvideojuego"), 
 						rs.getString("titulo"), 
-						null,
+						rs.getFloat("precio"),
 						rs.getString("descripcion"),
 						rs.getString("direccionArchivo"), 
-						rs.getString("portadaPath"));
+						rs.getString("portadaPath")
+						);
 				juegos.add(videojuegoImportado);
+				
 			}
-			int i = 0;
-			for(Videojuego vid: juegos) {
-				vid.setGeneros(obtenerGenerosDdBD(i));
-				i++;
+			Videojuego jg;
+			for(int i = 0; i < juegos.size(); i++) {
+				jg = juegos.get(i);
+				jg.setGeneros(obtenerGenerosDdBD(jg.getId()));
+				jg.setPlataforma(obtenerPlatafomaDeVideojuegodBD(jg.getId()));
 			}
 		}catch(SQLException ex) {
 			ex.printStackTrace();
@@ -75,11 +79,15 @@ public class RepositorioVideojuegos {
 	}
 	
 	public boolean eliminar(int id){
+		//Primero se debe eliminar de la tabla has
+		eliminarVideojuegoEnGeneroHas(id);
+		eliminarVideojuegoEnPlataformaHas(id);
+		// y luego ahora si el juego
 		String sql = "DELETE FROM videojuego WHERE idvideojuego = ?";
 		try(Connection conexion = DatabaseConnection.getConnection();
 				PreparedStatement pst = conexion.prepareStatement(sql);
 				){
-			pst.setInt(0, id);
+			pst.setInt(1, id);
 			int filaAfectada = pst.executeUpdate();
 			if(filaAfectada > 0) {
 				System.out.println("Se elimino");
@@ -90,35 +98,46 @@ public class RepositorioVideojuegos {
 		}
 		return false;
 	}
-	// Ver que hacer con este comando 
-	public boolean actualizar(int indice, Videojuego videojuegoActualizado) throws SQLException{
-		String sql = "UPDATE videojuego SET nombre = ?, precio = ?, direccionArchivo = ?"
-					+ "WHERW idvideojuego = ?";
-		
+	public boolean eliminarVideojuegoEnGeneroHas(int idVideojuego) {
+		String sql = "DELETE FROM videojuego_has_generoVideojuego WHERE videojuego_idvideojuego = ?";
 		try(Connection conexion = DatabaseConnection.getConnection();
-			PreparedStatement pst = conexion.prepareStatement(sql);)
-		{
-			pst.setString(0, videojuegoActualizado.getTitulo());
-			pst.setFloat(1, videojuegoActualizado.getPrecio());
-			pst.setString(2, videojuegoActualizado.getDireccionArchivo());
-			
+				PreparedStatement pst = conexion.prepareStatement(sql);
+				){
+			pst.setInt(1, idVideojuego);
 			int filaAfectada = pst.executeUpdate();
 			if(filaAfectada > 0) {
-				System.out.println("Cambios guardados");
 				return true;
 			}
-			
+		}catch(SQLException ex) {
+			ex.printStackTrace();
 		}
 		return false;
-		
 	}
+	public boolean eliminarVideojuegoEnPlataformaHas(int idVideojuego) {
+		String sql = "DELETE FROM videojuego_has_plataforma WHERE videojuego_idvideojuego = ?";
+		try(Connection conexion = DatabaseConnection.getConnection();
+				PreparedStatement pst = conexion.prepareStatement(sql);
+				){
+			System.out.println(idVideojuego);
+			pst.setInt(1, idVideojuego);
+			int filaAfectada = pst.executeUpdate();
+			if(filaAfectada > 0) {
+				return true;
+			}
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}
+		return false;
+	}
+	
 	public int obteneridVideojuegodeBD(Videojuego videojuego) throws SQLException{
 		int id = 0;
 		try (
 			Connection conexion = DatabaseConnection.getConnection();
 			Statement stm = conexion.createStatement();
-			ResultSet rs = stm.executeQuery("SELECT * FROM videojuego"))
+			ResultSet rs = stm.executeQuery("SELECT * FROM videojuego WHERE titulo = '" + videojuego.getTitulo() + "'"))
 		{
+			rs.next();
 			id = rs.getInt("idvideojuego");
 		}catch(SQLException ex) {
 			ex.printStackTrace();
@@ -127,6 +146,11 @@ public class RepositorioVideojuegos {
 	}
 	
 	public void conectarVideojuegosGeneros(Videojuego videojuego) throws SQLException {
+		int idVideojuego = obteneridVideojuegodeBD(videojuego);
+		int[] lista = new int[videojuego.getGeneros().size()];
+		for(int i = 0; i < videojuego.getGeneros().size(); i++) {
+			lista[i] = obtenerIDConStringGeneroVideojuego(videojuego.getGeneros().get(i));
+		}
 		String sql = "INSERT INTO videojuego_has_generoVideojuego("
 				+ "videojuego_idvideojuego, "
 				+ "generoVideojuego_idgeneroVideojuego) "
@@ -135,8 +159,8 @@ public class RepositorioVideojuegos {
 			PreparedStatement pst = conexion.prepareStatement(sql);)
 		{
 			for(int i = 0; i < videojuego.getGeneros().size(); i++) {
-				pst.setInt(1, obteneridVideojuegodeBD(videojuego));
-				pst.setInt(2, obtenerIDConStringGeneroVideojuego(videojuego.getGeneros().get(i)));
+				pst.setInt(1, idVideojuego);
+				pst.setInt(2, lista[i]);
 				pst.executeUpdate();
 			}
 
@@ -146,25 +170,34 @@ public class RepositorioVideojuegos {
 		}
 	}
 	public void conectarVideojuegoPlataforma(Videojuego videojuego) throws SQLException{
+		int idVideojuego = obteneridVideojuegodeBD(videojuego);
+		int[] lista = new int[videojuego.getPlataformasDisponibles().size()];
+		for(int i = 0; i < videojuego.getPlataformasDisponibles().size(); i++) {
+			lista[i] = obtenerIDSConStringPlataformaVideojuego(videojuego.getPlataformasDisponibles().get(i));
+		}
 		String sql = "INSERT INTO videojuego_has_plataforma("
-				+ "videojuego_idvideojuego"
+				+ "videojuego_idvideojuego, "
 				+ "plataforma_idplataforma) "
 				+ "VALUE (?, ?)";
 		try(Connection conexion = DatabaseConnection.getConnection();
 			PreparedStatement pst = conexion.prepareStatement(sql);)
 		{
-			for(int i = 0; i < videojuego.getGeneros().size(); i++) {
-				pst.setInt(1, obteneridVideojuegodeBD(videojuego));
-				pst.setInt(2, obtenerIDConStringPlataformaVideojuego(videojuego.getGeneros().get(i)));
+			for(int i = 0; i < videojuego.getPlataformasDisponibles().size(); i++) {
+				pst.setInt(1, idVideojuego);
+				pst.setInt(2, lista[i]);
 				pst.executeUpdate();
 			}
+
+			
+		}catch(SQLException ex) {
+			ex.printStackTrace();
 		}
 	}
 	public int obtenerIDConStringGeneroVideojuego(String nombre) throws SQLException{
 		int id = 0;
 		try(Connection conexion = DatabaseConnection.getConnection();
 			Statement stm = conexion.createStatement();
-			ResultSet rs = stm.executeQuery("SELECT * FROM generoVideojuego WHERE nombre = " + nombre);)
+			ResultSet rs = stm.executeQuery("SELECT * FROM generoVideojuego WHERE nombre = '" + nombre + "'");)
 		{
 			rs.next();
 			id = rs.getInt("idgeneroVideojuego");
@@ -172,11 +205,11 @@ public class RepositorioVideojuegos {
 		return id;
 	}
 	
-	public int obtenerIDConStringPlataformaVideojuego(String nombre) throws SQLException{
+	public int obtenerIDSConStringPlataformaVideojuego(String nombre) throws SQLException{
 		int id = 0;
 		try(Connection conexion = DatabaseConnection.getConnection();
 			Statement stm = conexion.createStatement();
-			ResultSet rs = stm.executeQuery("SELECT * FROM plataforma WHERE nombre = " + nombre);)
+			ResultSet rs = stm.executeQuery("SELECT * FROM plataforma WHERE nombre = '" + nombre + "'");)
 		{
 			rs.next();
 			id = rs.getInt("idplataforma");
@@ -189,13 +222,13 @@ public class RepositorioVideojuegos {
 		try (
 				Connection conexion = DatabaseConnection.getConnection();
 				Statement stm = conexion.createStatement();
-				ResultSet rs = stm.executeQuery("SELECT nombre, idgeneroVideojuego FROM generoVideojuego gv "
+				ResultSet rs = stm.executeQuery("SELECT * FROM generoVideojuego gv "
 						+ "INNER JOIN videojuego_has_generoVideojuego vhg ON gv.idgeneroVideojuego = vhg.generoVideojuego_idgeneroVideojuego "
 						+ "INNER JOIN videojuego v ON vhg.videojuego_idvideojuego = v.idvideojuego WHERE v.idvideojuego = " 
 						+ id);)
 			{	
 			while(rs.next()) {
-				String temporal = rs.getString("nombre");
+				String temporal = rs.getNString("nombre");
 				generos.add(temporal);
 			}
 			}catch(SQLException ex) {
@@ -210,14 +243,13 @@ public class RepositorioVideojuegos {
 		try (
 				Connection conexion = DatabaseConnection.getConnection();
 				Statement stm = conexion.createStatement();
-				ResultSet rs = stm.executeQuery("SELECT nombre, idplataforma FROM plataforma p "
+				ResultSet rs = stm.executeQuery("SELECT * FROM plataforma p "
 						+ "INNER JOIN videojuego_has_plataforma vhp ON p.idplataforma = vhp.plataforma_idplataforma "
-						+ "INNER JOIN videojuego v ON vhp.plataforma_idplataforma = v.idvideojuego WHERE v.idvideojuego = " 
+						+ "INNER JOIN videojuego v ON vhp.videojuego_idvideojuego = v.idvideojuego WHERE v.idvideojuego = " 
 						+ idVideojuego);)
-			{	
+			{
 			while(rs.next()) {
-				String temporal = rs.getString("nombre");
-				System.out.println(temporal);
+				String temporal = rs.getNString("nombre");
 				plataforma.add(temporal);
 			}
 			}catch(SQLException ex) {
@@ -226,4 +258,49 @@ public class RepositorioVideojuegos {
 		
 		return plataforma;
 	}
+	
+	// Ver que hacer con este comando 
+		public boolean actualizar(int indice, Videojuego videojuegoActualizado) throws SQLException{
+			String sql = "UPDATE videojuego SET titulo = ?, "
+					+ "precio = ?, "
+					+ "direccionArchivo = ?, "
+					+ "descripcion = ?, "
+					+ "portadaPath = ?, "
+					+ "crossplay = ?, "
+					+ "multijugador = ? "
+					+ "WHERE idvideojuego = ?";
+			
+			try(Connection conexion = DatabaseConnection.getConnection();
+				PreparedStatement pst = conexion.prepareStatement(sql);)
+			{
+				pst.setString(1, videojuegoActualizado.getTitulo());
+				pst.setFloat(2, videojuegoActualizado.getPrecio());
+				pst.setString(3, videojuegoActualizado.getDireccionArchivo());
+				pst.setString(4, videojuegoActualizado.getDescripcion());
+				pst.setString(5, videojuegoActualizado.getPortadaPath());
+				pst.setBoolean(6, videojuegoActualizado.getCrossplay());
+				pst.setString(7, videojuegoActualizado.getMultijugador());
+				pst.setInt(8, videojuegoActualizado.getId());
+				int filaAfectada = pst.executeUpdate();
+				if(filaAfectada > 0) {
+					System.out.println("Cambios guardados");
+					return true;
+				}
+			}
+			return false;	
+		}
+		public boolean actualizarPlataformas(Videojuego videojuegoActualizado) throws SQLException {
+			System.out.println(eliminarVideojuegoEnPlataformaHas(videojuegoActualizado.getId()));
+			conectarVideojuegoPlataforma(videojuegoActualizado);
+			return true;
+		}
+		public boolean actualizarGeneros(Videojuego videojuegoActualizado) throws SQLException {
+			try	{
+				System.out.println(eliminarVideojuegoEnGeneroHas(videojuegoActualizado.getId()));
+				conectarVideojuegosGeneros(videojuegoActualizado);
+				return true;
+			}catch(SQLException ex) {
+				ex.printStackTrace();
+			}return false;
+		}
 }

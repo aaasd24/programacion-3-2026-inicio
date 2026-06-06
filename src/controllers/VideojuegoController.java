@@ -6,20 +6,18 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import models.Usuario;
 import models.Videojuego;
 import repositorio.RepositorioVideojuegos;
 import tablamodelos.Tablamodelovideojuego;
 import views.FormularioJuego;
-import views.FormularioUsuarioDialog;
 import views.VideojuegoView;
 
 public class VideojuegoController{
 
 	private VideojuegoView view;
 	private Tablamodelovideojuego tabla; //TODO irving te toca editar esta seccion pa que se vea chido
-	//private PDFExportador expo;
 	private RepositorioVideojuegos repo;
+	//private PDFExportador expo;
 	
 	
 	public VideojuegoController(VideojuegoView view) {
@@ -35,6 +33,7 @@ public class VideojuegoController{
 			int row = view.getSelectedRow();
 			if(row != -1 ) {
 				Videojuego seleccionado = tabla.getUserAt(row);
+				abrirFormulario(seleccionado);
 			}else {
 				JOptionPane.showMessageDialog(view, "Seleccione un juego a editar");
 			}
@@ -46,8 +45,8 @@ public class VideojuegoController{
 			if(eliminar) {
 				tabla.removeRow(view.getSelectedRow());
 			}
+			
 		});
-		
 		//Listener boton [ CREAR PDF JUEGO  ]
 		//view.getBtnExportarVideojuego().addActionListener(e -> generrarPDF());
 	}
@@ -68,26 +67,33 @@ public class VideojuegoController{
 		}
 	}
 	 private void abrirFormulario(Videojuego videojuego) {
-	    	System.out.println("Hola");
+	    	System.out.println("Formulario abierto");
 	        // null para crear un nuevo usuario, user para actualizar un usuario existente
-	        FormularioJuego dialog = new FormularioJuego();
+	        FormularioJuego dialog = new FormularioJuego(null);
 	        FormularioVideojuegoController dialogControlador = new FormularioVideojuegoController(dialog, videojuego);
 	        dialog.setVisible(true);
 	        dialogControlador.inicializarListeners();
+	        System.out.println("Cerro formulario");
 	        if (dialog.estaGuardado()) {
 	            Videojuego videojuegoActual = dialogControlador.getVideojuego(); 
 	            try {
-	                if (videojuegoActual == null) { //usuario nuevo
-	                	System.out.println("Se crea nuevo usuario");
+	            	System.out.println("Cargando");
+	                if (videojuego == null) { //Videojuego nuevo
+	                	System.out.println("Se crea nuevo Juevo");
 	                    repo.subirVideojuego(videojuegoActual);
-	                    //model.addRow(savedUser);
+	                    repo.conectarVideojuegosGeneros(videojuegoActual);
+	                    repo.conectarVideojuegoPlataforma(videojuegoActual);
 	                    
-	                } else {//actualizar usuario
-	                	System.out.println("Se edito un usuario");
+	                    tabla.addRow(videojuegoActual);
+	                    
+	                } else {//actualizar videojuego
+	                	System.out.println("Se edito un Juego");
 	                    int row = view.getSelectedRow();
 	                    boolean actualizar = repo.actualizar(row, videojuegoActual);
+	                    repo.actualizarGeneros(videojuegoActual);
+	                    repo.actualizarPlataformas(videojuegoActual);
 	                    if(actualizar) {
-	                    	//model.updateRow(row, savedUser);
+	                    	tabla.updateRow(row, videojuegoActual);
 	                    }
 	                }
 	                this.cargarJuegos();

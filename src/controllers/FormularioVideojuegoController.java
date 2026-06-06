@@ -2,24 +2,20 @@ package controllers;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import models.Videojuego;
-import repositorio.RepositorioVideojuegos;
 import views.FormularioJuego;
 
 public class FormularioVideojuegoController {
 
 	private FormularioJuego view;
-	private RepositorioVideojuegos repo;
 	private Videojuego videojuego;
 	
 	public FormularioVideojuegoController(FormularioJuego view, Videojuego videojuegoSeleccionado) {
@@ -30,6 +26,7 @@ public class FormularioVideojuegoController {
         cargarDatos();
 	}
 	public void inicializarListeners() {
+		view.getBotonCrear().addActionListener(e -> validarFormulario());
 		// --------VALIDACIONES EN TIEMPO REAL (TEXTFIELDS) --------
 		checarSiCompletoCampo(view.getTxtTitulo(), view.getLblErrorTitulo());
 		checarSiCompletoCampo(view.getTxtPrecio(), view.getLblErrorPrecio());
@@ -201,7 +198,7 @@ public class FormularioVideojuegoController {
     }
     
     private boolean validarMulti() {
-    	if(view.ischkSeleccionaco() == null) {
+    	if(!view.chkSeleccionado().isSelected()) {
     		view.getLblErrorMulijugador().setText("Indique un modo de multijugador");
     		return false;
     	}
@@ -213,20 +210,34 @@ public class FormularioVideojuegoController {
     }
     private void save() {
     	
-    	if(!validarFormulario()) {
-    		return;
-    	}
-    	
-    	String titulo = view.getTituloJuego();
-    	Float precio = Float.valueOf(view.getPrecio());
-    	List<String> genero = view.getJListaGeneros().getSelectedValuesList();
-        String descripcion = view.getDescripcion();
-        String link = view.getLinkDescarga();
-        boolean crossplay = view.getRbCrossplaySi().isSelected();//Solo sera true si se selecciona si
-        String portada = view.getSelectedImagePath();
-        List<String> plataformas = view.getJListaPlataformas().getSelectedValuesList();
-        String multi = view.getSMulti();
-        
+		if(!validarFormulario()) {
+			return;
+		}
+		
+		String titulo = view.getTituloJuego();
+		Float precio = Float.valueOf(view.getPrecio());
+		List<String> genero = view.getJListaGeneros().getSelectedValuesList();
+		String descripcion = view.getDescripcion();
+		String link = view.getLinkDescarga();
+		boolean crossplay = view.getRbCrossplaySi().isSelected();//Solo sera true si se selecciona si
+		String portada = view.getSelectedImagePath();
+		List<String> plataformas = view.getJListaPlataformas().getSelectedValuesList();
+		String multi = " ";
+		if(view.getChkCoopLocal().isSelected()) {
+			multi = "Coop Local";
+		}
+		else if(view.getChkCoopOnline().isSelected()) {
+			multi = "Coop Online";
+		}
+		else if(view.getChkLocal().isSelected()) {
+			multi = "Local";
+		}
+		else if(view.getChkOnline().isSelected()) {
+			multi = "Online";
+		}
+		System.out.println(multi);
+		
+		
         if(videojuego == null) { //															NO tiene imagen
         	this.videojuego = new Videojuego(titulo, genero, precio, descripcion, link, portada, plataformas, crossplay, multi);
         }else {
@@ -236,28 +247,19 @@ public class FormularioVideojuegoController {
         	this.videojuego.setDescripcion(descripcion);
         	this.videojuego.setDireccionArchivo(link);
         	this.videojuego.setPortadaPath(portada);
+        	this.videojuego.setPlataforma(plataformas);
         	this.videojuego.setCrossplay(crossplay);
         	this.videojuego.setMultijugador(multi);
         }
-        registrarJuego(videojuego);
         view.confirmarGuardado();
     }
 
 	public Videojuego getVideojuego() {
 		return videojuego;
 	}
-    
-	private void registrarJuego(Videojuego videojuego) {
-		try {
-			repo.subirVideojuego(videojuego);
-			JOptionPane.showMessageDialog(view, "Juego guardado");
-		}catch(SQLException ex) {
-			JOptionPane.showMessageDialog(view, ex.getMessage());
-		}
-	}
 	private void txtCelularKeyTyped(KeyEvent evt) {
 		int tecla = evt.getKeyChar();
-		System.out.println(tecla);
+
 		boolean caracteresValidos = tecla > 47 && tecla < 58 || tecla == 46 || tecla == 8 || tecla == 127 || tecla == 65535;
 	            
 	     if (!caracteresValidos )

@@ -16,9 +16,11 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
+import javax.swing.DefaultListSelectionModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -28,6 +30,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -35,12 +38,11 @@ import assets.AppFonts;
 import assets.Colores;
 import assets.GestorCursor;
 import config.Config;
-import controllers.FormularioVideojuegoController;
-// import controllers.GameRegistrationController; 
+ 
 import models.Videojuego;
 
 @SuppressWarnings("serial")
-public class FormularioJuego extends JFrame {
+public class FormularioJuego extends JDialog{
 
     // --- CAMPOS DEL JUEGO ---
     private JTextField txtTitulo = new JTextField(20);
@@ -90,7 +92,8 @@ public class FormularioJuego extends JFrame {
 
     private Videojuego videojuego;
     private boolean guardado = false;
-    public FormularioJuego() {
+    public FormularioJuego(JFrame parent) {
+    	super(parent, true);
         setSize(500, 750); 
         setResizable(false);
         setTitle("Añadir Videojuego a la Parrilla");
@@ -108,11 +111,7 @@ public class FormularioJuego extends JFrame {
         add(crearTituloPanel(), BorderLayout.NORTH);
         add(crearPanelFormulario());
         add(crearBotones(), BorderLayout.SOUTH);
-        
-        // Descomenta esto cuando crees el controlador del juego
-        // controller.initListeners(); 
-        
-        setVisible(true);		
+        	
     }
 	
 	public JScrollPane crearPanelFormulario() {
@@ -146,7 +145,10 @@ public class FormularioJuego extends JFrame {
 		// --- DATOS COMBOBOX ---
 		listaGeneros = new JList<String>(new String[] {"Acción", "Aventura", "RPG", "Shooter", "Deportes", "Estrategia", "Terror", "Indie"});
 		listaPlataformas = new JList<String>(new String[] {"NINTENDO", "PS4", "XBOX", "PC"});
-		        
+		listaGeneros.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		listaPlataformas.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		
+		
 		// --- INICIALIZAR ERRORES ---
 		lblErrorTitulo = createErrorLabel(" ");
 		lblErrorPrecio = createErrorLabel(" ");
@@ -161,7 +163,7 @@ public class FormularioJuego extends JFrame {
 		// --- AÑADIR CAMPOS BÁSICOS ---
 		panel.add(crearCampo("Título del Juego", txtTitulo, lblErrorTitulo));
 		panel.add(crearCampo("Precio ($)", txtPrecio, lblErrorPrecio));
-		panel.add(crearCampo("Géneros", new JScrollPane(listaGeneros), lblErrorGeneros));
+		panel.add(crearCampo("Géneros", listaGeneros, lblErrorGeneros));
 		panel.add(crearCampo("Enlace de Descarga", txtLinkDescarga, lblErrorLink));
 		
 		// --- DESCRIPCIÓN (Area de texto más grande) ---
@@ -350,49 +352,51 @@ public class FormularioJuego extends JFrame {
 	}
 
     public void mostrarDatos(Videojuego videojuegoSeleccionado) {
-    	if(videojuegoSeleccionado != null) {
-    		txtTitulo.setText(videojuegoSeleccionado.getTitulo());
-            txtPrecio.setText(videojuegoSeleccionado.getPrecio() + "");
-            txtLinkDescarga.setText(videojuegoSeleccionado.getDireccionArchivo());
-            txtDescripcion.setText(videojuegoSeleccionado.getDescripcion());
-            crossGrupo.setSelected(btnCrossActivo(), true);
-            
-            //Indicar los generos seleccionados
-            List<String> generos = videojuegoSeleccionado.getGeneros();
-            int[] indices = new int[generos.size()];
-            int i = 0;
-            for(String genero: generos) {
-            	if(genero.equals("Acción")) indices[i++] = 0;
-            	else if(genero.equals("Aventura")) indices[i++] = 1;
-            	else if(genero.equals("RPG")) indices[i++] = 2;
-            	else if(genero.equals("sHOOTER")) indices[i++] = 3;
-            	else if(genero.equals("Deportes")) indices[i++] = 4;
-            	else if(genero.equals("Estrategia")) indices[i++] = 5;
-            	else if(genero.equals("Terror")) indices[i++] = 6;
-            	else if(genero.equals("Indie")) indices[i++] = 7;
-            }
-            listaGeneros.setSelectedIndices(indices);
-            
-            multiGrupo.setSelected(ischkSeleccionaco(), true);
-            
-            List<String> plataformas = videojuegoSeleccionado.getPlataformasDisponibles();
-            int[] indicesP = new int[plataformas.size()];
-            int j = 0;
-            for(String plataforma: plataformas) {
-            	if(plataforma.equals("NINTENDO")) indicesP[j++] = 0;
-            	else if(plataforma.equals("PS4")) indicesP[j++] = 1;
-            	else if(plataforma.equals("XBOX")) indicesP[j++] = 2;
-            	else if(plataforma.equals("PC")) indicesP[j++] = 3;
-            }
-            listaPlataformas.setSelectedIndices(indicesP);
+		if(videojuegoSeleccionado != null) {
+			txtTitulo.setText(videojuegoSeleccionado.getTitulo());
+			txtPrecio.setText(videojuegoSeleccionado.getPrecio() + "");
+			txtLinkDescarga.setText(videojuegoSeleccionado.getDireccionArchivo());
+			txtDescripcion.setText(videojuegoSeleccionado.getDescripcion());
+			if(videojuegoSeleccionado.getCrossplay()) rbCrossplaySi.setSelected(true); else rbCrossplayNo.setSelected(true);
+			
+			
+			//Indicar los generos seleccionados
+			List<String> generos = videojuegoSeleccionado.getGeneros();
+			int[] indices = new int[generos.size()];
+			int i = 0;
+			for(String genero: generos) {
+				if(genero.equals("Acción")) indices[i++] = 0;
+				else if(genero.equals("Aventura")) indices[i++] = 1;
+				else if(genero.equals("RPG")) indices[i++] = 2;
+				else if(genero.equals("sHOOTER")) indices[i++] = 3;
+				else if(genero.equals("Deportes")) indices[i++] = 4;
+				else if(genero.equals("Estrategia")) indices[i++] = 5;
+				else if(genero.equals("Terror")) indices[i++] = 6;
+				else if(genero.equals("Indie")) indices[i++] = 7;
+			}
+			listaGeneros.setSelectedIndices(indices);
+			
+			chkCoopLocal.setSelected(true);
+			
+			List<String> plataformas = videojuegoSeleccionado.getPlataformasDisponibles();
+			int[] indicesP = new int[plataformas.size()];
+			int j = 0;
+			for(String plataforma: plataformas) {
+				if(plataforma.equals("NINTENDO")) indicesP[j++] = 0;
+				else if(plataforma.equals("PS4")) indicesP[j++] = 1;
+				else if(plataforma.equals("XBOX")) indicesP[j++] = 2;
+				else if(plataforma.equals("PC")) indicesP[j++] = 3;
+			}
+			listaPlataformas.setSelectedIndices(indicesP);
             
     	}
     }
     
     
     public void confirmarGuardado() {
+    	System.out.println("Guardado");
     	guardado = true;
-        dispose();  
+        this.dispose();  
     }
     public boolean estaGuardado() {
     	return guardado;
@@ -401,7 +405,7 @@ public class FormularioJuego extends JFrame {
 	public Videojuego getVideojuego() {
 		return videojuego;
 	}
-    
+	
     // --- GETTERS ---
     public String getTituloJuego() { return txtTitulo.getText(); }
     public String getPrecio() { return txtPrecio.getText(); }
@@ -411,13 +415,13 @@ public class FormularioJuego extends JFrame {
     public boolean tieneCrossplay() { return rbCrossplaySi.isSelected(); }
     
     // getters para saber que casillas marcan
-    public ButtonModel ischkSeleccionaco() { return multiGrupo.getSelection();}
-    public String getSMulti() { return multiGrupo.getSelection().getActionCommand();}
-    public boolean isOnline() { return chkOnline.isSelected(); }
-    public boolean isLocal() { return chkLocal.isSelected(); }
-    public boolean isCoopLocal() { return chkCoopLocal.isSelected(); }
-    public boolean isCoopOnline() { return chkCoopOnline.isSelected(); }
-    public boolean isMultiplataforma() { return chkMultiplataforma.isSelected(); }
+    public ButtonModel chkSeleccionado() { return multiGrupo.getSelection();}
+    
+    public String isOnline() { return chkOnline.getName(); }
+    public String isLocal() { return chkLocal.getName(); }
+    public String isCoopLocal() { return chkCoopLocal.getName(); }
+    public String isCoopOnline() { return chkCoopOnline.getName(); }
+    public String isMultiplataforma() { return chkMultiplataforma.getName(); }
     
     public String getSelectedImagePath() { return selectedImagePath; }
     
@@ -480,5 +484,4 @@ public class FormularioJuego extends JFrame {
 	public void setBotonCrear(JButton botonCrear) {this.botonCrear = botonCrear;}
 	public void setBotonCancelar(JButton botonCancelar) {this.botonCancelar = botonCancelar;}
 
-    
 }

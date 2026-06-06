@@ -107,7 +107,6 @@ public class RepositorioUsuarios {
 	}
 	
 	public boolean update(int index, Usuario updatedUser) throws IOException {
-		//TODO Index para que chuchas se usa????
 		String sql = "UPDATE usuario SET nombre = ?, correo = ?, region_idregion = ?, " +
 					" genero = ?, anio = ?, mes = ?, dia = ?, rol = ? WHERE idusuario = ?";
 		
@@ -159,8 +158,7 @@ public class RepositorioUsuarios {
 		{
 			rs.next();
 			id = rs.getInt("idbiblioteca");
-			
-			System.out.println("comando id completo");
+		
 		}
 		return id;
 	}

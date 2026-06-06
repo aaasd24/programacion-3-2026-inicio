@@ -13,7 +13,8 @@ public class Tablamodelovideojuego extends AbstractTableModel{
 	private final String[] nombreColumnas = {
 			"Nombre",
 			"Generos",
-			"Precio"
+			"Precio",
+			"Plataforma"
 	};
 	
 	public Tablamodelovideojuego(List<Videojuego> videojuegos) {
@@ -43,6 +44,8 @@ public class Tablamodelovideojuego extends AbstractTableModel{
 			return videojuegoActual.getGeneros();
 		case 2:
 			return videojuegoActual.getPrecio();
+		case 3:
+			return videojuegoActual.getPlataformasDisponibles();
 		}
 		return null;
 	}

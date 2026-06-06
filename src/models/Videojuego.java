@@ -17,10 +17,10 @@ public class Videojuego {
 	
 	
 	//Constructor base
-	public Videojuego(int id, String nombre, List<String> generos,String descripcion, String direccion, String imgaePath) {
+	public Videojuego(int id, String nombre,  float precio, String descripcion, String direccion, String imgaePath) {
 		this.id = id;
 		this.titulo = nombre;
-		this.generosId = generos;
+		this.precio = precio;
 		this.descripcion = descripcion;
 		this.direccionArchivo = direccion;
 		this.portadaPath = imgaePath;

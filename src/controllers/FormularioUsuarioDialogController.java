@@ -27,10 +27,7 @@ public class FormularioUsuarioDialogController {
 	public void inicializarListeners() {
 		//Boton guardar
         view.getBotonGuardar().addActionListener(e -> validarFormulario());
-
-        view.getComboRegiones().addActionListener(e -> validateComboRegion());
-
-        
+    	
         // --- 3. LIMPIAR Y ASIGNAR Listener GENERO ---
         // ------Regiones---------
         view.getRbHombre().addActionListener(e -> validateGender());
@@ -40,7 +37,7 @@ public class FormularioUsuarioDialogController {
         view.getComboMeses().addActionListener(e -> validateComboMes());
         view.getComboDias().addActionListener(e -> validateComboDia());
 
-        
+        view.getComboRegiones().addActionListener(e -> validateComboRegion());        
 
         // --------VALIDACIONES EN TIEMPO REAL (TEXTFIELDS) --------
         checarSiCompletoCampo(view.getTxtNombre(), view.getLblErrorNombre());

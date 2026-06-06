@@ -49,6 +49,9 @@ public class MainWindow extends JFrame {
 	public JButton botonHome;
 	public JButton botonVerJuego;
 	
+	private JPanel panelBusqueda;
+	private JTextField txtBuscar;
+	
 	public final static String HOME = "HOME";
 	public final static String USERS = "USERS";
 	public final static String GAMES = "GAMES";
@@ -80,64 +83,35 @@ public class MainWindow extends JFrame {
 		
 	}
 	
-	
-	/**
-	 * @return the salir
-	 */
 	public JMenuItem getSalir() {return salir;}
 
-
-	/**
-	 * @return the mb
-	 */
 	public JMenuBar getMb() {return mb;	}
 
 
-	/**
-	 * @return the archivo
-	 */
 	public JMenu getArchivo() {	return archivo;}
 
 
-	/**
-	 * @return the abrir
-	 */
+	
 	public JMenuItem getAbrir() {return abrir;}
 
-
-	/**
-	 * @return the guardar
-	 */
 	public JMenuItem getGuardar() {	return guardar;}
 
 
-	/**
-	 * @return the otraOpcion
-	 */
 	public JMenu getOtraOpcion() {
 		return otraOpcion;
 	}
 
-
-	/**
-	 * @return the opcion1
-	 */
 	public JMenu getOpcion1() {
 		return opcion1;
 	}
 
 
-	/**
-	 * @return the opcion2
-	 */
 	public JMenuItem getOpcion2() {
 		return opcion2;
 	}
 
 
-	/**
-	 * @return the opcion3
-	 */
+	
 	public JMenuItem getOpcion3() {
 		return opcion3;
 	}
@@ -149,21 +123,30 @@ public class MainWindow extends JFrame {
 		return botonVerUsuario;
 	}
 	
-	/**
-	 * 
-	 * @return boton home
-	 */
+	
 	public JButton getBotonHome() {
 		return botonHome;
 	}
-	/**
-	 * 
-	 * @return boton juegos
-	 */
 	public JButton getBotonVideojuego() {
 		return botonVerJuego;
 	}
 	
+	public JPanel getPanelBusqueda() {
+		return panelBusqueda;
+	}
+
+	public void setPanelBusqueda(JPanel panelBusqueda) {
+		this.panelBusqueda = panelBusqueda;
+	}
+
+	public JTextField getTxtBuscar() {
+		return txtBuscar;
+	}
+
+	public void setTxtBuscar(JTextField txtBuscar) {
+		this.txtBuscar = txtBuscar;
+	}
+
 	public void setMenu() {
 		
 		mb = new JMenuBar();
@@ -255,10 +238,10 @@ public class MainWindow extends JFrame {
 	    panelBotones.add(botonVerJuego);
 
 	    // para la barra de búsqueda maqueta
-	    JPanel panelBusqueda = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+	    panelBusqueda = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
 	    panelBusqueda.setOpaque(false);
 
-	    JTextField txtBuscar = new JTextField();
+	    txtBuscar = new JTextField();
 	    txtBuscar.setPreferredSize(new Dimension(220, 32));
 	    txtBuscar.setBackground(new Color(45, 45, 45));     
 	    txtBuscar.setForeground(Color.WHITE);              

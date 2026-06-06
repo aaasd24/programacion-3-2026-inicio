@@ -40,6 +40,7 @@ public class MainController {
 			updateMenuState(MainWindow.HOME);
 		});
 		view.getBotonVideojuego().addActionListener(e -> mostrarVideojuegos());
+		view.getTxtBuscar().addActionListener(e -> buscar());
 		
 	}
 	private void handleClose() {
@@ -115,6 +116,10 @@ public class MainController {
 		}
 		
 		view.setWindowSize(width, height);
+	}
+	
+	public void buscar() {
+		
 	}
 	
 }
