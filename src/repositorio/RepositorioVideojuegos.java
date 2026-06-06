@@ -52,15 +52,21 @@ public class RepositorioVideojuegos {
 			Statement stm = conexion.createStatement();
 			ResultSet rs = stm.executeQuery("SELECT * FROM videojuego");)
 		{
+
 			while(rs.next()) {
 				Videojuego videojuegoImportado = new Videojuego(
 						rs.getInt("idvideojuego"), 
 						rs.getString("titulo"), 
-						obtenerGenerosDdBD(rs.getInt("idvideojuego")),
+						null,
 						rs.getString("descripcion"),
 						rs.getString("direccionArchivo"), 
-						rs.getString("imagePath"));
+						rs.getString("portadaPath"));
 				juegos.add(videojuegoImportado);
+			}
+			int i = 0;
+			for(Videojuego vid: juegos) {
+				vid.setGeneros(obtenerGenerosDdBD(i));
+				i++;
 			}
 		}catch(SQLException ex) {
 			ex.printStackTrace();
@@ -178,7 +184,7 @@ public class RepositorioVideojuegos {
 		return id;
 	}
 	
-	public List<String> obtenerGenerosDdBD(int idVideojuego) throws SQLException{
+	public List<String> obtenerGenerosDdBD(int id) throws SQLException{
 		List<String> generos = new ArrayList<String>();
 		try (
 				Connection conexion = DatabaseConnection.getConnection();
@@ -186,11 +192,10 @@ public class RepositorioVideojuegos {
 				ResultSet rs = stm.executeQuery("SELECT nombre, idgeneroVideojuego FROM generoVideojuego gv "
 						+ "INNER JOIN videojuego_has_generoVideojuego vhg ON gv.idgeneroVideojuego = vhg.generoVideojuego_idgeneroVideojuego "
 						+ "INNER JOIN videojuego v ON vhg.videojuego_idvideojuego = v.idvideojuego WHERE v.idvideojuego = " 
-						+ idVideojuego);)
+						+ id);)
 			{	
 			while(rs.next()) {
 				String temporal = rs.getString("nombre");
-				System.out.println(temporal);
 				generos.add(temporal);
 			}
 			}catch(SQLException ex) {
@@ -205,7 +210,6 @@ public class RepositorioVideojuegos {
 		try (
 				Connection conexion = DatabaseConnection.getConnection();
 				Statement stm = conexion.createStatement();
-				//cambiar comando 
 				ResultSet rs = stm.executeQuery("SELECT nombre, idplataforma FROM plataforma p "
 						+ "INNER JOIN videojuego_has_plataforma vhp ON p.idplataforma = vhp.plataforma_idplataforma "
 						+ "INNER JOIN videojuego v ON vhp.plataforma_idplataforma = v.idvideojuego WHERE v.idvideojuego = " 

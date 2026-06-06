@@ -68,10 +68,10 @@ public class VideojuegoController{
 		}
 	}
 	 private void abrirFormulario(Videojuego videojuego) {
-	    	
+	    	System.out.println("Hola");
 	        // null para crear un nuevo usuario, user para actualizar un usuario existente
 	        FormularioJuego dialog = new FormularioJuego();
-	        FormularioVideojuegoDialogController dialogControlador = new FormularioVideojuegoDialogController(dialog, videojuego);
+	        FormularioVideojuegoController dialogControlador = new FormularioVideojuegoController(dialog, videojuego);
 	        dialog.setVisible(true);
 	        dialogControlador.inicializarListeners();
 	        if (dialog.estaGuardado()) {

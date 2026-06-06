@@ -27,7 +27,6 @@ public class DatabaseConnection {
 				Class.forName(driver);
 				
 				connection = DriverManager.getConnection(url, usuario, contraseña);
-				System.out.println("Conexion completada");
 			}
 			
 		} catch(Exception e) {

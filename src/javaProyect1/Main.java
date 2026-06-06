@@ -13,9 +13,8 @@ public class Main {
     public static void main(String[] args) {
     	ThemeManager.applySavedTheme();
     	//abrirLogin();
-    	//abrirMain();
+    	abrirMain();
     	//abrirFormulario();
-    	abrirFormularioVid();
     	System.out.println("jalando");
     	
     }
@@ -32,10 +31,6 @@ public class Main {
     public static void abrirMain() {
     	MainWindow mainWind = new MainWindow();
     	mainWind.setVisible(true);
-    }
-    public static void abrirFormularioVid() {
-    	FormularioJuego formula = new FormularioJuego();
-    	formula.setVisible(true);
     }
 }
 

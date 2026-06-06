@@ -7,23 +7,22 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.ScrollPane;
 import java.awt.Toolkit;
 import java.io.File;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -36,9 +35,9 @@ import assets.AppFonts;
 import assets.Colores;
 import assets.GestorCursor;
 import config.Config;
+import controllers.FormularioVideojuegoController;
 // import controllers.GameRegistrationController; 
 import models.Videojuego;
-import utils.Genero;
 
 @SuppressWarnings("serial")
 public class FormularioJuego extends JFrame {
@@ -51,7 +50,7 @@ public class FormularioJuego extends JFrame {
     private JTextArea txtDescripcion; 
     
     private JList<String> listaGeneros;
-    private JComboBox<String> comboGeneros;
+    private JList<String> listaPlataformas;
     private JCheckBox chkMultiplataforma;
     
     // Crossplay 
@@ -85,6 +84,9 @@ public class FormularioJuego extends JFrame {
     private JLabel lblErrorLink;
     private JLabel lblErrorPortada;
     private JLabel lblErrorCrossplay;
+    private JLabel lblErrorPlataforma;
+    private JLabel lblErrorGeneros;
+    private JLabel lblErrorMultijugador;
 
     private Videojuego videojuego;
     private boolean guardado = false;
@@ -108,7 +110,6 @@ public class FormularioJuego extends JFrame {
         add(crearBotones(), BorderLayout.SOUTH);
         
         // Descomenta esto cuando crees el controlador del juego
-        // GameRegistrationController controller = new GameRegistrationController(this);
         // controller.initListeners(); 
         
         setVisible(true);		
@@ -144,9 +145,7 @@ public class FormularioJuego extends JFrame {
 		
 		// --- DATOS COMBOBOX ---
 		listaGeneros = new JList<String>(new String[] {"Acción", "Aventura", "RPG", "Shooter", "Deportes", "Estrategia", "Terror", "Indie"});
-		//String generos[] = {"Seleccione", "Acción", "Aventura", "RPG", "Shooter", "Deportes", "Estrategia", "Terror", "Indie"};
-		//comboGeneros = new JComboBox<>(generos);
-		  
+		listaPlataformas = new JList<String>(new String[] {"NINTENDO", "PS4", "XBOX", "PC"});
 		        
 		// --- INICIALIZAR ERRORES ---
 		lblErrorTitulo = createErrorLabel(" ");
@@ -154,11 +153,15 @@ public class FormularioJuego extends JFrame {
 		lblErrorDesc = createErrorLabel(" ");
 		lblErrorLink = createErrorLabel(" ");
 		lblErrorPortada = createErrorLabel(" ");
+		lblErrorGeneros = createErrorLabel(" ");
+		lblErrorCrossplay = createErrorLabel(" ");
+		lblErrorPlataforma = createErrorLabel(" ");
+		lblErrorMultijugador = createErrorLabel(" ");
 		
 		// --- AÑADIR CAMPOS BÁSICOS ---
 		panel.add(crearCampo("Título del Juego", txtTitulo, lblErrorTitulo));
 		panel.add(crearCampo("Precio ($)", txtPrecio, lblErrorPrecio));
-		panel.add(crearCampo("Géneros", new JScrollPane(listaGeneros), createErrorLabel(" ")));
+		panel.add(crearCampo("Géneros", new JScrollPane(listaGeneros), lblErrorGeneros));
 		panel.add(crearCampo("Enlace de Descarga", txtLinkDescarga, lblErrorLink));
 		
 		// --- DESCRIPCIÓN (Area de texto más grande) ---
@@ -182,11 +185,12 @@ public class FormularioJuego extends JFrame {
 		crossGrupo.add(rbCrossplaySi);
 		panelCrossplay.add(rbCrossplaySi); 
 		panelCrossplay.add(rbCrossplayNo);
-		panel.add(crearCampo("¿Tiene Crossplay?", panelCrossplay, createErrorLabel(" ")));
+		panel.add(crearCampo("¿Tiene Crossplay?", panelCrossplay, lblErrorCrossplay));
 		
 		// --- MULTIJUGADOR Y PLATAFORMA (Checkboxes) ---
 		multiGrupo = new ButtonGroup();
 		panelMultijugador = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		
 		panelMultijugador.setOpaque(false);
 		chkOnline = new JCheckBox("Online");
 		chkLocal = new JCheckBox("Local");
@@ -209,14 +213,10 @@ public class FormularioJuego extends JFrame {
 		panelMultijugador.add(chkCoopOnline);
 		JPanel panelPlataforma = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		panelPlataforma.setOpaque(false);
+		panelPlataforma.add(listaPlataformas);
 		
-		
-		chkMultiplataforma = new JCheckBox("Disponible en múltiples plataformas");
-		configurarCheck(chkMultiplataforma); 
-		
-		panelPlataforma.add(chkMultiplataforma);
-		panel.add(crearCampo("Opciones Multijugador", panelMultijugador, createErrorLabel(" ")));
-		panel.add(crearCampo("Plataforma", panelPlataforma, createErrorLabel(" ")));
+		panel.add(crearCampo("Plataformas " , panelPlataforma, lblErrorPlataforma));
+		panel.add(crearCampo("Opciones Multijugador", panelMultijugador, lblErrorMultijugador));
 		
 		// --- PORTADA DEL JUEGO (Imagen) ---
 		botonSeleccionarPortada = new JButton("Seleccionar Portada");
@@ -316,7 +316,7 @@ public class FormularioJuego extends JFrame {
     }
     
     // El método para cargar la imagen (con la lógica de visibilidad arreglada)
-    //si no lo hice bien, pues me dices 
+    //Lo hiciste bien 
     public void elegirImagen() {
 		String lastDirectory = Config.get("registration.image.last.directory", System.getProperty("user.home"));
 		JFileChooser chooser = new JFileChooser(lastDirectory);
@@ -352,13 +352,40 @@ public class FormularioJuego extends JFrame {
     public void mostrarDatos(Videojuego videojuegoSeleccionado) {
     	if(videojuegoSeleccionado != null) {
     		txtTitulo.setText(videojuegoSeleccionado.getTitulo());
-            //txtPrecio.set(videojuegoSeleccionado.getPrecio());
+            txtPrecio.setText(videojuegoSeleccionado.getPrecio() + "");
             txtLinkDescarga.setText(videojuegoSeleccionado.getDireccionArchivo());
-            //comboPlataformas.setSelectedItem(videojuegoSeleccionado.get);
-            //TODO Prblemas con PRECIO, combo plataforma y generos, descripcion y multijugador4
+            txtDescripcion.setText(videojuegoSeleccionado.getDescripcion());
+            crossGrupo.setSelected(btnCrossActivo(), true);
             
-
-            //chkCoopLocal.setSelectedIcon(videojuegoSeleccionado.get);
+            //Indicar los generos seleccionados
+            List<String> generos = videojuegoSeleccionado.getGeneros();
+            int[] indices = new int[generos.size()];
+            int i = 0;
+            for(String genero: generos) {
+            	if(genero.equals("Acción")) indices[i++] = 0;
+            	else if(genero.equals("Aventura")) indices[i++] = 1;
+            	else if(genero.equals("RPG")) indices[i++] = 2;
+            	else if(genero.equals("sHOOTER")) indices[i++] = 3;
+            	else if(genero.equals("Deportes")) indices[i++] = 4;
+            	else if(genero.equals("Estrategia")) indices[i++] = 5;
+            	else if(genero.equals("Terror")) indices[i++] = 6;
+            	else if(genero.equals("Indie")) indices[i++] = 7;
+            }
+            listaGeneros.setSelectedIndices(indices);
+            
+            multiGrupo.setSelected(ischkSeleccionaco(), true);
+            
+            List<String> plataformas = videojuegoSeleccionado.getPlataformasDisponibles();
+            int[] indicesP = new int[plataformas.size()];
+            int j = 0;
+            for(String plataforma: plataformas) {
+            	if(plataforma.equals("NINTENDO")) indicesP[j++] = 0;
+            	else if(plataforma.equals("PS4")) indicesP[j++] = 1;
+            	else if(plataforma.equals("XBOX")) indicesP[j++] = 2;
+            	else if(plataforma.equals("PC")) indicesP[j++] = 3;
+            }
+            listaPlataformas.setSelectedIndices(indicesP);
+            
     	}
     }
     
@@ -380,11 +407,12 @@ public class FormularioJuego extends JFrame {
     public String getPrecio() { return txtPrecio.getText(); }
     public String getLinkDescarga() { return txtLinkDescarga.getText(); }
     public String getDescripcion() { return txtDescripcion.getText(); }
-    public String getGenero() { return String.valueOf(comboGeneros.getSelectedItem()); }
-    
+    public ButtonModel btnCrossActivo() { return crossGrupo.getSelection();}
     public boolean tieneCrossplay() { return rbCrossplaySi.isSelected(); }
     
     // getters para saber que casillas marcan
+    public ButtonModel ischkSeleccionaco() { return multiGrupo.getSelection();}
+    public String getSMulti() { return multiGrupo.getSelection().getActionCommand();}
     public boolean isOnline() { return chkOnline.isSelected(); }
     public boolean isLocal() { return chkLocal.isSelected(); }
     public boolean isCoopLocal() { return chkCoopLocal.isSelected(); }
@@ -397,105 +425,60 @@ public class FormularioJuego extends JFrame {
     public JButton getBotonCancelar() { return botonCancelar; }
     public JButton getBotonSeleccionarPortada() { return botonSeleccionarPortada; }
 
-	
+	// GETTERS Y SETTER DE LOS LabelError
 	public JLabel getLblErrorTitulo() {	return lblErrorTitulo;}
-	public void setLblErrorTitulo(JLabel lblErrorTitulo) {this.lblErrorTitulo = lblErrorTitulo;	}
 	public JLabel getLblErrorPrecio() {	return lblErrorPrecio;	}
-	public void setLblErrorPrecio(JLabel lblErrorPrecio) {this.lblErrorPrecio = lblErrorPrecio;	}
 	public JLabel getLblErrorDesc() {return lblErrorDesc;}
-	public void setLblErrorDesc(JLabel lblErrorDesc) {	this.lblErrorDesc = lblErrorDesc;}
 	public JLabel getLblErrorLink() {	return lblErrorLink;}
-	public void setLblErrorLink(JLabel lblErrorLink) {this.lblErrorLink = lblErrorLink;}
 	public JLabel getLblErrorPortada() {return lblErrorPortada;}
-	public void setLblErrorPortada(JLabel lblErrorPortada) {this.lblErrorPortada = lblErrorPortada;}
+	public JLabel getLblErrorMulijugador() {return lblErrorMultijugador;}
+	public JLabel getLblErrorPlataforma() {return lblErrorPlataforma;}
+	public JLabel getLblErrorGeneros() {return lblErrorGeneros;}
+	public JLabel getLblErrorCrossplay() {return lblErrorCrossplay;}
 	
+	public void setLblErrorTitulo(JLabel lblErrorTitulo) {this.lblErrorTitulo = lblErrorTitulo;	}
+	public void setLblErrorPrecio(JLabel lblErrorPrecio) {this.lblErrorPrecio = lblErrorPrecio;	}
+	public void setLblErrorDesc(JLabel lblErrorDesc) {	this.lblErrorDesc = lblErrorDesc;}
+	public void setLblErrorLink(JLabel lblErrorLink) {this.lblErrorLink = lblErrorLink;}
+	public void setLblErrorPortada(JLabel lblErrorPortada) {this.lblErrorPortada = lblErrorPortada;}
+
 	//Getters de los componentes
     public JTextField getTxtTitulo() { return txtTitulo;}
 	public JTextField getTxtPrecio() {return txtPrecio;}
-
 	public JTextField getTxtLinkDescarga() {return txtLinkDescarga;}
+	public JTextArea getTxtDescripcion() {return txtDescripcion;}	
+	public JList<String> getJListaGeneros() {return listaGeneros;}
+	public JList<String> getJListaPlataformas() { return listaPlataformas;}
+	public JPanel getPanelCrossplay() {	return panelCrossplay;}
+	public JRadioButton getRbCrossplaySi() {return rbCrossplaySi;}
+	public JRadioButton getRbCrossplayNo() {return rbCrossplayNo;}
+	public JPanel getPanelMultijugador() {return panelMultijugador;}
+	public JCheckBox getChkOnline() {return chkOnline;}
+	public JLabel getLblPortadaNombre() {return lblPortadaNombre;}
+	public JCheckBox getChkLocal() {return chkLocal;}
+	public JCheckBox getChkCoopLocal() {return chkCoopLocal;}
+	public JCheckBox getChkCoopOnline() {return chkCoopOnline;}
+	public JLabel getLblPortadaPrevia() {return lblPortadaPrevia;}
 	
-	public JTextArea getTxtDescripcion() {return txtDescripcion;}
-	public void setTxtDescripcion(JTextArea txtDescripcion) {this.txtDescripcion = txtDescripcion;}
-	public JComboBox<String> getComboGeneros() {return comboGeneros;}
-	public void setComboGeneros(JComboBox<String> comboGeneros) {
-		this.comboGeneros = comboGeneros;
-	}
+	//Setters de los componentes
 	public void setTxtPrecio(JTextField txtPrecio) {this.txtPrecio = txtPrecio;}
 	public void setTxtLinkDescarga(JTextField txtLinkDescarga) {this.txtLinkDescarga = txtLinkDescarga;}
-
-	public JPanel getPanelCrossplay() {
-		return panelCrossplay;
-	}
-	public void setPanelCrossplay(JPanel panelCrossplay) {
-		this.panelCrossplay = panelCrossplay;
-	}
-	public JRadioButton getRbCrossplaySi() {
-		return rbCrossplaySi;
-	}
-	public void setRbCrossplaySi(JRadioButton rbCrossplaySi) {
-		this.rbCrossplaySi = rbCrossplaySi;
-	}
-	public JRadioButton getRbCrossplayNo() {
-		return rbCrossplayNo;
-	}
-	public void setRbCrossplayNo(JRadioButton rbCrossplayNo) {
-		this.rbCrossplayNo = rbCrossplayNo;
-	}
-	public JPanel getPanelMultijugador() {
-		return panelMultijugador;
-	}
-	public void setPanelMultijugador(JPanel panelMultijugador) {
-		this.panelMultijugador = panelMultijugador;
-	}
-	public JCheckBox getChkOnline() {
-		return chkOnline;
-	}
-	public void setChkOnline(JCheckBox chkOnline) {
-		this.chkOnline = chkOnline;
-	}
-	public JCheckBox getChkLocal() {
-		return chkLocal;
-	}
-	public void setChkLocal(JCheckBox chkLocal) {
-		this.chkLocal = chkLocal;
-	}
-	public JCheckBox getChkCoopLocal() {
-		return chkCoopLocal;
-	}
-	public void setChkCoopLocal(JCheckBox chkCoopLocal) {
-		this.chkCoopLocal = chkCoopLocal;
-	}
-	public JCheckBox getChkCoopOnline() {
-		return chkCoopOnline;
-	}
-	public void setChkCoopOnline(JCheckBox chkCoopOnline) {
-		this.chkCoopOnline = chkCoopOnline;
-	}
-	public JLabel getLblPortadaPrevia() {
-		return lblPortadaPrevia;
-	}
-	public void setLblPortadaPrevia(JLabel lblPortadaPrevia) {
-		this.lblPortadaPrevia = lblPortadaPrevia;
-	}
-	public JLabel getLblPortadaNombre() {
-		return lblPortadaNombre;
-	}
-	public void setLblPortadaNombre(JLabel lblPortadaNombre) {
-		this.lblPortadaNombre = lblPortadaNombre;
-	}
-	public void setTxtTitulo(JTextField txtTitulo) {
-		this.txtTitulo = txtTitulo;
-	}
-	public void setBotonSeleccionarPortada(JButton botonSeleccionarPortada) {
-		this.botonSeleccionarPortada = botonSeleccionarPortada;
-	}
-	public void setSelectedImagePath(String selectedImagePath) {
-		this.selectedImagePath = selectedImagePath;
-	}
+	public void setTxtDescripcion(JTextArea txtDescripcion) {this.txtDescripcion = txtDescripcion;}
+	public void setPanelCrossplay(JPanel panelCrossplay) {this.panelCrossplay = panelCrossplay;}
+	public void setRbCrossplaySi(JRadioButton rbCrossplaySi) {this.rbCrossplaySi = rbCrossplaySi;}
+	public void setRbCrossplayNo(JRadioButton rbCrossplayNo) {this.rbCrossplayNo = rbCrossplayNo;}
+	public void setPanelMultijugador(JPanel panelMultijugador) {this.panelMultijugador = panelMultijugador;}
+	public void setChkOnline(JCheckBox chkOnline) {this.chkOnline = chkOnline;}
+	public void setChkLocal(JCheckBox chkLocal) {this.chkLocal = chkLocal;}
+	public void setChkCoopLocal(JCheckBox chkCoopLocal) {this.chkCoopLocal = chkCoopLocal;}
+	public void setChkCoopOnline(JCheckBox chkCoopOnline) {	this.chkCoopOnline = chkCoopOnline;}
+	public void setLblPortadaPrevia(JLabel lblPortadaPrevia) {this.lblPortadaPrevia = lblPortadaPrevia;	}
+	public void setLblPortadaNombre(JLabel lblPortadaNombre) {this.lblPortadaNombre = lblPortadaNombre;}
+	public void setTxtTitulo(JTextField txtTitulo) {this.txtTitulo = txtTitulo;}
+	public void setBotonSeleccionarPortada(JButton botonSeleccionarPortada) {this.botonSeleccionarPortada = botonSeleccionarPortada;}
+	public void setSelectedImagePath(String selectedImagePath) {this.selectedImagePath = selectedImagePath;}
 	public void setBotonCrear(JButton botonCrear) {this.botonCrear = botonCrear;}
-	public void setBotonCancelar(JButton botonCancelar) {this.botonCancelar = botonCancelar;
-	}
+	public void setBotonCancelar(JButton botonCancelar) {this.botonCancelar = botonCancelar;}
 
     
 }
