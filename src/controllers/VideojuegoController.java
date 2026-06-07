@@ -1,6 +1,8 @@
 package controllers;
 
 
+import java.awt.Desktop;
+import java.io.File;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -8,6 +10,7 @@ import javax.swing.JOptionPane;
 
 import models.Videojuego;
 import repositorio.RepositorioVideojuegos;
+import servicios.PDFExportadorVideojuego;
 import tablamodelos.Tablamodelovideojuego;
 import views.FormularioJuego;
 import views.VideojuegoView;
@@ -17,13 +20,13 @@ public class VideojuegoController{
 	private VideojuegoView view;
 	private Tablamodelovideojuego tabla; //TODO irving te toca editar esta seccion pa que se vea chido
 	private RepositorioVideojuegos repo;
-	//private PDFExportador expo;
+	private PDFExportadorVideojuego expo;
 	
 	
 	public VideojuegoController(VideojuegoView view) {
 		this.view = view;
 		this.repo = new RepositorioVideojuegos();
-		//this.expPDF
+		this.expo = new PDFExportadorVideojuego();
 		
 		//Listener boton [  AGRREGAR JUEGO  ]
 		view.getBtnAdd().addActionListener(e -> abrirFormulario(null));
@@ -48,8 +51,9 @@ public class VideojuegoController{
 			
 		});
 		//Listener boton [ CREAR PDF JUEGO  ]
-		//view.getBtnExportarVideojuego().addActionListener(e -> generrarPDF());
+		view.getBtnExportarVideojuego().addActionListener(e -> generrarPDF());
 	}
+	
 	public void cargarJuegos() {
 		System.out.println("Se muestran juegos");
 		try {
@@ -104,7 +108,21 @@ public class VideojuegoController{
 	            }
 
 	        }
-	    }
+	 }
 	
-	
+	 private void generrarPDF() {
+		 File file = view.seleccionarPdfFile();
+			if(file == null) {
+				return;
+			}
+			try {
+				expo.exportarVideojuegos(repo.obtenerListaVideojuegos(), file); 
+				if(Desktop.isDesktopSupported()) {
+					Desktop.getDesktop().open(file);
+				}
+			}catch(Exception ex) {
+				ex.printStackTrace();
+				JOptionPane.showMessageDialog(view, "Error al exportar no soporta el sistema");
+			}
+		}
 }
