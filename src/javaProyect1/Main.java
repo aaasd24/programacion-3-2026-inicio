@@ -1,6 +1,5 @@
 package javaProyect1;
 
-import views.FormularioJuego;
 import views.FormularioRegistro;
 import views.LoginWindow;
 import views.MainWindow;

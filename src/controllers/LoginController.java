@@ -15,8 +15,6 @@ import models.Usuario;
 import repositorio.LoginRepository;
 import utils.Session;
 import views.FormularioRegistro;
-//import exceptions.InvalidPasswordException;
-//import exceptions.InvalidUserException;
 import views.LoginView;
 import views.LoginWindow;
 import views.MainWindow;

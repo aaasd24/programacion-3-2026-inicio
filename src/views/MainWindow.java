@@ -29,6 +29,7 @@ import javax.swing.SwingConstants;
 import utils.ThemeManager;
 
 import controllers.MainController;
+import models.Videojuego;
 
 @SuppressWarnings("serial")
 public class MainWindow extends JFrame {
@@ -61,6 +62,10 @@ public class MainWindow extends JFrame {
 	
 	private CardLayout cardLayout;
 	private JPanel contenedor;
+	
+	//Atributos base para tarjetas
+	private String imagenPath;
+	private String textoInferior;
 	
 	public MainWindow() {
 		
@@ -371,7 +376,7 @@ public class MainWindow extends JFrame {
         
         //tarjetas de prueba por categoria, todas con "Jugar"
         for(int i = 0; i < 5; i++) {
-            panelJuegos.add(crearTarjetaJuego(null, "Jugar")); 
+            panelJuegos.add(crearTarjetaJuego(imagenPath, "Jugar")); 
             // Nota: Cambiar el 'null' por la ruta de la imagen cuando queramos agregarlas
         }
         
@@ -382,6 +387,7 @@ public class MainWindow extends JFrame {
     }
 
     private JPanel crearTarjetaJuego(String rutaImagen, String textoInferior) {
+    	//
         JPanel tarjeta = new JPanel(new BorderLayout());
         tarjeta.setPreferredSize(new Dimension(140, 200)); //tamaño de la imagen aprox
         tarjeta.setOpaque(false);
@@ -391,21 +397,23 @@ public class MainWindow extends JFrame {
         lblPortada.setOpaque(true);
         lblPortada.setBackground(new Color(40, 40, 40, 200)); // Fondo gris de prueba por ahora
         lblPortada.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        
         if (rutaImagen != null) {
-            try {
-                javax.swing.ImageIcon icon = new javax.swing.ImageIcon(getClass().getResource(rutaImagen));
-                Image img = icon.getImage().getScaledInstance(140, 175, Image.SCALE_SMOOTH);
-                lblPortada.setIcon(new javax.swing.ImageIcon(img));
-            } catch (Exception e) {
-                lblPortada.setText("Imagen no encontrada");
-                lblPortada.setForeground(Color.WHITE);
-            }
-        } else {
-            // Placeholder de texto si mandamos null
-            lblPortada.setText("Portada"); 
-            lblPortada.setForeground(Color.LIGHT_GRAY);
-        }
+        	try {
+		         javax.swing.ImageIcon icon = new javax.swing.ImageIcon(getClass().getResource(imagenPath));
+		         Image img = icon.getImage().getScaledInstance(140, 175, Image.SCALE_SMOOTH);
+		         lblPortada.setIcon(new javax.swing.ImageIcon(img));
+		     } catch (Exception e) {
+		         lblPortada.setText("Imagen no encontrada");
+		         lblPortada.setForeground(Color.WHITE);
+		     }
+		 } else {
+		     // Placeholder de texto si mandamos null
+			 lblPortada.setText("Portada"); 
+		     lblPortada.setForeground(Color.LIGHT_GRAY);
+		 }
+        
+        
+       
         
         //borde para jugar
         JLabel lblHoras = new JLabel(textoInferior, javax.swing.SwingConstants.CENTER);
@@ -422,8 +430,14 @@ public class MainWindow extends JFrame {
         tarjeta.add(lblHoras, BorderLayout.SOUTH);
         
         return tarjeta;
+		
     }
 	
-	
+	public void mostrarJuego(Videojuego videojuego) {
+		if(videojuego != null) {
+			imagenPath = videojuego.getPortadaPath();
+		}
+		
+	}
 }
 

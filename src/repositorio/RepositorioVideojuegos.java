@@ -260,47 +260,81 @@ public class RepositorioVideojuegos {
 	}
 	
 	// Ver que hacer con este comando 
-		public boolean actualizar(int indice, Videojuego videojuegoActualizado) throws SQLException{
-			String sql = "UPDATE videojuego SET titulo = ?, "
-					+ "precio = ?, "
-					+ "direccionArchivo = ?, "
-					+ "descripcion = ?, "
-					+ "portadaPath = ?, "
-					+ "crossplay = ?, "
-					+ "multijugador = ? "
-					+ "WHERE idvideojuego = ?";
-			
-			try(Connection conexion = DatabaseConnection.getConnection();
-				PreparedStatement pst = conexion.prepareStatement(sql);)
-			{
-				pst.setString(1, videojuegoActualizado.getTitulo());
-				pst.setFloat(2, videojuegoActualizado.getPrecio());
-				pst.setString(3, videojuegoActualizado.getDireccionArchivo());
-				pst.setString(4, videojuegoActualizado.getDescripcion());
-				pst.setString(5, videojuegoActualizado.getPortadaPath());
-				pst.setBoolean(6, videojuegoActualizado.getCrossplay());
-				pst.setString(7, videojuegoActualizado.getMultijugador());
-				pst.setInt(8, videojuegoActualizado.getId());
-				int filaAfectada = pst.executeUpdate();
-				if(filaAfectada > 0) {
-					System.out.println("Cambios guardados");
-					return true;
-				}
-			}
-			return false;	
-		}
-		public boolean actualizarPlataformas(Videojuego videojuegoActualizado) throws SQLException {
-			System.out.println(eliminarVideojuegoEnPlataformaHas(videojuegoActualizado.getId()));
-			conectarVideojuegoPlataforma(videojuegoActualizado);
-			return true;
-		}
-		public boolean actualizarGeneros(Videojuego videojuegoActualizado) throws SQLException {
-			try	{
-				System.out.println(eliminarVideojuegoEnGeneroHas(videojuegoActualizado.getId()));
-				conectarVideojuegosGeneros(videojuegoActualizado);
+	public boolean actualizar(int indice, Videojuego videojuegoActualizado) throws SQLException{
+		String sql = "UPDATE videojuego SET titulo = ?, "
+				+ "precio = ?, "
+				+ "direccionArchivo = ?, "
+				+ "descripcion = ?, "
+				+ "portadaPath = ?, "
+				+ "crossplay = ?, "
+				+ "multijugador = ? "
+				+ "WHERE idvideojuego = ?";
+		
+		try(Connection conexion = DatabaseConnection.getConnection();
+			PreparedStatement pst = conexion.prepareStatement(sql);)
+		{
+			pst.setString(1, videojuegoActualizado.getTitulo());
+			pst.setFloat(2, videojuegoActualizado.getPrecio());
+			pst.setString(3, videojuegoActualizado.getDireccionArchivo());
+			pst.setString(4, videojuegoActualizado.getDescripcion());
+			pst.setString(5, videojuegoActualizado.getPortadaPath());
+			pst.setBoolean(6, videojuegoActualizado.getCrossplay());
+			pst.setString(7, videojuegoActualizado.getMultijugador());
+			pst.setInt(8, videojuegoActualizado.getId());
+			int filaAfectada = pst.executeUpdate();
+			if(filaAfectada > 0) {
+				System.out.println("Cambios guardados");
 				return true;
-			}catch(SQLException ex) {
-				ex.printStackTrace();
-			}return false;
+			}
 		}
+		return false;	
+	}
+	public boolean actualizarPlataformas(Videojuego videojuegoActualizado) throws SQLException {
+		System.out.println(eliminarVideojuegoEnPlataformaHas(videojuegoActualizado.getId()));
+		conectarVideojuegoPlataforma(videojuegoActualizado);
+		return true;
+	}
+	public boolean actualizarGeneros(Videojuego videojuegoActualizado) throws SQLException {
+		try	{
+			System.out.println(eliminarVideojuegoEnGeneroHas(videojuegoActualizado.getId()));
+			conectarVideojuegosGeneros(videojuegoActualizado);
+			return true;
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}return false;
+	}
+	
+	public List<Videojuego> buscarJuego(String entrada){
+		List<Videojuego> juegos = new ArrayList<Videojuego>();
+		try (
+				Connection conexion = DatabaseConnection.getConnection();
+				Statement stm = conexion.createStatement();
+				ResultSet rs = stm.executeQuery("SELECT * FROM videojuego WHERE titulo LIKE '%" + entrada + "%'");)
+		{
+			while(rs.next()) {
+				Videojuego videojuegoImportado = new Videojuego(
+						rs.getInt("idvideojuego"), 
+						rs.getString("titulo"), 
+						rs.getFloat("precio"),
+						rs.getString("descripcion"),
+						rs.getString("direccionArchivo"), 
+						rs.getString("portadaPath")
+						);
+				juegos.add(videojuegoImportado);
+				
+			}
+			Videojuego jg;
+			for(int i = 0; i < juegos.size(); i++) {
+				jg = juegos.get(i);
+				jg.setGeneros(obtenerGenerosDdBD(jg.getId()));
+				jg.setPlataforma(obtenerPlatafomaDeVideojuegodBD(jg.getId()));
+			}
+		}catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		
+		
+		return juegos;
+	}
+	
 }

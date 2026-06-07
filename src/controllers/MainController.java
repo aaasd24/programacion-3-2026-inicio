@@ -2,13 +2,20 @@ package controllers;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
 import config.Config;
+import models.Videojuego;
+import repositorio.RepositorioVideojuegos;
 import views.MainWindow;
 
 public class MainController {
@@ -17,6 +24,7 @@ public class MainController {
 	public JButton BotonVerUsuarios;
 	private UserController usuarioController;
 	private VideojuegoController videojuegoController;
+	private RepositorioVideojuegos repo;
 	
 	public MainController(MainWindow view) {	
 		this.view = view;
@@ -40,7 +48,17 @@ public class MainController {
 			updateMenuState(MainWindow.HOME);
 		});
 		view.getBotonVideojuego().addActionListener(e -> mostrarVideojuegos());
-		view.getTxtBuscar().addActionListener(e -> buscar());
+		KeyAdapter teclaPasar = new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					buscar();
+				}
+			}
+		};
+		
+		view.getTxtBuscar().addKeyListener(teclaPasar);
 		
 	}
 	private void handleClose() {
@@ -118,7 +136,27 @@ public class MainController {
 		view.setWindowSize(width, height);
 	}
 	
-	public void buscar() {
+	public List<Videojuego> buscar() {
+		List<Videojuego> juegosRelacionados = new ArrayList<Videojuego>();
+		String SBusqueda = view.getTxtBuscar().getSelectedText();
+		try {
+			repo.buscarJuego(SBusqueda);
+		}catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return juegosRelacionados;
+		
+	}
+	public void cargarJuegos() {
+		try {
+			List<Videojuego> lista = repo.obtenerListaVideojuegos();
+			for(Videojuego juego: lista) {
+				view.mostrarJuego(juego);
+			}
+			
+		}catch (SQLException ex) {
+			ex.printStackTrace();
+		}
 		
 	}
 	
