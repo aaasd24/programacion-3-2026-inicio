@@ -61,7 +61,9 @@ public class RepositorioVideojuegos {
 						rs.getFloat("precio"),
 						rs.getString("descripcion"),
 						rs.getString("direccionArchivo"), 
-						rs.getString("portadaPath")
+						rs.getString("portadaPath"),
+						rs.getBoolean("crossplay"),
+						rs.getString("multijugador")
 						);
 				juegos.add(videojuegoImportado);
 				
@@ -290,13 +292,11 @@ public class RepositorioVideojuegos {
 		return false;	
 	}
 	public boolean actualizarPlataformas(Videojuego videojuegoActualizado) throws SQLException {
-		System.out.println(eliminarVideojuegoEnPlataformaHas(videojuegoActualizado.getId()));
 		conectarVideojuegoPlataforma(videojuegoActualizado);
 		return true;
 	}
 	public boolean actualizarGeneros(Videojuego videojuegoActualizado) throws SQLException {
 		try	{
-			System.out.println(eliminarVideojuegoEnGeneroHas(videojuegoActualizado.getId()));
 			conectarVideojuegosGeneros(videojuegoActualizado);
 			return true;
 		}catch(SQLException ex) {
@@ -318,7 +318,9 @@ public class RepositorioVideojuegos {
 						rs.getFloat("precio"),
 						rs.getString("descripcion"),
 						rs.getString("direccionArchivo"), 
-						rs.getString("portadaPath")
+						rs.getString("portadaPath"),
+						rs.getBoolean("crossplay"),
+						rs.getString("multijugador")
 						);
 				juegos.add(videojuegoImportado);
 				

@@ -60,6 +60,7 @@ public class UserController {
             List<Usuario> listaFresca = repo.obtenerUsuarios();
             if(model == null) {
                 model = new Tablamodelousuario(listaFresca);
+                System.out.println(model.getColumnName(0));
                 view.setModeloTable(model);
             } else {
                 model.setUsers(listaFresca);

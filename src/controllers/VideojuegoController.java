@@ -18,7 +18,7 @@ import views.VideojuegoView;
 public class VideojuegoController{
 
 	private VideojuegoView view;
-	private Tablamodelovideojuego tabla; //TODO irving te toca editar esta seccion pa que se vea chido
+	private Tablamodelovideojuego tabla;
 	private RepositorioVideojuegos repo;
 	private PDFExportadorVideojuego expo;
 	
@@ -35,7 +35,7 @@ public class VideojuegoController{
 		view.getBtnEdit().addActionListener(e -> {
 			int row = view.getSelectedRow();
 			if(row != -1 ) {
-				Videojuego seleccionado = tabla.getUserAt(row);
+				Videojuego seleccionado = tabla.getVideojuegorAt(row);
 				abrirFormulario(seleccionado);
 			}else {
 				JOptionPane.showMessageDialog(view, "Seleccione un juego a editar");
@@ -44,7 +44,7 @@ public class VideojuegoController{
 		
 		//Listener boton [ eLIMINAR ] 
 		view.getBtnDelete().addActionListener(e ->{
-			boolean eliminar = repo.eliminar(tabla.getUserAt(view.getSelectedRow()).getId());
+			boolean eliminar = repo.eliminar(tabla.getVideojuegorAt(view.getSelectedRow()).getId());
 			if(eliminar) {
 				tabla.removeRow(view.getSelectedRow());
 			}
@@ -62,7 +62,7 @@ public class VideojuegoController{
 				tabla = new Tablamodelovideojuego(lista);
 				view.setModeloTable(tabla);
 			}else {
-				tabla.setUsers(lista);
+				tabla.setJuegos(lista);
 			}
 			view.getTable().revalidate();
 			view.getTable().repaint();
@@ -81,7 +81,6 @@ public class VideojuegoController{
 	        if (dialog.estaGuardado()) {
 	            Videojuego videojuegoActual = dialogControlador.getVideojuego(); 
 	            try {
-	            	System.out.println("Cargando");
 	                if (videojuego == null) { //Videojuego nuevo
 	                	System.out.println("Se crea nuevo Juevo");
 	                    repo.subirVideojuego(videojuegoActual);

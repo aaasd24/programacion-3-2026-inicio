@@ -45,6 +45,15 @@ public class VideojuegoView extends JPanel {
 
         //Configuración de la Tabla y el Scroll
         tabla = new JTable();
+        
+        btnAdd = crearBotonEstilizado("Agregar Juego");
+        btnEdit = crearBotonEstilizado("Editar");
+        btnDelete = crearBotonEstilizado("Eliminar");
+        btnExportarVideojuego = crearBotonEstilizado("Exportar PDF");
+        panelButtons.add(btnAdd);
+        panelButtons.add(btnEdit);
+        panelButtons.add(btnDelete);
+        panelButtons.add(btnExportarVideojuego);
         estilizarTabla();
         
         JScrollPane scrollPane = new JScrollPane(tabla);
@@ -56,18 +65,7 @@ public class VideojuegoView extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
         
         //Configuración de los Botones
-        panelButtons.setOpaque(false); 
-
-        btnAdd = crearBotonEstilizado("Agregar Juego");
-        btnEdit = crearBotonEstilizado("Editar");
-        btnDelete = crearBotonEstilizado("Eliminar");
-        btnExportarVideojuego = crearBotonEstilizado("Exportar PDF");
-
-        panelButtons.add(btnAdd);
-        panelButtons.add(btnEdit);
-        panelButtons.add(btnDelete);
-        panelButtons.add(btnExportarVideojuego);
-        
+        panelButtons.setOpaque(false);
         add(panelButtons, BorderLayout.NORTH);
     }
     
@@ -215,7 +213,7 @@ public class VideojuegoView extends JPanel {
             tabla.getColumnModel().getColumn(0).setCellRenderer(center);
         }
         // columna 3(precios)
-        if (tabla.getColumnCount() >= 4) {
+        if (tabla.getColumnCount() >= 3) {
             tabla.getColumnModel().getColumn(3).setCellRenderer(center);
         }
         

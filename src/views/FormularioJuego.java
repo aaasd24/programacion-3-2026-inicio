@@ -16,7 +16,6 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
-import javax.swing.DefaultListSelectionModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -53,7 +52,6 @@ public class FormularioJuego extends JDialog{
     
     private JList<String> listaGeneros;
     private JList<String> listaPlataformas;
-    private JCheckBox chkMultiplataforma;
     
     // Crossplay 
     private ButtonGroup crossGrupo;
@@ -376,7 +374,7 @@ public class FormularioJuego extends JDialog{
 			}
 			listaGeneros.setSelectedIndices(indices);
 			
-			chkCoopLocal.setSelected(true);
+			mostrarMultiSleccionado(videojuegoSeleccionado).setSelected(true);
 			
 			List<String> plataformas = videojuegoSeleccionado.getPlataformasDisponibles();
 			int[] indicesP = new int[plataformas.size()];
@@ -394,7 +392,7 @@ public class FormularioJuego extends JDialog{
     
     
     public void confirmarGuardado() {
-    	System.out.println("Guardado");
+    	System.out.println("Guardado confirmado");
     	guardado = true;
         this.dispose();  
     }
@@ -404,6 +402,22 @@ public class FormularioJuego extends JDialog{
 
 	public Videojuego getVideojuego() {
 		return videojuego;
+	}
+	public JCheckBox mostrarMultiSleccionado(Videojuego videojuego) {
+		String multiS = videojuego.getMultijugador();
+		if(multiS.equals("Online")) {
+			return chkOnline;
+		}else if(multiS.equals("Local")) {
+			return chkLocal;
+		}else if(multiS.equals("Coop Online")) {
+			return chkCoopOnline;
+		}else if(multiS.equals("Coop Local")) {
+			return chkCoopLocal;
+		}
+		System.out.println("ninguno");
+		return null;
+		
+		
 	}
 	
     // --- GETTERS ---
@@ -416,12 +430,12 @@ public class FormularioJuego extends JDialog{
     
     // getters para saber que casillas marcan
     public ButtonModel chkSeleccionado() { return multiGrupo.getSelection();}
+
+    public boolean isOnline() { return chkOnline.isSelected(); }
+    public boolean isLocal() { return chkLocal.isSelected(); }
+    public boolean isCoopLocal() { return chkCoopLocal.isSelected(); }
+    public boolean isCoopOnline() { return chkCoopOnline.isSelected(); }
     
-    public String isOnline() { return chkOnline.getName(); }
-    public String isLocal() { return chkLocal.getName(); }
-    public String isCoopLocal() { return chkCoopLocal.getName(); }
-    public String isCoopOnline() { return chkCoopOnline.getName(); }
-    public String isMultiplataforma() { return chkMultiplataforma.getName(); }
     
     public String getSelectedImagePath() { return selectedImagePath; }
     

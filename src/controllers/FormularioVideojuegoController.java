@@ -59,6 +59,8 @@ public class FormularioVideojuegoController {
 		view.getChkLocal().addActionListener(e -> validarMulti());
 		view.getChkOnline().addActionListener(e -> validarMulti());
 		
+		view.getBotonSeleccionarPortada().addActionListener(e -> view.elegirImagen());
+		
 		view.getBotonCrear().addActionListener(e -> save());
 		view.getBotonCancelar().addActionListener(e -> view.dispose());
         
@@ -78,6 +80,7 @@ public class FormularioVideojuegoController {
 		if (!validarDescripcion()) valid = false;
 		if (!validarplataformas()) valid = false;
 		if (!validarGeneros()) valid = false;
+		if (!validarImagen()) valid = false;
 		
 		if (valid) {
 			return true;
@@ -179,7 +182,7 @@ public class FormularioVideojuegoController {
     }
 
     private boolean validarplataformas() {
-        if (view.getJListaPlataformas().getSelectedValuesList() == null) {
+        if (view.getJListaPlataformas().isSelectionEmpty()) {
             view.getLblErrorPlataforma().setText("Seleccione minimo una plataforma");
             return false;
         }
@@ -189,7 +192,7 @@ public class FormularioVideojuegoController {
     }    
     
     private boolean validarGeneros() {
-    	if(view.getJListaGeneros().getSelectedValuesList() == null) {
+    	if(view.getJListaGeneros().isSelectionEmpty()) {
     		view.getLblErrorGeneros().setText("Seleccione minimo un genero");
     		return false;
     	}
@@ -198,13 +201,22 @@ public class FormularioVideojuegoController {
     }
     
     private boolean validarMulti() {
-    	if(!view.chkSeleccionado().isSelected()) {
+    	if(!(view.isCoopLocal() == true || view.isCoopOnline() == true || view.isLocal() == true || view.isOnline() == true)) {
     		view.getLblErrorMulijugador().setText("Indique un modo de multijugador");
     		return false;
     	}
     	view.getLblErrorMulijugador().setText(" ");
     	return true;
     }
+    private boolean validarImagen(){
+	    if(view.getSelectedImagePath() == null){
+	        view.getLblErrorPortada().setText("Selecciona una imagen");
+	        return false;
+	    }
+
+	    view.getLblErrorPlataforma().setText(" ");
+	    return true;
+	}
     private void cargarDatos() {
     	view.mostrarDatos(videojuego);
     }
@@ -235,7 +247,6 @@ public class FormularioVideojuegoController {
 		else if(view.getChkOnline().isSelected()) {
 			multi = "Online";
 		}
-		System.out.println(multi);
 		
 		
         if(videojuego == null) { //															NO tiene imagen

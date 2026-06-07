@@ -28,6 +28,7 @@ public class MainController {
 	
 	public MainController(MainWindow view) {	
 		this.view = view;
+		this.repo = new RepositorioVideojuegos();
 		loadWindowPreferences();
 		
 	}

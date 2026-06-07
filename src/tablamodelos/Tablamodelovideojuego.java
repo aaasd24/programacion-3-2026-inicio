@@ -11,7 +11,7 @@ public class Tablamodelovideojuego extends AbstractTableModel{
 
 	private List<Videojuego> listaVideojuego;
 	private final String[] nombreColumnas = {
-			"Nombre",
+			"Titulo",
 			"Generos",
 			"Precio",
 			"Plataforma"
@@ -21,8 +21,8 @@ public class Tablamodelovideojuego extends AbstractTableModel{
 		this.listaVideojuego = videojuegos;
 	}
 	
-	public String getCoulmName(int columna) {
-		return nombreColumnas[columna];
+	public String getColumnName(int column) {
+		return nombreColumnas[column];
 	}
 	@Override
 	public int getRowCount() {
@@ -49,11 +49,11 @@ public class Tablamodelovideojuego extends AbstractTableModel{
 		}
 		return null;
 	}
-	public Videojuego getUserAt(int row) {
+	public Videojuego getVideojuegorAt(int row) {
 		return listaVideojuego.get(row);
 	}
 	
-	public void setUsers(List<Videojuego> videojuegos) {
+	public void setJuegos(List<Videojuego> videojuegos) {
 		this.listaVideojuego = videojuegos;
 		fireTableDataChanged();
 	}

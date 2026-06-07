@@ -17,13 +17,15 @@ public class Videojuego {
 	
 	
 	//Constructor base
-	public Videojuego(int id, String nombre,  float precio, String descripcion, String direccion, String imgaePath) {
+	public Videojuego(int id, String nombre,  float precio, String descripcion, String direccion, String imgaePath, boolean crossplay, String multijugador) {
 		this.id = id;
 		this.titulo = nombre;
 		this.precio = precio;
 		this.descripcion = descripcion;
 		this.direccionArchivo = direccion;
 		this.portadaPath = imgaePath;
+		this.crossplay = crossplay;
+		this.multijugador = multijugador;
 	}
 	
 	//Constructor completo 
