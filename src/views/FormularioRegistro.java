@@ -332,6 +332,14 @@ public class FormularioRegistro extends JFrame {
 		}
 		
 	}
+    public int confirmarVolver() {
+	    return JOptionPane.showConfirmDialog(
+	        this,
+	        "¿Seguro que deseas regresar? Se perderán todos los datos",
+	        "¿Seguro?",
+	        JOptionPane.YES_NO_OPTION
+	    );
+	}
 
     // --- GETTERS PARA EL CONTROLADOR ---
     public JTextField getTxtNombre() { return txtNombre; }

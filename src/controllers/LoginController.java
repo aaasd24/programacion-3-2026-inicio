@@ -18,6 +18,7 @@ import views.FormularioRegistro;
 //import exceptions.InvalidPasswordException;
 //import exceptions.InvalidUserException;
 import views.LoginView;
+import views.LoginWindow;
 import views.MainWindow;
 
 
@@ -153,7 +154,7 @@ public class LoginController {
 		 JOptionPane.showMessageDialog(view.getVentana(), "No tienes permisos");
 	 }
 	 
-		
+	 new LoginWindow();	
 	 view.getVentana().dispose();
 		
 	}
@@ -163,12 +164,7 @@ public class LoginController {
 	 * Metodo para confirmar cerrar ventana, Si presiona la opcion si, se cierra
 	 */
 	private void handleClose() {
-		int option = JOptionPane.showConfirmDialog(view, "¿Seguro que deseas regresar? Se perderán todos los datos");
-		if(option == JOptionPane.YES_OPTION) {
-			System.exit(0);
-		}else {
-			;
-		}
+		
 		
 	}
 	

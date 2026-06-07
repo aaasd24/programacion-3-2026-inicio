@@ -61,8 +61,14 @@ public class RegistrationController {
             view.getBotonCancelar().removeActionListener(al);
         }
         view.getBotonCancelar().addActionListener(e -> {
-        	new LoginWindow();
-        	view.dispose();
+        	 int option = view.confirmarRegreso();
+
+             if(option == JOptionPane.YES_OPTION){
+            	 LoginWindow ventana = new LoginWindow();
+                 new LoginController(ventana.getLoginView());
+                 ventana.setVisible(true);
+                 view.dispose();
+             }
         	
         });
 
@@ -212,7 +218,7 @@ public class RegistrationController {
 	            "Sesion iniciada",
 	            JOptionPane.INFORMATION_MESSAGE
 	        );
-    	new LoginWindow(); 
+    	new MainController(new MainWindow()); 
         view.dispose();
     }
 
