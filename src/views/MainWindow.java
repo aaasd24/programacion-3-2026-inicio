@@ -279,6 +279,9 @@ public class MainWindow extends JFrame {
                 }
             }
         };
+        
+        assets.GestorCursor.aplicarATodo(this);
+        
         panelHome.setLayout(new BorderLayout());
         JPanel panelCabecera = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
         panelCabecera.setOpaque(false); // Transparente
@@ -291,12 +294,13 @@ public class MainWindow extends JFrame {
         try {
             // Cargamos el logo de la parrilla en pequeño
             javax.swing.ImageIcon icon = new javax.swing.ImageIcon(getClass().getResource("../assets/SteakGames.png"));
-            Image img = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+            Image img = icon.getImage().getScaledInstance(250, 250, Image.SCALE_SMOOTH);
             labelLogo.setIcon(new javax.swing.ImageIcon(img));
         } catch (Exception e) {
             labelLogo.setText("[LOGO]");
             labelLogo.setForeground(Color.WHITE);
         }
+        
         
         panelCabecera.add(labelBienvenida);
         panelCabecera.add(labelLogo);
@@ -320,8 +324,11 @@ public class MainWindow extends JFrame {
 		
 		add(contenedor, BorderLayout.CENTER);
 	}
+	
+	
 	public void mostrarVista(String vista) {
 		cardLayout.show(contenedor, vista);
+		assets.GestorCursor.aplicarATodo(this);
 	}
 	public void setWindowSize(int width, int height) {
 		setSize(width, height);
@@ -334,18 +341,17 @@ public class MainWindow extends JFrame {
 
 	// --- MÉTODOS PARA MAQUETAR LA BIBLIOTECA ---
 
-    private JScrollPane crearPanelCatalogoJuegos() {
+	private JScrollPane crearPanelCatalogoJuegos() {
         JPanel panelContenedor = new JPanel();
         panelContenedor.setLayout(new javax.swing.BoxLayout(panelContenedor, javax.swing.BoxLayout.Y_AXIS));
         panelContenedor.setOpaque(false);
-        panelContenedor.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 30, 20, 30)); // Márgenes laterales
+        panelContenedor.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 30, 20, 30)); 
         
-     //categorias del figma
-        panelContenedor.add(crearCategoria("continuar jugando (9) ∨"));
-        panelContenedor.add(javax.swing.Box.createVerticalStrut(25)); // Espaciado entre listas
-        panelContenedor.add(crearCategoria("terror(15) ∨"));
+        // CORRECCIÓN AQUÍ: Solo pasamos el título, sin el segundo parámetro viejo ("horas" o "")
+        panelContenedor.add(crearCategoria("continuar jugando ->"));
+        panelContenedor.add(javax.swing.Box.createVerticalStrut(25)); 
+        panelContenedor.add(crearCategoria("biblioteca ->"));
         
-       
         JScrollPane scroll = new JScrollPane(panelContenedor);
         scroll.setOpaque(false);
         scroll.getViewport().setOpaque(false);
@@ -356,23 +362,21 @@ public class MainWindow extends JFrame {
         return scroll;
     }
 
-    private JPanel crearCategoria(String titulo) {
+    private JPanel crearCategoria(String titulo) { // CORRECCIÓN: Solo recibe (String titulo)
         JPanel panelCat = new JPanel(new BorderLayout());
         panelCat.setOpaque(false);
         
         JLabel lblTitulo = new JLabel(titulo);
         lblTitulo.setForeground(Color.WHITE);
         lblTitulo.setFont(assets.AppFonts.negrita()); 
-        lblTitulo.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 10, 0)); // Margen abajo del título
+        lblTitulo.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 10, 0)); 
         
-        // Panel horizontal para las portadas
         JPanel panelJuegos = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
         panelJuegos.setOpaque(false);
         
-        //tarjetas de prueba por categoria, todas con "Jugar"
         for(int i = 0; i < 5; i++) {
+            // Todas las tarjetas dirán "Jugar"
             panelJuegos.add(crearTarjetaJuego(null, "Jugar")); 
-            // Nota: Cambiar el 'null' por la ruta de la imagen cuando queramos agregarlas
         }
         
         panelCat.add(lblTitulo, BorderLayout.NORTH);
