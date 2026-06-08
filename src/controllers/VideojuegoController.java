@@ -87,35 +87,43 @@ public class VideojuegoController{
         if (dialog.estaGuardado()) {
             Videojuego videojuegoActual = dialogControlador.getVideojuego(); 
             try {
-                if (videojuego == null) { // Videojuego nuevo
+                if (videojuego == null) { 
                     System.out.println("Se crea nuevo Juego");
-                    
-                    //Guarda el registro base en la tabla videojuego
+ 
                     repo.subirVideojuego(videojuegoActual);
-                    
-                    //Inserto las relaciones usando UPPER y TRIM
                     repo.conectarVideojuegosGeneros(videojuegoActual);
                     repo.conectarVideojuegoPlataforma(videojuegoActual);
                     
-                } else { // Actualizar videojuego
+                    //Refrescamos 
+                    this.cargarJuegos(); 
+                    
+                   
+                    // Le pedimos a la vista su MainWindow, y a la MainWindow le ordenamos refrescar el catálogo de inicio con una consulta limpia de la base de datos
+                    view.getMainWindow().refrescarCatalogoDesdeBD(repo.obtenerListaVideojuegos());
+                    
+                    System.out.println("Catálogo de inicio sincronizado con éxito!");
+                    
+                } else { //actualizar
                     System.out.println("Se edito un Juego");
                     int row = view.getSelectedRow();
                     boolean actualizar = repo.actualizar(row, videojuegoActual);
                     if (actualizar) {
                         repo.actualizarGeneros(videojuegoActual);
                         repo.actualizarPlataformas(videojuegoActual);
-                        
                         this.cargarJuegos(); 
+                        
+                        // actualizamos el catálogo principal si se actualiza un juego
+                        view.getMainWindow().refrescarCatalogoDesdeBD(repo.obtenerListaVideojuegos());
                         System.out.println("Catálogo actualizado en la interfaz con éxito.");
                     } else {
                         JOptionPane.showMessageDialog(view, "No se pudieron guardar los cambios en la base de datos.", "Error de actualización", JOptionPane.WARNING_MESSAGE);
                     }
                 }
-            } catch (Exception e) { 
+            } catch (Exception e) {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(view, "Error al guardar en la base de datos: " + e.getMessage());
-            } 
-        } 
+            }
+        }
     } 
 	
 	 private void generrarPDF() {

@@ -35,11 +35,13 @@ public class VideojuegoView extends JPanel {
     private JButton btnDelete;
     private JButton btnExportarVideojuego;
     private JTable tabla;
+    private MainWindow mainWindow;
     
     // Panel superior para los botones
     private JPanel panelButtons = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 15));
     
-    public VideojuegoView() {
+    public VideojuegoView(MainWindow mainWindow) {
+        this.mainWindow = mainWindow;
         setLayout(new BorderLayout());
         setOpaque(false); //panel base lo hago transparente
 
@@ -272,7 +274,8 @@ public class VideojuegoView extends JPanel {
     public JButton getBtnEdit() { return btnEdit; }
     public JButton getBtnDelete() { return btnDelete; }
     public JButton getBtnExportarVideojuego() { return btnExportarVideojuego; }
-    
+    public MainWindow getMainWindow() { return this.mainWindow; }
+
     public int getSelectedRow() {
         return tabla.getSelectedRow();
     }

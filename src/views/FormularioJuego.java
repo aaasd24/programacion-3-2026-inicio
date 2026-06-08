@@ -363,14 +363,14 @@ public class FormularioJuego extends JDialog{
 			int[] indices = new int[generos.size()];
 			int i = 0;
 			for(String genero: generos) {
-				if(genero.equals("Acción")) indices[i++] = 0;
-				else if(genero.equals("Aventura")) indices[i++] = 1;
+				if(genero.equals("ACCION")) indices[i++] = 0;
+				else if(genero.equals("AVENTURA")) indices[i++] = 1;
 				else if(genero.equals("RPG")) indices[i++] = 2;
 				else if(genero.equals("SHOOTER")) indices[i++] = 3;
-				else if(genero.equals("Deportes")) indices[i++] = 4;
-				else if(genero.equals("Estrategia")) indices[i++] = 5;
-				else if(genero.equals("Terror")) indices[i++] = 6;
-				else if(genero.equals("Indie")) indices[i++] = 7;
+				else if(genero.equals("DEPORTES")) indices[i++] = 4;
+				else if(genero.equals("ESTRATEGIA")) indices[i++] = 5;
+				else if(genero.equals("TERROR")) indices[i++] = 6;
+				else if(genero.equals("INDIE")) indices[i++] = 7;
 			}
 			listaGeneros.setSelectedIndices(indices);
 			

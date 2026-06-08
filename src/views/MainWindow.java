@@ -331,7 +331,7 @@ public class MainWindow extends JFrame {
 		panelUsuario.setOpaque(false);
 		
 		//Panel de CRUD videojuegos
-		panelVideojuego = new VideojuegoView();
+		panelVideojuego = new VideojuegoView(this);
 		panelVideojuego.setOpaque(false);
 		
 		contenedor.add(panelHome, HOME);
@@ -389,11 +389,13 @@ public class MainWindow extends JFrame {
         JPanel panelCat = new JPanel(new BorderLayout());
         panelCat.setOpaque(false);
         
+        // Título de la categoría
         JLabel lblTitulo = new JLabel(titulo);
         lblTitulo.setForeground(Color.WHITE);
         lblTitulo.setFont(assets.AppFonts.negrita()); 
         lblTitulo.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 10, 0)); 
         
+        // Fila que contiene las tarjetas de los juegos
         JPanel panelJuegos = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
         panelJuegos.setOpaque(false);
         
@@ -408,8 +410,28 @@ public class MainWindow extends JFrame {
             panelJuegos.add(vacío);
         }
         
+      
+        // JScrollPane que solo se mueva de izquierda a derecha en panelJuegos
+        JScrollPane scrollFila = new JScrollPane(panelJuegos);
+        scrollFila.setOpaque(false);
+        scrollFila.getViewport().setOpaque(false);
+        scrollFila.setBorder(null); // Sin bordes feos de Windows clásico
+        
+        // Configuración de barras: Activamos la horizontal sólo si es necesaria, apagamos la vertical
+        scrollFila.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollFila.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        
+        // Scroll supersuave para la fila horizontal
+        scrollFila.getHorizontalScrollBar().setUnitIncrement(16);
+        
+        scrollFila.setPreferredSize(new Dimension(400, 250));
+        scrollFila.setMinimumSize(new Dimension(100, 250));
+        scrollFila.setMaximumSize(new Dimension(Integer.MAX_VALUE, 250));
+        
+        scrollFila.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 10)); 
+        
         panelCat.add(lblTitulo, BorderLayout.NORTH);
-        panelCat.add(panelJuegos, BorderLayout.CENTER);
+        panelCat.add(scrollFila, BorderLayout.CENTER); 
         
         return panelCat;
     }
@@ -450,15 +472,15 @@ public class MainWindow extends JFrame {
 		 }
         
         // Franja inferior interactiva ("Jugar")
-        JLabel lblHoras = new JLabel(textoInferior, javax.swing.SwingConstants.CENTER);
-        lblHoras.setForeground(Color.WHITE);
-        lblHoras.setFont(assets.AppFonts.small());
-        lblHoras.setOpaque(true);
-        lblHoras.setBackground(new Color(211, 84, 0, 230)); 
-        lblHoras.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 0, 4, 0));
+        JLabel lblJugar = new JLabel(textoInferior, javax.swing.SwingConstants.CENTER);
+        lblJugar.setForeground(Color.WHITE);
+        lblJugar.setFont(assets.AppFonts.small());
+        lblJugar.setOpaque(true);
+        lblJugar.setBackground(new Color(211, 84, 0, 230)); 
+        lblJugar.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 0, 4, 0));
         
         contenedorArte.add(lblPortada, BorderLayout.CENTER);
-        contenedorArte.add(lblHoras, BorderLayout.SOUTH);
+        contenedorArte.add(lblJugar, BorderLayout.SOUTH);
         
         // Texto con el nombre real del videojuego abajo de la tarjeta
         JLabel lblNombreJuego = new JLabel(tituloJuego, javax.swing.SwingConstants.CENTER);
@@ -470,6 +492,25 @@ public class MainWindow extends JFrame {
         tarjeta.add(lblNombreJuego, BorderLayout.SOUTH);
         
         return tarjeta;
+    }
+	
+	public void refrescarCatalogoDesdeBD(java.util.List<Videojuego> listaActualizada) {
+        // 1. Buscamos el JScrollPane que está actualmente en el centro del Home
+        BorderLayout layout = (BorderLayout) ((JPanel) contenedor.getComponent(0)).getLayout();
+        Component viejoScroll = layout.getLayoutComponent(BorderLayout.CENTER);
+        
+        if (viejoScroll != null) {
+            ((JPanel) contenedor.getComponent(0)).remove(viejoScroll);
+        }
+        
+        // 2. Generamos el nuevo catálogo con la lista fresca que nos manden
+        JScrollPane nuevoScroll = crearPanelCatalogoJuegos(listaActualizada);
+        ((JPanel) contenedor.getComponent(0)).add(nuevoScroll, BorderLayout.CENTER);
+        
+        // 3. Forzamos a Java Swing a re-renderizar los pixeles y aplicar cursores
+        ((JPanel) contenedor.getComponent(0)).revalidate();
+        ((JPanel) contenedor.getComponent(0)).repaint();
+        assets.GestorCursor.aplicarATodo(this);
     }
 }
 
