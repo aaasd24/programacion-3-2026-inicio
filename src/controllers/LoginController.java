@@ -9,8 +9,7 @@ import java.awt.event.WindowListener;
 
 import javax.swing.JOptionPane;
 
-import exception.InvalidPasswordException;
-import exception.InvalidUserException;
+
 import models.Usuario;
 import repositorio.LoginRepository;
 import utils.Session;

@@ -9,12 +9,10 @@ import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
-import java.net.URL;
 import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -26,8 +24,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-
 import utils.ThemeManager;
 
 import controllers.MainController;
@@ -64,10 +60,6 @@ public class MainWindow extends JFrame {
 	
 	private CardLayout cardLayout;
 	private JPanel contenedor;
-	
-	//Atributos base para tarjetas
-	private String imagenPath;
-	private String textoInferior;
 	
 	public MainWindow() {
 		

@@ -1,6 +1,5 @@
 package models;
 
-import java.sql.Date;
 
 import utils.Genero;
 

@@ -7,6 +7,7 @@ import javax.swing.SwingConstants;
 
 import assets.AppFonts;
 
+@SuppressWarnings("serial")
 public class ErrorLabel extends JLabel{
 
 	public ErrorLabel() {
