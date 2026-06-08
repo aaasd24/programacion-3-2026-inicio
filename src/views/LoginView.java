@@ -94,9 +94,13 @@ public class LoginView extends JPanel{
 		campoEmail.setMaximumSize(new Dimension(Integer.MAX_VALUE, campoEmail.getPreferredSize().height));
 		campoEmail.setBackground(new Color(255, 255, 255, 200)); // El 200 le da un toque de transparencia
 		campoEmail.setBorder(BorderFactory.createLineBorder(new Color(255,255,255,50)));
+		campoEmail.setForeground(Color.BLACK); 
+		campoEmail.setFont(AppFonts.normal());
 		campoContrasenia.setMaximumSize(new Dimension(Integer.MAX_VALUE, campoContrasenia.getPreferredSize().height));
 		campoContrasenia.setBackground(new Color(255, 255, 255, 200)); // El 200 le da un toque de transparencia
 		campoContrasenia.setBorder(BorderFactory.createLineBorder(new Color(255,255,255,50)));
+		campoContrasenia.setForeground(Color.BLACK); 
+		campoContrasenia.setFont(AppFonts.normal());
 		
 		
 		
@@ -457,7 +461,7 @@ public class LoginView extends JPanel{
 	    
 	    try {
 	    
-	        Image fondo = ImageIO.read(getClass().getResource("../assets/photoshop_del_login-version_alt.jpg"));
+	        Image fondo = ImageIO.read(getClass().getResource("../assets/photoshop_del_login.jpg"));
 	        
 	        
 	        g.drawImage(fondo, 0, 0, getWidth(), getHeight(), this);
