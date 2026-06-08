@@ -11,23 +11,14 @@ import java.util.List;
 import config.DatabaseConnection;
 import models.Videojuego;
 
+//TODO estuve modificando esta clase para ayudarte a corregir los errores con la BD.
 public class RepositorioVideojuegos {
 
 	public void subirVideojuego(Videojuego videojuegoNuevo) throws SQLException {
-		//pasar todos los datos excepto los generos
-		String sql = "INSERT INTO videojuego(titulo, "
-				+ "portadaPath,"
-				+ "descripcion,"
-				+ "crossplay,"
-				+ "multijugador,"
-				+ "precio, "
-				+ "direccionArchivo"
-				+ ")" + 
-					"VALUE (?, ?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO videojuego(titulo, portadaPath, descripcion, crossplay, multijugador, precio, direccionArchivo, disponibilidadEnEstaPlataforma) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 		try(Connection conexion = DatabaseConnection.getConnection();
 			PreparedStatement pst = conexion.prepareStatement(sql);)
 		{
-			
 			pst.setString(1, videojuegoNuevo.getTitulo());
 			pst.setString(2, videojuegoNuevo.getPortadaPath());
 			pst.setString(3, videojuegoNuevo.getDescripcion());
@@ -35,17 +26,17 @@ public class RepositorioVideojuegos {
 			pst.setString(5, videojuegoNuevo.getMultijugador());
 			pst.setFloat(6, videojuegoNuevo.getPrecio());
 			pst.setString(7, videojuegoNuevo.getDireccionArchivo());
-			// El ID del juego se agrega automaticamente, los generos se agregar aparte
+			pst.setBoolean(8, true); // O videojuegoNuevo.getDisponibilidad() si tienes el atributo
+			
 			pst.executeUpdate();
 			System.err.println("Se subio nuevo juego");
 			
 		}catch(SQLException ex) {
-			System.out.println("Error en conexion");
+			System.out.println("Error en conexion al subir videojuego");
 			ex.printStackTrace();
+			throw ex;
 		}
-		
 	}
-	
 	public List<Videojuego> obtenerListaVideojuegos() throws SQLException{
 		List<Videojuego> juegos = new ArrayList<Videojuego>();
 		try (
@@ -134,14 +125,18 @@ public class RepositorioVideojuegos {
 	
 	public int obteneridVideojuegodeBD(Videojuego videojuego) throws SQLException{
 		int id = 0;
-		try (
-			Connection conexion = DatabaseConnection.getConnection();
-			Statement stm = conexion.createStatement();
-			ResultSet rs = stm.executeQuery("SELECT * FROM videojuego WHERE titulo = '" + videojuego.getTitulo() + "'"))
+		String sql = "SELECT idvideojuego FROM videojuego WHERE UPPER(TRIM(titulo)) = UPPER(TRIM(?))";
+		// Abrimos una conexión independiente para que no interfiera con los ciclos externos
+		try (Connection conexion = DatabaseConnection.getConnection();
+			 PreparedStatement pst = conexion.prepareStatement(sql))
 		{
-			rs.next();
-			id = rs.getInt("idvideojuego");
-		}catch(SQLException ex) {
+			pst.setString(1, videojuego.getTitulo());
+			try (ResultSet rs = pst.executeQuery()) {
+				if (rs.next()) {
+					id = rs.getInt("idvideojuego");
+				}
+			}
+		} catch(SQLException ex) {
 			ex.printStackTrace();
 		}
 		return id;
@@ -149,115 +144,133 @@ public class RepositorioVideojuegos {
 	
 	public void conectarVideojuegosGeneros(Videojuego videojuego) throws SQLException {
 		int idVideojuego = obteneridVideojuegodeBD(videojuego);
-		int[] lista = new int[videojuego.getGeneros().size()];
-		for(int i = 0; i < videojuego.getGeneros().size(); i++) {
-			lista[i] = obtenerIDConStringGeneroVideojuego(videojuego.getGeneros().get(i));
-		}
+		
 		String sql = "INSERT INTO videojuego_has_generoVideojuego("
 				+ "videojuego_idvideojuego, "
 				+ "generoVideojuego_idgeneroVideojuego) "
-				+ "VALUE (?, ?)";
+				+ "VALUES (?, ?)";
 		try(Connection conexion = DatabaseConnection.getConnection();
 			PreparedStatement pst = conexion.prepareStatement(sql);)
 		{
 			for(int i = 0; i < videojuego.getGeneros().size(); i++) {
-				pst.setInt(1, idVideojuego);
-				pst.setInt(2, lista[i]);
-				pst.executeUpdate();
+				int idGenero = obtenerIDConStringGeneroVideojuego(videojuego.getGeneros().get(i));
+				
+				//Solo inserta si el genero de verdad se encontro (que el ID no sea 0)
+				if (idGenero > 0 && idVideojuego > 0) {
+					pst.setInt(1, idVideojuego);
+					pst.setInt(2, idGenero);
+					pst.executeUpdate();
+				}
 			}
-
-			
 		}catch(SQLException ex) {
 			ex.printStackTrace();
 		}
 	}
+	
 	public void conectarVideojuegoPlataforma(Videojuego videojuego) throws SQLException{
 		int idVideojuego = obteneridVideojuegodeBD(videojuego);
-		int[] lista = new int[videojuego.getPlataformasDisponibles().size()];
-		for(int i = 0; i < videojuego.getPlataformasDisponibles().size(); i++) {
-			lista[i] = obtenerIDSConStringPlataformaVideojuego(videojuego.getPlataformasDisponibles().get(i));
-		}
+		
 		String sql = "INSERT INTO videojuego_has_plataforma("
 				+ "videojuego_idvideojuego, "
 				+ "plataforma_idplataforma) "
-				+ "VALUE (?, ?)";
+				+ "VALUES (?, ?)";
 		try(Connection conexion = DatabaseConnection.getConnection();
 			PreparedStatement pst = conexion.prepareStatement(sql);)
 		{
 			for(int i = 0; i < videojuego.getPlataformasDisponibles().size(); i++) {
-				pst.setInt(1, idVideojuego);
-				pst.setInt(2, lista[i]);
-				pst.executeUpdate();
+				int idPlataforma = obtenerIDSConStringPlataformaVideojuego(videojuego.getPlataformasDisponibles().get(i));
+				
+				// Si la plataforma fallo, la ignora 
+				// e impide que MySQL lance el error de llave foranea
+				if (idPlataforma > 0 && idVideojuego > 0) {
+					pst.setInt(1, idVideojuego);
+					pst.setInt(2, idPlataforma);
+					pst.executeUpdate();
+				}
 			}
-
-			
 		}catch(SQLException ex) {
 			ex.printStackTrace();
 		}
 	}
+	
 	public int obtenerIDConStringGeneroVideojuego(String nombre) throws SQLException{
 		int id = 0;
+		//estoy tratando de hacer que cuando lea las consultas no se confunda con las variables de plataforma y siga arrojando errores
+		String sql = "SELECT idgeneroVideojuego FROM generoVideojuego WHERE UPPER(TRIM(nombre)) = UPPER(TRIM(?))";
 		try(Connection conexion = DatabaseConnection.getConnection();
-			Statement stm = conexion.createStatement();
-			ResultSet rs = stm.executeQuery("SELECT * FROM generoVideojuego WHERE nombre = '" + nombre + "'");)
+			PreparedStatement pst = conexion.prepareStatement(sql);)
 		{
-			rs.next();
-			id = rs.getInt("idgeneroVideojuego");
+			pst.setString(1, nombre);
+			try(ResultSet rs = pst.executeQuery()) {
+				if (rs.next()) {
+					id = rs.getInt("idgeneroVideojuego");
+				} else {
+					System.out.println("El genero '" + nombre + "' no coincide con el script SQL.");
+				}
+			}
 		}
 		return id;
 	}
 	
 	public int obtenerIDSConStringPlataformaVideojuego(String nombre) throws SQLException{
 		int id = 0;
+		String sql = "SELECT idplataforma FROM plataforma WHERE UPPER(TRIM(nombre)) = UPPER(TRIM(?))";
 		try(Connection conexion = DatabaseConnection.getConnection();
-			Statement stm = conexion.createStatement();
-			ResultSet rs = stm.executeQuery("SELECT * FROM plataforma WHERE nombre = '" + nombre + "'");)
+			PreparedStatement pst = conexion.prepareStatement(sql);)
 		{
-			rs.next();
-			id = rs.getInt("idplataforma");
+			pst.setString(1, nombre);
+			try(ResultSet rs = pst.executeQuery()) {
+				if (rs.next()) {
+					id = rs.getInt("idplataforma");
+				} else {
+					System.out.println("La plataforma '" + nombre + "' no coincide con el script SQL.");
+				}
+			}
 		}
 		return id;
 	}
 	
 	public List<String> obtenerGenerosDdBD(int id) throws SQLException{
 		List<String> generos = new ArrayList<String>();
+		// Selecciona  gv.nombre para evitar confusiones en el Driver
+		String sql = "SELECT gv.nombre FROM generoVideojuego gv "
+				+ "INNER JOIN videojuego_has_generoVideojuego vhg ON gv.idgeneroVideojuego = vhg.generoVideojuego_idgeneroVideojuego "
+				+ "INNER JOIN videojuego v ON vhg.videojuego_idvideojuego = v.idvideojuego WHERE v.idvideojuego = ?";
 		try (
-				Connection conexion = DatabaseConnection.getConnection();
-				Statement stm = conexion.createStatement();
-				ResultSet rs = stm.executeQuery("SELECT * FROM generoVideojuego gv "
-						+ "INNER JOIN videojuego_has_generoVideojuego vhg ON gv.idgeneroVideojuego = vhg.generoVideojuego_idgeneroVideojuego "
-						+ "INNER JOIN videojuego v ON vhg.videojuego_idvideojuego = v.idvideojuego WHERE v.idvideojuego = " 
-						+ id);)
-			{	
-			while(rs.next()) {
-				String temporal = rs.getNString("nombre");
-				generos.add(temporal);
+			Connection conexion = DatabaseConnection.getConnection();
+			PreparedStatement pst = conexion.prepareStatement(sql))
+		{	
+			pst.setInt(1, id);
+			try (ResultSet rs = pst.executeQuery()) {
+				while(rs.next()) {
+					generos.add(rs.getString("nombre"));
+				}
 			}
-			}catch(SQLException ex) {
-				ex.printStackTrace();
-			}
-		
+		} catch(SQLException ex) {
+			ex.printStackTrace();
+		}
 		return generos;
 	}
 	
 	public List<String> obtenerPlatafomaDeVideojuegodBD(int idVideojuego) throws SQLException{
 		List<String> plataforma = new ArrayList<String>();
+		// Seleccionamos explícitamente p.nombre de la tabla plataforma
+		String sql = "SELECT p.nombre FROM plataforma p "
+				+ "INNER JOIN videojuego_has_plataforma vhp ON p.idplataforma = vhp.plataforma_idplataforma "
+				+ "INNER JOIN videojuego v ON vhp.videojuego_idvideojuego = v.idvideojuego WHERE v.idvideojuego = ?";
 		try (
-				Connection conexion = DatabaseConnection.getConnection();
-				Statement stm = conexion.createStatement();
-				ResultSet rs = stm.executeQuery("SELECT * FROM plataforma p "
-						+ "INNER JOIN videojuego_has_plataforma vhp ON p.idplataforma = vhp.plataforma_idplataforma "
-						+ "INNER JOIN videojuego v ON vhp.videojuego_idvideojuego = v.idvideojuego WHERE v.idvideojuego = " 
-						+ idVideojuego);)
-			{
-			while(rs.next()) {
-				String temporal = rs.getNString("nombre");
-				plataforma.add(temporal);
+			Connection conexion = DatabaseConnection.getConnection();
+			PreparedStatement pst = conexion.prepareStatement(sql))
+		{
+			pst.setInt(1, idVideojuego);
+			try (ResultSet rs = pst.executeQuery()) {
+				while(rs.next()) {
+					plataforma.add(rs.getString("nombre"));
+				}
 			}
-			}catch(SQLException ex) {
-				ex.printStackTrace();
-			}
-		
+		} catch(SQLException ex) {
+			ex.printStackTrace();
+		}
 		return plataforma;
 	}
 	

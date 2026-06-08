@@ -39,6 +39,10 @@ public class Videojuego {
 		this.plataformasDisponible = plataforma;
 		this.crossplay = crossplay;
 		this.multijugador = multijugador;
+		
+		//no los habias inicializado y por eso arrojaba error we
+		this.generosId = new java.util.ArrayList<>();
+		this.plataformasDisponible = new java.util.ArrayList<>();
 	}
 
 	public int getId() {

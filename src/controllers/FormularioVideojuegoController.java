@@ -249,7 +249,7 @@ public class FormularioVideojuegoController {
 		}
 		
 		
-        if(videojuego == null) { //															NO tiene imagen
+        if(videojuego == null) { //	NO tiene imagen
         	this.videojuego = new Videojuego(titulo, genero, precio, descripcion, link, portada, plataformas, crossplay, multi);
         }else {
         	this.videojuego.setTitulo(titulo);

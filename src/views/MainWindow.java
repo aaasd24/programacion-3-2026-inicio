@@ -9,6 +9,7 @@ import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -216,7 +217,7 @@ public class MainWindow extends JFrame {
 	    //botones
 	    botonHome = new JButton("Inicio");
 	    botonVerUsuario = new JButton("Usuarios");
-	    botonVerJuego = new JButton("adminPrueba"); 
+	    botonVerJuego = new JButton("Videojuegos"); 
 	   
 	    //botones estilo
 	    botonHome.setBackground(new Color(60, 60, 60, 200));
@@ -313,7 +314,17 @@ public class MainWindow extends JFrame {
         panelHome.add(panelCabecera, BorderLayout.NORTH);
         
         // --- CATÁLOGO DE JUEGOS ---
-        panelHome.add(crearPanelCatalogoJuegos(), BorderLayout.CENTER);
+        try {
+            // Creamos una instancia rápida del repositorio de tu compañero
+            repositorio.RepositorioVideojuegos repoInicial = new repositorio.RepositorioVideojuegos();
+            
+            // Le pasamos la lista real de la base de datos entre los paréntesis
+            panelHome.add(crearPanelCatalogoJuegos(repoInicial.obtenerListaVideojuegos()), BorderLayout.CENTER);
+        } catch(Exception e) {
+            // Si la base de datos llega a estar apagada, le pasamos una lista vacía 
+            // para que tu Front-End cargue limpio y no se congele la aplicación
+            panelHome.add(crearPanelCatalogoJuegos(new java.util.ArrayList<>()), BorderLayout.CENTER);
+        }
         
         //Panel de CRUD  usuarios
 		panelUsuario = new UsuarioView();
@@ -333,7 +344,7 @@ public class MainWindow extends JFrame {
 	
 	public void mostrarVista(String vista) {
 		cardLayout.show(contenedor, vista);
-		assets.GestorCursor.aplicarATodo(this);
+		assets.GestorCursor.aplicarATodo(this); 
 	}
 	public void setWindowSize(int width, int height) {
 		setSize(width, height);
@@ -346,16 +357,23 @@ public class MainWindow extends JFrame {
 
 	// --- MÉTODOS PARA MAQUETAR LA BIBLIOTECA ---
 
-	private JScrollPane crearPanelCatalogoJuegos() {
+	public JScrollPane crearPanelCatalogoJuegos(List<Videojuego> listaJuegos) {
         JPanel panelContenedor = new JPanel();
         panelContenedor.setLayout(new javax.swing.BoxLayout(panelContenedor, javax.swing.BoxLayout.Y_AXIS));
         panelContenedor.setOpaque(false);
         panelContenedor.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 30, 20, 30)); 
         
-        // CORRECCIÓN AQUÍ: Solo pasamos el título, sin el segundo parámetro viejo ("horas" o "")
-        panelContenedor.add(crearCategoria("continuar jugando ->"));
+        // Categoria 1: Continuar jugando (Simulamos los primeros 2 juegos de la lista)
+        List<Videojuego> recientes = new java.util.ArrayList<>();
+        if (listaJuegos != null && !listaJuegos.isEmpty()) {
+            recientes.add(listaJuegos.get(0));
+            if (listaJuegos.size() > 1) recientes.add(listaJuegos.get(1));
+        }
+        panelContenedor.add(crearCategoria("continuar jugando ->", recientes));
         panelContenedor.add(javax.swing.Box.createVerticalStrut(25)); 
-        panelContenedor.add(crearCategoria("biblioteca ->"));
+        
+        // Categoria 2: Toda tu biblioteca de la Parrilla
+        panelContenedor.add(crearCategoria("biblioteca ->", listaJuegos));
         
         JScrollPane scroll = new JScrollPane(panelContenedor);
         scroll.setOpaque(false);
@@ -367,7 +385,7 @@ public class MainWindow extends JFrame {
         return scroll;
     }
 
-    private JPanel crearCategoria(String titulo) { // CORRECCIÓN: Solo recibe (String titulo)
+	private JPanel crearCategoria(String titulo, List<Videojuego> juegos) { 
         JPanel panelCat = new JPanel(new BorderLayout());
         panelCat.setOpaque(false);
         
@@ -379,14 +397,15 @@ public class MainWindow extends JFrame {
         JPanel panelJuegos = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
         panelJuegos.setOpaque(false);
         
-        for(int i = 0; i < 5; i++) {
-
-
-            // Nota: Cambiar el 'null' por la ruta de la imagen cuando queramos agregarlas
-
-            // Todas las tarjetas dirán "Jugar"
-            panelJuegos.add(crearTarjetaJuego(null, "Jugar")); 
-
+        if (juegos != null && !juegos.isEmpty()) {
+            for (Videojuego juego : juegos) {
+                panelJuegos.add(crearTarjetaJuego(juego.getPortadaPath(), "Jugar", juego.getTitulo())); 
+            }
+        } else {
+            JLabel vacío = new JLabel("La parrilla está vacía. Añade un juego en Videojuegos.");
+            vacío.setForeground(Color.GRAY);
+            vacío.setFont(assets.AppFonts.small());
+            panelJuegos.add(vacío);
         }
         
         panelCat.add(lblTitulo, BorderLayout.NORTH);
@@ -395,58 +414,62 @@ public class MainWindow extends JFrame {
         return panelCat;
     }
 
-    private JPanel crearTarjetaJuego(String rutaImagen, String textoInferior) {
-    	//
+	private JPanel crearTarjetaJuego(String rutaImagen, String textoInferior, String tituloJuego) {
         JPanel tarjeta = new JPanel(new BorderLayout());
-        tarjeta.setPreferredSize(new Dimension(140, 200)); //tamaño de la imagen aprox
+        tarjeta.setPreferredSize(new Dimension(140, 215)); // Incrementamos un poquito el alto para el título
         tarjeta.setOpaque(false);
         
-        // 1. La Portada
+        // Panel interno para agrupar portada + franja de jugar
+        JPanel contenedorArte = new JPanel(new BorderLayout());
+        contenedorArte.setPreferredSize(new Dimension(140, 190));
+        contenedorArte.setOpaque(false);
+
         JLabel lblPortada = new JLabel();
         lblPortada.setOpaque(true);
-        lblPortada.setBackground(new Color(40, 40, 40, 200)); // Fondo gris de prueba por ahora
+        lblPortada.setBackground(new Color(45, 45, 45)); 
         lblPortada.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        if (rutaImagen != null) {
+        
+        if (rutaImagen != null && !rutaImagen.trim().isEmpty()) {
         	try {
-		         javax.swing.ImageIcon icon = new javax.swing.ImageIcon(getClass().getResource(imagenPath));
-		         Image img = icon.getImage().getScaledInstance(140, 175, Image.SCALE_SMOOTH);
-		         lblPortada.setIcon(new javax.swing.ImageIcon(img));
+		         java.net.URL urlImg = getClass().getResource(rutaImagen);
+		         if (urlImg != null) {
+		             ImageIcon icon = new ImageIcon(urlImg);
+		             Image img = icon.getImage().getScaledInstance(140, 165, Image.SCALE_SMOOTH);
+		             lblPortada.setIcon(new ImageIcon(img));
+		         } else {
+		             lblPortada.setText("Insertar Portada"); 
+		             lblPortada.setForeground(Color.LIGHT_GRAY);
+		         }
 		     } catch (Exception e) {
-		         lblPortada.setText("Imagen no encontrada");
-		         lblPortada.setForeground(Color.WHITE);
+		         lblPortada.setText("Error");
+		         lblPortada.setForeground(Color.RED);
 		     }
 		 } else {
-		     // Placeholder de texto si mandamos null
-			 lblPortada.setText("Portada"); 
-		     lblPortada.setForeground(Color.LIGHT_GRAY);
+			 lblPortada.setText("Sin Portada"); 
+		     lblPortada.setForeground(Color.GRAY);
 		 }
         
-        
-       
-        
-        //borde para jugar
+        // Franja inferior interactiva ("Jugar")
         JLabel lblHoras = new JLabel(textoInferior, javax.swing.SwingConstants.CENTER);
         lblHoras.setForeground(Color.WHITE);
         lblHoras.setFont(assets.AppFonts.small());
         lblHoras.setOpaque(true);
-        lblHoras.setBackground(new Color(20, 20, 20, 220)); // Franja casi negra transparente
-        lblHoras.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 0, 5, 0));
+        lblHoras.setBackground(new Color(211, 84, 0, 230)); 
+        lblHoras.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 0, 4, 0));
         
-        // Para que las tarjetas tengan un borde redondeado o limpio usando FlatLaf
-        tarjeta.putClientProperty("FlatLaf.style", "arc: 10");
+        contenedorArte.add(lblPortada, BorderLayout.CENTER);
+        contenedorArte.add(lblHoras, BorderLayout.SOUTH);
         
-        tarjeta.add(lblPortada, BorderLayout.CENTER);
-        tarjeta.add(lblHoras, BorderLayout.SOUTH);
+        // Texto con el nombre real del videojuego abajo de la tarjeta
+        JLabel lblNombreJuego = new JLabel(tituloJuego, javax.swing.SwingConstants.CENTER);
+        lblNombreJuego.setForeground(Color.WHITE);
+        lblNombreJuego.setFont(assets.AppFonts.small());
+        lblNombreJuego.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 0, 0, 0));
+        
+        tarjeta.add(contenedorArte, BorderLayout.CENTER);
+        tarjeta.add(lblNombreJuego, BorderLayout.SOUTH);
         
         return tarjeta;
-		
     }
-	
-	public void mostrarJuego(Videojuego videojuego) {
-		if(videojuego != null) {
-			imagenPath = videojuego.getPortadaPath();
-		}
-		
-	}
 }
 

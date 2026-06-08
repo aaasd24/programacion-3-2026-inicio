@@ -58,8 +58,11 @@ public class VideojuegoView extends JPanel {
         
         JScrollPane scrollPane = new JScrollPane(tabla);
        
-        scrollPane.setOpaque(false);
-        scrollPane.getViewport().setOpaque(false);
+        Color fondoSolidoOscuro = new Color(30, 30, 30); // Gris muy oscuro sólido
+        scrollPane.setOpaque(true);
+        scrollPane.getViewport().setOpaque(true);
+        scrollPane.setBackground(fondoSolidoOscuro);
+        scrollPane.getViewport().setBackground(fondoSolidoOscuro);
         scrollPane.setBorder(BorderFactory.createEmptyBorder(10, 20, 20, 20)); 
 
         add(scrollPane, BorderLayout.CENTER);
@@ -108,50 +111,49 @@ public class VideojuegoView extends JPanel {
     public void estilizarTabla() {
         tabla.setRowHeight(35);
         tabla.setShowGrid(true);
-        tabla.setGridColor(new Color(80, 80, 80)); 
+        tabla.setGridColor(new Color(60, 60, 60)); 
         
-        // Colores base de la tabla (Modo oscuro)
-        tabla.setBackground(new Color(40, 40, 40, 150));
+        tabla.setOpaque(true); 
+        tabla.setBackground(new Color(30, 30, 30)); // Gris oscuro
         tabla.setForeground(Color.WHITE); 
         tabla.setFont(AppFonts.normal());
         
         // Color al seleccionar una fila 
-        tabla.setSelectionBackground(new Color(211, 84, 0)); // Naranja intenso
+        tabla.setSelectionBackground(new Color(211, 84, 0)); 
         tabla.setSelectionForeground(Color.WHITE);
-        
         tabla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         
-        // Estilo de la Cabecera
+        // Estilo de la Cabecera (Totalmente solida)
         JTableHeader header = tabla.getTableHeader();
-        header.setBackground(new Color(25, 25, 25)); // Gris casi negro
+        header.setBackground(new Color(20, 20, 20)); // Gris casi negro
         header.setForeground(Color.WHITE);
         header.setFont(AppFonts.negrita());
-        header.setPreferredSize(new Dimension(0, 45)); // Cabecera alta
+        header.setPreferredSize(new Dimension(0, 45)); 
         header.setReorderingAllowed(false);
         
-        // Renderizador personalizado para las celdas
         tabla.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 
-                // Efecto cebra para las filas (Tonos oscuros)
+                ((DefaultTableCellRenderer) c).setOpaque(true);
+                
+                // Efecto cebra con colores sólidos 
                 if (!isSelected) {
                     if (row % 2 == 0) {
-                        c.setBackground(new Color(45, 45, 45, 200)); // Par
+                        c.setBackground(new Color(40, 40, 40)); // Filas pares (gris intermedio)
                     } else {
-                        c.setBackground(new Color(35, 35, 35, 200)); // Impar
+                        c.setBackground(new Color(30, 30, 30)); // Filas impares (gris oscuro)
                     }
+                    c.setForeground(Color.WHITE);
+                } else {
+                    c.setBackground(new Color(211, 84, 0)); // Fila seleccionada (naranja)
                     c.setForeground(Color.WHITE);
                 }
                 
-                // Resaltar la columna 1(Título del juego)
-                if (column == 1) {
+                // Estilo para resaltar la columna del Titulo (Columna 1)
+                if (column == 1) { 
                     c.setFont(AppFonts.negrita());
-                    // Si no está seleccionada, le damos un tono ligeramente gris claro o blanco humo
-                    if (!isSelected) {
-                        c.setForeground(new Color(220, 220, 220)); 
-                    }
                 } else {
                     c.setFont(AppFonts.normal());
                 }
@@ -159,8 +161,51 @@ public class VideojuegoView extends JPanel {
                 return c;
             }
         });
+
+        tabla.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                
+                // Forzamos la opacidad absoluta en la celda
+                setOpaque(true);
+                
+                // Asignamos el color de fondo correspondiente (Cebra oscuro)
+                if (!isSelected) {
+                    if (row % 2 == 0) {
+                        c.setBackground(new Color(45, 45, 45)); // Gris carbón
+                    } else {
+                        c.setBackground(new Color(30, 30, 30)); // Gris oscuro
+                    }
+                    c.setForeground(Color.WHITE);
+                } else {
+                    c.setBackground(new Color(211, 84, 0)); // Naranja 
+                    c.setForeground(Color.WHITE);
+                }
+
+                if (column == 0) {
+                    c.setFont(AppFonts.negrita());
+                    if (!isSelected) {
+                        c.setForeground(new Color(230, 230, 230));
+                    }
+                } else {
+                    c.setFont(AppFonts.normal());
+                }
+
+                return c;
+            }
+
+            // Inyección del limpiador de graficos directamente en la celda
+            @Override
+            protected void paintComponent(Graphics g) {
+                g.setColor(getBackground());
+                g.fillRect(0, 0, getWidth(), getHeight());
+                super.paintComponent(g);
+            }
+        });
     }
     
+    //metodo PDFexporter
     public File seleccionarPdfFile() {
         String path = Config.get("videojuego.export.pdf", System.getProperty("user.home"));
         JFileChooser chooser = new JFileChooser(path);

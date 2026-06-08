@@ -70,44 +70,53 @@ public class VideojuegoController{
 			ex.printStackTrace();
 		}
 	}
-	 private void abrirFormulario(Videojuego videojuego) {
-	    	System.out.println("Formulario abierto");
-	        // null para crear un nuevo usuario, user para actualizar un usuario existente
-	        FormularioJuego dialog = new FormularioJuego(null);
-	        FormularioVideojuegoController dialogControlador = new FormularioVideojuegoController(dialog, videojuego);
-	        dialog.setVisible(true);
-	        dialogControlador.inicializarListeners();
-	        System.out.println("Cerro formulario");
-	        if (dialog.estaGuardado()) {
-	            Videojuego videojuegoActual = dialogControlador.getVideojuego(); 
-	            try {
-	                if (videojuego == null) { //Videojuego nuevo
-	                	System.out.println("Se crea nuevo Juevo");
-	                    repo.subirVideojuego(videojuegoActual);
-	                    repo.conectarVideojuegosGeneros(videojuegoActual);
-	                    repo.conectarVideojuegoPlataforma(videojuegoActual);
-	                    
-	                    tabla.addRow(videojuegoActual);
-	                    
-	                } else {//actualizar videojuego
-	                	System.out.println("Se edito un Juego");
-	                    int row = view.getSelectedRow();
-	                    boolean actualizar = repo.actualizar(row, videojuegoActual);
-	                    repo.actualizarGeneros(videojuegoActual);
-	                    repo.actualizarPlataformas(videojuegoActual);
-	                    if(actualizar) {
-	                    	tabla.updateRow(row, videojuegoActual);
-	                    }
-	                }
-	                this.cargarJuegos();
-	                
-	            } catch (Exception e) {
-	                e.printStackTrace();
-	                JOptionPane.showMessageDialog(view, "Error al guardar: " + e.getMessage());
-	            }
-
-	        }
-	 }
+	private void abrirFormulario(Videojuego videojuego) {
+        System.out.println("Formulario abierto");
+        FormularioJuego dialog = new FormularioJuego(null);
+        FormularioVideojuegoController dialogControlador = new FormularioVideojuegoController(dialog, videojuego);
+        
+        // Si estamos editando, mostramos los datos existentes
+        if (videojuego != null) {
+            dialog.mostrarDatos(videojuego);
+        }
+        
+        dialogControlador.inicializarListeners();
+        dialog.setVisible(true);
+        System.out.println("Se prendio el cerro");
+        
+        if (dialog.estaGuardado()) {
+            Videojuego videojuegoActual = dialogControlador.getVideojuego(); 
+            try {
+                if (videojuego == null) { // Videojuego nuevo
+                    System.out.println("Se crea nuevo Juego");
+                    
+                    //Guarda el registro base en la tabla videojuego
+                    repo.subirVideojuego(videojuegoActual);
+                    
+                    //Inserto las relaciones usando UPPER y TRIM
+                    repo.conectarVideojuegosGeneros(videojuegoActual);
+                    repo.conectarVideojuegoPlataforma(videojuegoActual);
+                    
+                } else { // Actualizar videojuego
+                    System.out.println("Se edito un Juego");
+                    int row = view.getSelectedRow();
+                    boolean actualizar = repo.actualizar(row, videojuegoActual);
+                    if (actualizar) {
+                        repo.actualizarGeneros(videojuegoActual);
+                        repo.actualizarPlataformas(videojuegoActual);
+                        
+                        this.cargarJuegos(); 
+                        System.out.println("Catálogo actualizado en la interfaz con éxito.");
+                    } else {
+                        JOptionPane.showMessageDialog(view, "No se pudieron guardar los cambios en la base de datos.", "Error de actualización", JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+            } catch (Exception e) { 
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(view, "Error al guardar en la base de datos: " + e.getMessage());
+            } 
+        } 
+    } 
 	
 	 private void generrarPDF() {
 		 File file = view.seleccionarPdfFile();

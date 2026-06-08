@@ -366,7 +366,7 @@ public class FormularioJuego extends JDialog{
 				if(genero.equals("Acción")) indices[i++] = 0;
 				else if(genero.equals("Aventura")) indices[i++] = 1;
 				else if(genero.equals("RPG")) indices[i++] = 2;
-				else if(genero.equals("sHOOTER")) indices[i++] = 3;
+				else if(genero.equals("SHOOTER")) indices[i++] = 3;
 				else if(genero.equals("Deportes")) indices[i++] = 4;
 				else if(genero.equals("Estrategia")) indices[i++] = 5;
 				else if(genero.equals("Terror")) indices[i++] = 6;
