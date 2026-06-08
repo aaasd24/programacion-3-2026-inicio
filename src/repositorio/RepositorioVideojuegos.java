@@ -15,7 +15,7 @@ import models.Videojuego;
 public class RepositorioVideojuegos {
 
 	public void subirVideojuego(Videojuego videojuegoNuevo) throws SQLException {
-		String sql = "INSERT INTO videojuego(titulo, portadaPath, descripcion, crossplay, multijugador, precio, direccionArchivo, disponibilidadEnEstaPlataforma) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO videojuego(titulo, portadaPath, descripcion, crossplay, multijugador, precio, direccionArchivo) VALUES (?, ?, ?, ?, ?, ?, ?)";
 		try(Connection conexion = DatabaseConnection.getConnection();
 			PreparedStatement pst = conexion.prepareStatement(sql);)
 		{
@@ -26,7 +26,6 @@ public class RepositorioVideojuegos {
 			pst.setString(5, videojuegoNuevo.getMultijugador());
 			pst.setFloat(6, videojuegoNuevo.getPrecio());
 			pst.setString(7, videojuegoNuevo.getDireccionArchivo());
-			pst.setBoolean(8, true); // O videojuegoNuevo.getDisponibilidad() si tienes el atributo
 			
 			pst.executeUpdate();
 			System.err.println("Se subio nuevo juego");
@@ -106,6 +105,7 @@ public class RepositorioVideojuegos {
 		}
 		return false;
 	}
+	
 	public boolean eliminarVideojuegoEnPlataformaHas(int idVideojuego) {
 		String sql = "DELETE FROM videojuego_has_plataforma WHERE videojuego_idvideojuego = ?";
 		try(Connection conexion = DatabaseConnection.getConnection();
@@ -144,7 +144,10 @@ public class RepositorioVideojuegos {
 	
 	public void conectarVideojuegosGeneros(Videojuego videojuego) throws SQLException {
 		int idVideojuego = obteneridVideojuegodeBD(videojuego);
-		
+		int[] idGeneros = new int[videojuego.getGeneros().size()];
+		for(int i = 0; i < videojuego.getGeneros().size(); i++) {
+			idGeneros[i] = obtenerIDConStringGeneroVideojuego(videojuego.getGeneros().get(i));
+		}
 		String sql = "INSERT INTO videojuego_has_generoVideojuego("
 				+ "videojuego_idvideojuego, "
 				+ "generoVideojuego_idgeneroVideojuego) "
@@ -152,15 +155,11 @@ public class RepositorioVideojuegos {
 		try(Connection conexion = DatabaseConnection.getConnection();
 			PreparedStatement pst = conexion.prepareStatement(sql);)
 		{
-			for(int i = 0; i < videojuego.getGeneros().size(); i++) {
-				int idGenero = obtenerIDConStringGeneroVideojuego(videojuego.getGeneros().get(i));
-				
-				//Solo inserta si el genero de verdad se encontro (que el ID no sea 0)
-				if (idGenero > 0 && idVideojuego > 0) {
-					pst.setInt(1, idVideojuego);
-					pst.setInt(2, idGenero);
-					pst.executeUpdate();
-				}
+			for(int i = 0; i < videojuego.getGeneros().size(); i++) {				
+				pst.setInt(1, idVideojuego);
+				pst.setInt(2, idGeneros[i]);
+				pst.executeUpdate();
+			
 			}
 		}catch(SQLException ex) {
 			ex.printStackTrace();
@@ -169,7 +168,10 @@ public class RepositorioVideojuegos {
 	
 	public void conectarVideojuegoPlataforma(Videojuego videojuego) throws SQLException{
 		int idVideojuego = obteneridVideojuegodeBD(videojuego);
-		
+		int[] idPlataformas = new int[videojuego.getPlataformasDisponibles().size()];
+		for(int i = 0; i < videojuego.getPlataformasDisponibles().size(); i++) {
+			idPlataformas[i] = obtenerIDSConStringPlataformaVideojuego(videojuego.getPlataformasDisponibles().get(i));
+		}
 		String sql = "INSERT INTO videojuego_has_plataforma("
 				+ "videojuego_idvideojuego, "
 				+ "plataforma_idplataforma) "
@@ -178,16 +180,11 @@ public class RepositorioVideojuegos {
 			PreparedStatement pst = conexion.prepareStatement(sql);)
 		{
 			for(int i = 0; i < videojuego.getPlataformasDisponibles().size(); i++) {
-				int idPlataforma = obtenerIDSConStringPlataformaVideojuego(videojuego.getPlataformasDisponibles().get(i));
-				
-				// Si la plataforma fallo, la ignora 
-				// e impide que MySQL lance el error de llave foranea
-				if (idPlataforma > 0 && idVideojuego > 0) {
-					pst.setInt(1, idVideojuego);
-					pst.setInt(2, idPlataforma);
-					pst.executeUpdate();
-				}
+				pst.setInt(1, idVideojuego);
+				pst.setInt(2, idPlataformas[i]);
+				pst.executeUpdate();
 			}
+		
 		}catch(SQLException ex) {
 			ex.printStackTrace();
 		}
@@ -305,11 +302,17 @@ public class RepositorioVideojuegos {
 		return false;	
 	}
 	public boolean actualizarPlataformas(Videojuego videojuegoActualizado) throws SQLException {
-		conectarVideojuegoPlataforma(videojuegoActualizado);
-		return true;
+		try	{
+			eliminarVideojuegoEnPlataformaHas(videojuegoActualizado.getId());
+			conectarVideojuegoPlataforma(videojuegoActualizado);
+			return true;
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}return false;
 	}
 	public boolean actualizarGeneros(Videojuego videojuegoActualizado) throws SQLException {
 		try	{
+			eliminarVideojuegoEnGeneroHas(videojuegoActualizado.getId());
 			conectarVideojuegosGeneros(videojuegoActualizado);
 			return true;
 		}catch(SQLException ex) {

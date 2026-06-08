@@ -1,5 +1,6 @@
 package controllers;
 
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.List;
@@ -59,6 +60,9 @@ public class FormularioVideojuegoController {
 		view.getChkLocal().addActionListener(e -> validarMulti());
 		view.getChkOnline().addActionListener(e -> validarMulti());
 		
+		for (ActionListener al : view.getBotonSeleccionarPortada().getActionListeners()) {
+            view.getBotonSeleccionarPortada().removeActionListener(al);
+        }
 		view.getBotonSeleccionarPortada().addActionListener(e -> view.elegirImagen());
 		
 		view.getBotonCrear().addActionListener(e -> save());
