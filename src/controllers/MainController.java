@@ -2,10 +2,12 @@ package controllers;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,8 @@ import javax.swing.JOptionPane;
 import config.Config;
 import models.Videojuego;
 import repositorio.RepositorioVideojuegos;
+import utils.Session;
+import views.LoginWindow;
 import views.MainWindow;
 
 public class MainController {
@@ -35,12 +39,41 @@ public class MainController {
 
 	public void registerListeners( ) {
 
-		view.getSalir().addActionListener(e -> handleClose());
+		for (ActionListener al : view.getSalir().getActionListeners()) {
+            view.getSalir().removeActionListener(al);
+        }
+		view.getSalir().addActionListener(e -> {
+			saveWindowPreferences();
+			int option = view.confirmarSalida();
+			if(option == JOptionPane.YES_OPTION){
+				Session.logout();
+				 LoginWindow ventana = new LoginWindow();
+			     new LoginController(ventana.getLoginView());
+			     ventana.setVisible(true);
+			     view.dispose();
+			     
+			}	    	
+		});
 
+		for (WindowListener al : view.getWindowListeners()) {
+            view.removeWindowListener(al);
+        }
 		view.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				handleClose();
+				{
+					saveWindowPreferences();
+		        	 int option = view.confirmarSalida();
+
+		             if(option == JOptionPane.YES_OPTION){
+		            	 LoginWindow ventana = new LoginWindow();
+		                 new LoginController(ventana.getLoginView());
+		                 ventana.setVisible(true);
+		                 view.dispose();
+		                 
+		             }
+		        	
+		        };
 			}
 		});
 		view.getBotonVerUsuario().addActionListener(e -> mostrarUsuarios());
@@ -62,14 +95,6 @@ public class MainController {
 		
 		view.getTxtBuscar().addKeyListener(teclaPasar);
 		
-	}
-	private void handleClose() {
-		//int option = JOptionPane.showConfirmDialog(view, "¿Seguro que deseas regresar? Se perderán todos los datos");
-		//if (option == JOptionPane.YES_OPTION) {
-			//new LoginController(new LoginWindow().getLoginView());
-		saveWindowPreferences();
-		view.dispose();
-		//}
 	}
 	private void mostrarUsuarios() {
 		if(usuarioController == null) {

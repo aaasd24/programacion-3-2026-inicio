@@ -162,7 +162,7 @@ public class MainWindow extends JFrame {
 		archivo= new JMenu("Archivo");
 		archivo.setMnemonic(KeyEvent.VK_A);
 		mb.add(archivo);
-		
+		/*
 		abrir = new JMenuItem("Abrir");
 		abrir.setMnemonic(KeyEvent.VK_B);
 		archivo.add(abrir);
@@ -170,7 +170,7 @@ public class MainWindow extends JFrame {
 		guardar = new JMenuItem("Guardar");
 		guardar.setMnemonic(KeyEvent.VK_G);
 		archivo.add(guardar);
-		
+		*/
 		archivo.addSeparator();
 		salir = new JMenuItem("Salir");
 		salir.setMnemonic(KeyEvent.VK_S);
@@ -497,5 +497,13 @@ public class MainWindow extends JFrame {
         ((JPanel) contenedor.getComponent(0)).repaint();
         assets.GestorCursor.aplicarATodo(this);
     }
+	public int confirmarSalida() {
+	    return JOptionPane.showConfirmDialog(
+	        this,
+	        "¿Seguro que deseas regresar? Se perderán todos los datos",
+	        "¿Seguro?",
+	        JOptionPane.YES_NO_OPTION
+	    );
+	}
 }
 
