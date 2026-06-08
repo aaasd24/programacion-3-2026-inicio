@@ -24,6 +24,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+
+import utils.Session;
 import utils.ThemeManager;
 
 import controllers.MainController;
@@ -220,9 +222,10 @@ public class MainWindow extends JFrame {
 	    
 	    //botones en el panel izquierdo
 	    panelBotones.add(botonHome);
-	    panelBotones.add(botonVerUsuario);
-	    panelBotones.add(botonVerJuego);
-
+	    if(Session.getRolUsuario().equals("ADMIN")) {
+	    	panelBotones.add(botonVerUsuario);
+	    	panelBotones.add(botonVerJuego);
+		}
 	    // para la barra de búsqueda maqueta
 	    panelBusqueda = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
 	    panelBusqueda.setOpaque(false);
@@ -279,7 +282,7 @@ public class MainWindow extends JFrame {
         JLabel labelLogo = new JLabel();
         try {
             // Cargamos el logo de la parrilla en pequeño
-            javax.swing.ImageIcon icon = new javax.swing.ImageIcon(getClass().getResource("../assets/SteakGames.png"));
+            javax.swing.ImageIcon icon = new javax.swing.ImageIcon(getClass().getResource("../assets/steak games-version_alt.jpg"));
             Image img = icon.getImage().getScaledInstance(250, 250, Image.SCALE_SMOOTH);
             labelLogo.setIcon(new javax.swing.ImageIcon(img));
         } catch (Exception e) {
@@ -315,8 +318,11 @@ public class MainWindow extends JFrame {
 		panelVideojuego.setOpaque(false);
 		
 		contenedor.add(panelHome, HOME);
-		contenedor.add(panelUsuario, USERS);
-		contenedor.add(panelVideojuego, GAMES);
+		if(Session.getRolUsuario().equals("ADMIN")) {
+			contenedor.add(panelUsuario, USERS);
+			contenedor.add(panelVideojuego, GAMES);
+			
+		}
 		
 		add(contenedor, BorderLayout.CENTER);
 	}

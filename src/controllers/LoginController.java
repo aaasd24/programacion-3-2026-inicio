@@ -148,7 +148,7 @@ public class LoginController {
 	 if(Session.getRolUsuario().equals("ADMIN")) {
 		 new MainController(new MainWindow()); 
 	 }else {
-		 JOptionPane.showMessageDialog(view.getVentana(), "No tienes permisos");
+		 new MainController(new MainWindow());
 	 }
 	 
 	 new LoginWindow();	

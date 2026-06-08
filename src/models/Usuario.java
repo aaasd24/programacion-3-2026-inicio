@@ -2,6 +2,7 @@ package models;
 
 
 import utils.Genero;
+import utils.Session;
 
 public class Usuario {
 
@@ -19,7 +20,7 @@ public class Usuario {
 	private int idBiblioteca;
 	
 	public Usuario() {
-		
+		this.rol = "ADMIN";
 	}
 	public Usuario(int id, String correo, String contrasenia) {
 		this.id = id;

@@ -54,27 +54,7 @@ public class MainController {
 			}	    	
 		});
 
-		for (WindowListener al : view.getWindowListeners()) {
-            view.removeWindowListener(al);
-        }
-		view.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				{
-					saveWindowPreferences();
-		        	 int option = view.confirmarSalida();
-
-		             if(option == JOptionPane.YES_OPTION){
-		            	 LoginWindow ventana = new LoginWindow();
-		                 new LoginController(ventana.getLoginView());
-		                 ventana.setVisible(true);
-		                 view.dispose();
-		                 
-		             }
-		        	
-		        };
-			}
-		});
+		
 		view.getBotonVerUsuario().addActionListener(e -> mostrarUsuarios());
 		view.getBotonVideojuego().addActionListener(e -> mostrarVideojuegos());
 		view.getBotonHome().addActionListener(e -> {

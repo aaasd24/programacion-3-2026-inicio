@@ -1,6 +1,7 @@
 package controllers;
 
 import views.FormularioRegistro;
+import views.LoginView;
 import views.LoginWindow;
 import views.MainWindow; 
 
@@ -214,12 +215,14 @@ public class RegistrationController {
 		}
     	JOptionPane.showMessageDialog(
 	            view,
-	            "Se inició la sesión",
-	            "Sesion iniciada",
+	            "Se Creo cuenta Nueva",
+	            "Sesion Creada",
 	            JOptionPane.INFORMATION_MESSAGE
 	        );
-    	new MainController(new MainWindow()); 
-        view.dispose();
+    	LoginWindow ventana = new LoginWindow();
+	     new LoginController(ventana.getLoginView());
+	     ventana.setVisible(true);
+	     view.dispose();
     }
 
     private boolean validarJTextField(JTextField campoChecar, JLabel labelError) {
