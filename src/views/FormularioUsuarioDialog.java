@@ -30,6 +30,7 @@ public class FormularioUsuarioDialog extends JDialog{
 
 	private JTextField txtNombre;
     private JTextField txtEmail;
+    private JPasswordField txtContra = new JPasswordField(20);
     private static String ADMIN = "ADMIN";
     private JComboBox<String> comboAnios;
     private JComboBox<String> comboMeses;
@@ -42,6 +43,7 @@ public class FormularioUsuarioDialog extends JDialog{
 
     private JLabel lblErrorNombre;
     private JLabel lblErrorEmail;
+    private JLabel lblErrorContrasenia;
     private JLabel lblErrorGenero;
     private JLabel lblErrorDia;
     private JLabel lblErrorMes;
@@ -94,8 +96,8 @@ public class FormularioUsuarioDialog extends JDialog{
 
     	lblErrorNombre = createErrorLabel(" ");
         lblErrorEmail = createErrorLabel(" ");
+        lblErrorContrasenia = createErrorLabel(" ");
         lblErrorGenero = createErrorLabel(" ");
-        //lblErrorTerminos = createErrorLabel(" ");
         lblErrorAnio = createErrorLabel(" ");
         lblErrorMes = createErrorLabel(" ");
         lblErrorDia = createErrorLabel(" ");
@@ -142,6 +144,7 @@ public class FormularioUsuarioDialog extends JDialog{
 		
 		panel.add(createField("Nombre:", txtNombre, lblErrorNombre));
 		panel.add(createField("Email:", txtEmail, lblErrorEmail));
+		panel.add(createField("Contrasenia: ", txtContra, lblErrorContrasenia));
 		panel.add(createField("Anio", comboAnios, lblErrorAnio));
 		panel.add(createField("Mes:", comboMeses, lblErrorMes));
 		panel.add(createField("Dia:", comboDias, lblErrorDia));
@@ -193,7 +196,7 @@ public class FormularioUsuarioDialog extends JDialog{
     		txtNombre.setText(usuarioSeleccionado.getNombre());
             txtEmail.setText(usuarioSeleccionado.getCorreo());
             comboRegiones.setSelectedItem(usuarioSeleccionado.getRegionString());
-
+            
             if (usuarioSeleccionado.getGenero() == Genero.HOMBRE) {
                 rbtnMale.setSelected(true);
             } else {
@@ -225,6 +228,7 @@ public class FormularioUsuarioDialog extends JDialog{
  // --- GETTERS PARA EL CONTROLADOR ---
     public JTextField getTxtNombre() { return txtNombre; }
     public JTextField getTxtEmail() { return txtEmail; }
+    public JPasswordField getTxtContrasenia() { return txtContra; }
     public JComboBox<String> getComboAnios()	{return comboAnios; }
     public JComboBox<String> getComboMeses() { return comboMeses; }
     public JComboBox<String> getComboDias() { return comboDias; }
@@ -241,6 +245,7 @@ public class FormularioUsuarioDialog extends JDialog{
     public JLabel getLblErrorMes() { return lblErrorMes; }
     public JLabel getLblErrorAnio() { return lblErrorAnio; }
     public JLabel getLblErrorRegion() { return lblErrorRegion; }
+    public JLabel getLblErrorContrasenia() { return lblErrorContrasenia; }
     
     public String getEmailUsuario() { return txtEmail.getText();}
     public String getRegion() { return String.valueOf(comboRegiones.getSelectedItem());}

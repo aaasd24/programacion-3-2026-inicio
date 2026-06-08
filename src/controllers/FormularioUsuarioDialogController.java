@@ -2,6 +2,9 @@ package controllers;
 
 
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
@@ -42,6 +45,34 @@ public class FormularioUsuarioDialogController {
         // --------VALIDACIONES EN TIEMPO REAL (TEXTFIELDS) --------
         checarSiCompletoCampo(view.getTxtNombre(), view.getLblErrorNombre());
         checarSiCompletoCampo(view.getTxtEmail(), view.getLblErrorEmail());
+        view.getTxtContrasenia().addKeyListener(new KeyListener() {
+			
+        	@Override
+			public void keyTyped(KeyEvent e) {
+        		if(usuario != null) {
+        			bloquearTXt(e);
+        			view.getLblErrorContrasenia().setText("No puede editar este campo");
+        		}
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if(usuario != null) {
+        			bloquearTXt(e);
+        			view.getLblErrorContrasenia().setText("No puede editar este campo");
+        		}
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(usuario != null) {
+        			bloquearTXt(e);
+        			view.getLblErrorContrasenia().setText("No puede editar este campo");
+        		}
+				
+			}
+		});
         
         view.getBotonGuardar().addActionListener(e -> save());
         view.getBotonCancelar().addActionListener(e -> view.dispose());
@@ -53,6 +84,7 @@ public class FormularioUsuarioDialogController {
         
         if (!validateName()) valid = false;
         if (!validateEmail()) valid = false;
+        if (!validateContrasenia()) valid = false;
         if (!validateComboRegion()) valid = false;
         if (!validateAnio()) valid = false;
         if (!validateComboMes()) valid = false;
@@ -127,6 +159,16 @@ public class FormularioUsuarioDialogController {
         }
         return true;
     }
+    private boolean validateContrasenia() {
+		if (String.valueOf(view.getTxtContrasenia().getPassword()).trim().isEmpty() && usuario == null) {
+			view.getLblErrorContrasenia().setText("La contraseña es obligatoria");
+			return false;
+		}
+	
+   
+		 return true;
+    		
+    }
     private boolean validateComboMes() {
         if (view.getComboMeses().getSelectedIndex() == 0) {
             view.getLblErrorMes().setText("Seleccione un mes");
@@ -173,6 +215,7 @@ public class FormularioUsuarioDialogController {
     	}
     	
     	String nombre = view.getTxtNombre().getText();
+    	String contrasenia = String.valueOf(view.getTxtContrasenia().getPassword());
     	String correo = view.getEmailUsuario();
         int region = (int) view.getRegionID();
         String anio = view.getAnio();
@@ -184,8 +227,7 @@ public class FormularioUsuarioDialogController {
         Genero genero = view.getGenero(); 
         
         if(usuario == null) { //															NO tiene imagen
-        	this.usuario = new Usuario(nombre, correo, region, genero, anio, mes, dia, null, rol);
-        	//BibliotecaPersonal temporal = new BibliotecaPersonal(nombre + " ADMIN");
+        	this.usuario = new Usuario(nombre, contrasenia, correo, region, genero, anio, mes, dia, null, rol);
         	
         }else {
         	this.usuario.setNombre(nombre);
@@ -204,5 +246,12 @@ public class FormularioUsuarioDialogController {
 	public Usuario getUsuario() {
 		return usuario;
 	}
-    
+	private void bloquearTXt(KeyEvent evt) {
+		int tecla = evt.getKeyChar();
+		boolean caracteresInValidos = tecla > 0;
+		if (caracteresInValidos)
+	    {
+			evt.consume();
+	    }
+	}
 }
