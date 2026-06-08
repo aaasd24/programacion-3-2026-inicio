@@ -330,7 +330,10 @@ public class FormularioJuego extends JDialog{
 		if(option == JFileChooser.APPROVE_OPTION) {
 			File file = chooser.getSelectedFile();
 			selectedImagePath = file.getAbsolutePath();
+			System.out.println("----------------------- > " + file.getAbsolutePath());
 			lastDirectory = file.getParent();
+			System.out.println("sB -> " + file.getName());
+			System.out.println("sB -> " + file.getParent());
 			Config.set("registration.image.last.directory", lastDirectory);
 			
 			lblPortadaNombre.setText(file.getName());

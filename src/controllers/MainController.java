@@ -44,11 +44,12 @@ public class MainController {
 			}
 		});
 		view.getBotonVerUsuario().addActionListener(e -> mostrarUsuarios());
+		view.getBotonVideojuego().addActionListener(e -> mostrarVideojuegos());
 		view.getBotonHome().addActionListener(e -> {
 			view.mostrarVista(MainWindow.HOME);
 			updateMenuState(MainWindow.HOME);
 		});
-		view.getBotonVideojuego().addActionListener(e -> mostrarVideojuegos());
+		
 		KeyAdapter teclaPasar = new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -92,6 +93,7 @@ public class MainController {
 	
 	private void updateMenuState(String viewName) {
 		view.botonVerUsuario.setEnabled(!viewName.equals(MainWindow.USERS));
+		view.botonVerJuego.setEnabled(!viewName.equals(MainWindow.GAMES));
 		view.botonHome.setEnabled(!viewName.equals(MainWindow.HOME));
 	}
 	private void saveWindowPreferences() {
@@ -146,18 +148,6 @@ public class MainController {
 			ex.printStackTrace();
 		}
 		return juegosRelacionados;
-		
-	}
-	public void cargarJuegos() {
-		try {
-			List<Videojuego> lista = repo.obtenerListaVideojuegos();
-			for(Videojuego juego: lista) {
-				view.mostrarJuego(juego);
-			}
-			
-		}catch (SQLException ex) {
-			ex.printStackTrace();
-		}
 		
 	}
 	

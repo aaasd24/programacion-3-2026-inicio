@@ -9,6 +9,7 @@ import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
+import java.net.URL;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -182,19 +183,6 @@ public class MainWindow extends JFrame {
 	    
 	    
 	    mb.add(theme);
-		/*otraOpcion= new JMenu("Otra opción");
-		otraOpcion.setMnemonic(KeyEvent.VK_O);
-		mb.add(otraOpcion);
-		
-		opcion1 = new JMenu("Opción 1");
-		otraOpcion.add(opcion1);
-		
-		opcion3 = new JMenuItem("Opción 3");
-		opcion1.add(opcion3);
-		
-		opcion2 = new JMenuItem("Opción 2");
-		otraOpcion.add(opcion2);
-		*/
 		
 	}
 
@@ -399,9 +387,11 @@ public class MainWindow extends JFrame {
         JPanel panelJuegos = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
         panelJuegos.setOpaque(false);
         
+        String imgRuta;
         if (juegos != null && !juegos.isEmpty()) {
             for (Videojuego juego : juegos) {
-                panelJuegos.add(crearTarjetaJuego(juego.getPortadaPath(), "Jugar", juego.getTitulo())); 
+            	imgRuta = juego.getPortadaPath();
+                panelJuegos.add(crearTarjetaJuego(imgRuta, "Jugar", juego.getTitulo())); 
             }
         } else {
             JLabel vacío = new JLabel("La parrilla está vacía. Añade un juego en Videojuegos.");
@@ -453,18 +443,13 @@ public class MainWindow extends JFrame {
         
         if (rutaImagen != null && !rutaImagen.trim().isEmpty()) {
         	try {
-		         java.net.URL urlImg = getClass().getResource(rutaImagen);
-		         if (urlImg != null) {
-		             ImageIcon icon = new ImageIcon(urlImg);
-		             Image img = icon.getImage().getScaledInstance(140, 165, Image.SCALE_SMOOTH);
-		             lblPortada.setIcon(new ImageIcon(img));
-		         } else {
-		             lblPortada.setText("Insertar Portada"); 
-		             lblPortada.setForeground(Color.LIGHT_GRAY);
-		         }
+				ImageIcon icon = new ImageIcon(rutaImagen);
+				Image img = icon.getImage().getScaledInstance(140, 165, Image.SCALE_SMOOTH);
+				lblPortada.setIcon(new ImageIcon(img));
 		     } catch (Exception e) {
 		         lblPortada.setText("Error");
 		         lblPortada.setForeground(Color.RED);
+		         e.printStackTrace();
 		     }
 		 } else {
 			 lblPortada.setText("Sin Portada"); 
