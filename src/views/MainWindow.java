@@ -25,6 +25,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import assets.GestorCursor;
 import utils.Session;
 import utils.ThemeManager;
 
@@ -298,14 +299,10 @@ public class MainWindow extends JFrame {
         
         // --- CATÁLOGO DE JUEGOS ---
         try {
-            // Creamos una instancia rápida del repositorio de tu compañero
             repositorio.RepositorioVideojuegos repoInicial = new repositorio.RepositorioVideojuegos();
-            
-            // Le pasamos la lista real de la base de datos entre los paréntesis
             panelHome.add(crearPanelCatalogoJuegos(repoInicial.obtenerListaVideojuegos()), BorderLayout.CENTER);
         } catch(Exception e) {
-            // Si la base de datos llega a estar apagada, le pasamos una lista vacía 
-            // para que tu Front-End cargue limpio y no se congele la aplicación
+            
             panelHome.add(crearPanelCatalogoJuegos(new java.util.ArrayList<>()), BorderLayout.CENTER);
         }
         
@@ -355,11 +352,14 @@ public class MainWindow extends JFrame {
             recientes.add(listaJuegos.get(0));
             if (listaJuegos.size() > 1) recientes.add(listaJuegos.get(1));
         }
-        panelContenedor.add(crearCategoria("continuar jugando ->", recientes));
+        
+        // 🔥 Agregamos el parámetro "JUGAR" exclusivo para la primera sección
+        panelContenedor.add(crearCategoria("continuar jugando ->", recientes, "JUGAR"));
         panelContenedor.add(javax.swing.Box.createVerticalStrut(25)); 
         
         // Categoria 2: Toda tu biblioteca de la Parrilla
-        panelContenedor.add(crearCategoria("biblioteca ->", listaJuegos));
+        // 🔥 Agregamos el parámetro "COMPRAR" para diferenciar la segunda sección
+        panelContenedor.add(crearCategoria("Catalogo ->", listaJuegos, "COMPRAR"));
         
         JScrollPane scroll = new JScrollPane(panelContenedor);
         scroll.setOpaque(false);
@@ -371,7 +371,7 @@ public class MainWindow extends JFrame {
         return scroll;
     }
 
-	private JPanel crearCategoria(String titulo, List<Videojuego> juegos) { 
+	private JPanel crearCategoria(String titulo, List<Videojuego> juegos, String tipoAccion) { 
         JPanel panelCat = new JPanel(new BorderLayout());
         panelCat.setOpaque(false);
         
@@ -385,11 +385,46 @@ public class MainWindow extends JFrame {
         JPanel panelJuegos = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
         panelJuegos.setOpaque(false);
         
-        String imgRuta;
         if (juegos != null && !juegos.isEmpty()) {
             for (Videojuego juego : juegos) {
-            	imgRuta = juego.getPortadaPath();
-                panelJuegos.add(crearTarjetaJuego(imgRuta, "Jugar", juego.getTitulo())); 
+                // Evaluamos dinámicamente el texto de la franja inferior de la tarjeta
+                String textoBoton = tipoAccion.equals("JUGAR") ? "Jugar" : "Comprar";
+                JPanel tarjetaJuego = crearTarjetaJuego(juego.getPortadaPath(), textoBoton, juego.getTitulo());
+                
+                // Asignamos los listeners interactivos
+                tarjetaJuego.addMouseListener(new java.awt.event.MouseAdapter() {
+                    @Override
+                    public void mouseClicked(java.awt.event.MouseEvent e) {
+                        // 🔥 CONDICIÓN CLAVE: Solo la primera sección levanta la vista de detalles
+                        if (tipoAccion.equals("JUGAR")) {
+                            System.out.println("Cargando detalles de: " + juego.getTitulo());
+                            
+                            // Instanciamos y desplegamos tu JDialog modal dedicado
+                            DetalleJuegoView detalleView = new DetalleJuegoView(MainWindow.this, juego);
+                            detalleView.setVisible(true);
+                        } else {
+                            // Aquí irá la lógica de compra de la segunda sección más adelante
+                            System.out.println("Sección de compra para: " + juego.getTitulo());
+                        }
+                    }
+                    
+                    // Efecto de hover sutil para la UI/UX
+                    @Override
+                    public void mouseEntered(java.awt.event.MouseEvent e) {
+                        tarjetaJuego.setOpaque(true);
+                        tarjetaJuego.setBackground(new Color(60, 60, 60)); 
+                        tarjetaJuego.repaint();
+                        GestorCursor.aplicarATodo(MainWindow.this);
+                    }
+                    
+                    @Override
+                    public void mouseExited(java.awt.event.MouseEvent e) {
+                        tarjetaJuego.setOpaque(false);
+                        tarjetaJuego.repaint();
+                    }
+                });
+                
+                panelJuegos.add(tarjetaJuego); 
             }
         } else {
             JLabel vacío = new JLabel("La parrilla está vacía. Añade un juego en Videojuegos.");
@@ -398,24 +433,19 @@ public class MainWindow extends JFrame {
             panelJuegos.add(vacío);
         }
         
-      
-        // JScrollPane que solo se mueva de izquierda a derecha en panelJuegos
+        // JScrollPane que solo se mueva de izquierda a derecha
         JScrollPane scrollFila = new JScrollPane(panelJuegos);
         scrollFila.setOpaque(false);
         scrollFila.getViewport().setOpaque(false);
-        scrollFila.setBorder(null); // Sin bordes feos de Windows clásico
+        scrollFila.setBorder(null); 
         
-        // Configuración de barras: Activamos la horizontal sólo si es necesaria, apagamos la vertical
         scrollFila.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollFila.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-        
-        // Scroll supersuave para la fila horizontal
         scrollFila.getHorizontalScrollBar().setUnitIncrement(16);
         
         scrollFila.setPreferredSize(new Dimension(400, 250));
         scrollFila.setMinimumSize(new Dimension(100, 250));
         scrollFila.setMaximumSize(new Dimension(Integer.MAX_VALUE, 250));
-        
         scrollFila.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 10)); 
         
         panelCat.add(lblTitulo, BorderLayout.NORTH);
