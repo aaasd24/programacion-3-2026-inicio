@@ -8,7 +8,9 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Window;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -64,6 +66,11 @@ public class MainWindow extends JFrame {
 	private CardLayout cardLayout;
 	private JPanel contenedor;
 	
+	private List<JPanel> tarjetaJuego = new ArrayList<JPanel>();
+	private List<Videojuego> juegosVista = new ArrayList<Videojuego>();
+	
+	private List<JPanel> tarjetaJuegoPersonal = new ArrayList<JPanel>();
+	private List<Videojuego> juegosVistaPersonal = new ArrayList<Videojuego>();
 	public MainWindow() {
 		
 		setSize(500,500);
@@ -157,15 +164,7 @@ public class MainWindow extends JFrame {
 		archivo= new JMenu("Archivo");
 		archivo.setMnemonic(KeyEvent.VK_A);
 		mb.add(archivo);
-		/*
-		abrir = new JMenuItem("Abrir");
-		abrir.setMnemonic(KeyEvent.VK_B);
-		archivo.add(abrir);
 		
-		guardar = new JMenuItem("Guardar");
-		guardar.setMnemonic(KeyEvent.VK_G);
-		archivo.add(guardar);
-		*/
 		archivo.addSeparator();
 		salir = new JMenuItem("Salir");
 		salir.setMnemonic(KeyEvent.VK_S);
@@ -332,7 +331,6 @@ public class MainWindow extends JFrame {
 	public void setWindowSize(int width, int height) {
 		setSize(width, height);
 	}
-	
 	public void setWindowLocation(int x, int y) {
 		setLocation(x, y);
 	}
@@ -386,45 +384,23 @@ public class MainWindow extends JFrame {
         panelJuegos.setOpaque(false);
         
         if (juegos != null && !juegos.isEmpty()) {
+        	int i = 0;
             for (Videojuego juego : juegos) {
                 // Evaluamos dinámicamente el texto de la franja inferior de la tarjeta
                 String textoBoton = tipoAccion.equals("JUGAR") ? "Jugar" : "Comprar";
-                JPanel tarjetaJuego = crearTarjetaJuego(juego.getPortadaPath(), textoBoton, juego.getTitulo());
+                JPanel Tjuego = crearTarjetaJuego(juego.getPortadaPath(), textoBoton, juego.getTitulo());
+                if(textoBoton == "Jugar") {
+                	tarjetaJuegoPersonal.add(Tjuego);
+                	juegosVistaPersonal.add(juego);
+                	panelJuegos.add(tarjetaJuegoPersonal.get(i));
+                }else {
+                	tarjetaJuego.add(Tjuego);
+                    juegosVista.add(juego);
+                    panelJuegos.add(tarjetaJuego.get(i));
+                }
                 
-                // Asignamos los listeners interactivos
-                tarjetaJuego.addMouseListener(new java.awt.event.MouseAdapter() {
-                    @Override
-                    public void mouseClicked(java.awt.event.MouseEvent e) {
-                        // 🔥 CONDICIÓN CLAVE: Solo la primera sección levanta la vista de detalles
-                        if (tipoAccion.equals("JUGAR")) {
-                            System.out.println("Cargando detalles de: " + juego.getTitulo());
-                            
-                            // Instanciamos y desplegamos tu JDialog modal dedicado
-                            DetalleJuegoView detalleView = new DetalleJuegoView(MainWindow.this, juego);
-                            detalleView.setVisible(true);
-                        } else {
-                            // Aquí irá la lógica de compra de la segunda sección más adelante
-                            System.out.println("Sección de compra para: " + juego.getTitulo());
-                        }
-                    }
-                    
-                    // Efecto de hover sutil para la UI/UX
-                    @Override
-                    public void mouseEntered(java.awt.event.MouseEvent e) {
-                        tarjetaJuego.setOpaque(true);
-                        tarjetaJuego.setBackground(new Color(60, 60, 60)); 
-                        tarjetaJuego.repaint();
-                        GestorCursor.aplicarATodo(MainWindow.this);
-                    }
-                    
-                    @Override
-                    public void mouseExited(java.awt.event.MouseEvent e) {
-                        tarjetaJuego.setOpaque(false);
-                        tarjetaJuego.repaint();
-                    }
-                });
                 
-                panelJuegos.add(tarjetaJuego); 
+                i++;
             }
         } else {
             JLabel vacío = new JLabel("La parrilla está vacía. Añade un juego en Videojuegos.");
@@ -532,6 +508,22 @@ public class MainWindow extends JFrame {
 	        "¿Seguro?",
 	        JOptionPane.YES_NO_OPTION
 	    );
+	}
+
+	public Window getVentana() { return this;}
+	
+	
+	public List<JPanel> getJuegosP() {
+		return tarjetaJuego;
+	}
+	public List<Videojuego> getLJuegos(){
+		return juegosVista;
+	}
+	public List<JPanel> getJuegosPL() {
+		return tarjetaJuegoPersonal;
+	}
+	public List<Videojuego> getLJuegosL(){
+		return juegosVistaPersonal;
 	}
 }
 

@@ -176,15 +176,10 @@ public class DetalleJuegoView extends JDialog {
             String pathImg = videojuegoSeleccionado.getPortadaPath();
             if (pathImg != null && !pathImg.trim().isEmpty()) {
                 try {
-                    java.net.URL urlImg = getClass().getResource(pathImg);
-                    if (urlImg != null) {
-                        ImageIcon icon = new ImageIcon(urlImg);
-                        Image img = icon.getImage().getScaledInstance(300, 450, Image.SCALE_SMOOTH);
-                        lblPortadaGrande.setIcon(new ImageIcon(img));
-                    } else {
-                        lblPortadaGrande.setText("Insertar Portada"); //si no carga la img
-                        lblPortadaGrande.setForeground(Color.LIGHT_GRAY);
-                    }
+                    ImageIcon icon = new ImageIcon(pathImg);
+                    Image img = icon.getImage().getScaledInstance(300, 450, Image.SCALE_SMOOTH);
+                    lblPortadaGrande.setIcon(new ImageIcon(img));
+                
                 } catch (Exception e) {
                     lblPortadaGrande.setText("Error Arte");
                     lblPortadaGrande.setForeground(Color.RED);
@@ -195,4 +190,5 @@ public class DetalleJuegoView extends JDialog {
             }
         }
     }
+    //public 
 }

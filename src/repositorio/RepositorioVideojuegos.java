@@ -355,4 +355,36 @@ public class RepositorioVideojuegos {
 		return juegos;
 	}
 	
+	public Videojuego buscarJuegoUnico(String entrada){
+		Videojuego videojuego = null;
+		try (
+				Connection conexion = DatabaseConnection.getConnection();
+				Statement stm = conexion.createStatement();
+				ResultSet rs = stm.executeQuery("SELECT * FROM videojuego WHERE titulo LIKE '%" + entrada + "%'");)
+		{
+			while(rs.next()) {
+				Videojuego videojuegoImportado = new Videojuego(
+						rs.getInt("idvideojuego"), 
+						rs.getString("titulo"), 
+						rs.getFloat("precio"),
+						rs.getString("descripcion"),
+						rs.getString("direccionArchivo"), 
+						rs.getString("portadaPath"),
+						rs.getBoolean("crossplay"),
+						rs.getString("multijugador")
+						);
+				videojuego = videojuegoImportado;
+				
+			}
+			
+			videojuego.setGeneros(obtenerGenerosDdBD(videojuego.getId()));
+			videojuego.setPlataforma(obtenerPlatafomaDeVideojuegodBD(videojuego.getId()));
+			
+		}catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		
+		
+		return videojuego;
+	}
 }

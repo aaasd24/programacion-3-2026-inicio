@@ -5,23 +5,26 @@ import java.awt.Point;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import config.Config;
 import models.Videojuego;
 import repositorio.RepositorioVideojuegos;
 import utils.Session;
+import views.DetalleJuegoView;
 import views.LoginWindow;
 import views.MainWindow;
 
-public class MainController {
+public class MainController{
 	
 	private MainWindow view;
 	public JButton BotonVerUsuarios;
@@ -53,7 +56,32 @@ public class MainController {
 			     
 			}	    	
 		});
-
+		for(int i = 0; i < view.getJuegosP().size(); i++) {
+			int j = i;
+			JPanel panelito = view.getJuegosP().get(j);
+			panelito.addMouseListener(new MouseAdapter() {
+				public void mouseClicked(MouseEvent e) {
+			        Point p = new Point(e.getLocationOnScreen());
+			        SwingUtilities.convertPointFromScreen(p, e.getComponent());
+			        if(e.getComponent().contains(p)) {
+			        	checarStatusJuegoGeneral(j);
+			        }
+			    }
+			});
+		}
+		for(int i = 0; i < view.getJuegosPL().size(); i++) {
+			int j = i;
+			JPanel panelito = view.getJuegosPL().get(j);
+			panelito.addMouseListener(new MouseAdapter() {
+				public void mouseClicked(MouseEvent e) {
+			        Point p = new Point(e.getLocationOnScreen());
+			        SwingUtilities.convertPointFromScreen(p, e.getComponent());
+			        if(e.getComponent().contains(p)) {
+			        	checarStatusJuegoPersonal(j);
+			        }
+			    }
+			});
+		}
 		
 		view.getBotonVerUsuario().addActionListener(e -> mostrarUsuarios());
 		view.getBotonVideojuego().addActionListener(e -> mostrarVideojuegos());
@@ -154,5 +182,20 @@ public class MainController {
 		return juegosRelacionados;
 		
 	}
+	public void checarStatusJuegoGeneral(int i) {
+		if(view.getLJuegos().get(i) != null) {
+			DetalleJuegoView detalleView = new DetalleJuegoView(view, view.getLJuegos().get(i));
+            detalleView.setVisible(true);
+            
+		}
+	}	
+	public void checarStatusJuegoPersonal(int i) {		
+		if(view.getLJuegosL().get(i) != null) {
+			DetalleJuegoView detalleView = new DetalleJuegoView(view, view.getLJuegosL().get(i));
+            detalleView.setVisible(true);
+            
+		}
+	}
+	
 	
 }
