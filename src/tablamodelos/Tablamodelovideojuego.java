@@ -14,7 +14,10 @@ public class Tablamodelovideojuego extends AbstractTableModel{
 			"Titulo",
 			"Generos",
 			"Precio",
-			"Plataforma"
+			"Plataforma",
+			"Descripcion",
+			"Modo Multijugador",
+			"CrossPlay"
 	};
 	
 	public Tablamodelovideojuego(List<Videojuego> videojuegos) {
@@ -46,6 +49,12 @@ public class Tablamodelovideojuego extends AbstractTableModel{
 			return videojuegoActual.getPrecio();
 		case 3:
 			return videojuegoActual.getPlataformasDisponibles();
+		case 4:
+			return videojuegoActual.getDescripcion();
+		case 5:
+			return videojuegoActual.getMultijugador();
+		case 6:
+			return videojuegoActual.getCrossplay();
 		}
 		return null;
 	}
